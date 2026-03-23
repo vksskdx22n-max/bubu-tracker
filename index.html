@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>🐾 Bubu's Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --soil:    #3D2B1F;
+  --bark:    #6B4226;
+  --moss:    #4A6741;
+  --sage:    #7A9E6E;
+  --fern:    #A8C49A;
+  --cream:   #F5EDD8;
+  --sand:    #E8D5B0;
+  --stone:   #C4B49A;
+  --warm:    #D4956A;
+  --copper:  #B5622A;
+  --gold:    #C8922A;
+  --piscina-c:  #3A7CA5;
+  --piscina-l:  #EAF4FB;
+  --tartufo-c:  #7B5835;
+  --tartufo-l:  #F5EDE2;
+  --guinz-c:    #4A6741;
+  --guinz-l:    #EBF3E8;
+  --red:    #C0392B;
+  --red-l:  #FDECEA;
+  --yellow: #C8922A;
+  --yellow-l: #FEF6E4;
+  --green:  #4A6741;
+  --green-l:#EBF3E8;
+  --r: 16px;
+  --r-lg: 22px;
+  --shadow: 0 4px 24px rgba(61,43,31,0.10);
+  --shadow-lg: 0 8px 40px rgba(61,43,31,0.16);
+}
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--soil);
+  min-height: 100vh;
+  padding-bottom: 90px;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, #F5EDD8 0%, #EDE0C4 100%);
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(145deg, var(--bark) 0%, var(--soil) 100%);
+  padding: 52px 22px 44px;
+  position: relative; overflow: hidden;
+}
+.header-deco {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    radial-gradient(circle at 88% 18%, rgba(200,146,42,0.28) 0%, transparent 52%),
+    radial-gradient(circle at 12% 82%, rgba(74,103,65,0.32) 0%, transparent 50%);
+}
+.header-paws {
+  position:absolute; inset:0; pointer-events:none; opacity:0.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cellipse cx='30' cy='38' rx='10' ry='8' fill='white'/%3E%3Ccircle cx='19' cy='26' r='5' fill='white'/%3E%3Ccircle cx='41' cy='26' r='5' fill='white'/%3E%3Ccircle cx='24' cy='18' r='4' fill='white'/%3E%3Ccircle cx='36' cy='18' r='4' fill='white'/%3E%3C/svg%3E");
+  background-size:60px 60px;
+}
+.header-inner { position:relative; z-index:1; display:flex; align-items:center; gap:16px; }
+.header-avatar {
+  width:62px; height:62px;
+  background: linear-gradient(135deg, var(--gold), var(--warm));
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:32px; flex-shrink:0;
+  box-shadow:0 4px 16px rgba(0,0,0,0.3), 0 0 0 3px rgba(255,255,255,0.15);
+  animation:pulse-av 3s ease-in-out infinite;
+}
+@keyframes pulse-av {
+  0%,100%{box-shadow:0 4px 16px rgba(0,0,0,0.3),0 0 0 3px rgba(255,255,255,0.15)}
+  50%{box-shadow:0 4px 20px rgba(0,0,0,0.35),0 0 0 6px rgba(200,146,42,0.25)}
+}
+.header-title { font-family:'Playfair Display',serif; font-size:27px; font-weight:900; color:var(--cream); line-height:1; }
+.header-sub { font-size:15px; font-weight:800; color:rgba(245,237,216,0.85); margin-top:6px; letter-spacing:0.2px; }
+.header-badges { position:relative; z-index:1; display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+.hbadge {
+  background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+  border-radius:20px; padding:4px 12px; font-size:11px; font-weight:800;
+  color:rgba(245,237,216,0.9);
+}
+.hbadge.al { background:rgba(192,57,43,0.45); border-color:rgba(192,57,43,0.6); color:#FFCAC5; }
+.hbadge.wa { background:rgba(200,146,42,0.45); border-color:rgba(200,146,42,0.6); color:#FFE8A0; }
+
+/* NAV */
+.nav-wrap { background:var(--soil); position:sticky; top:0; z-index:50; box-shadow:0 2px 12px rgba(61,43,31,0.25); }
+.nav-tabs { display:flex; }
+.nav-tab {
+  flex:1; border:none; background:transparent; cursor:pointer;
+  font-family:'Nunito',sans-serif; font-size:11px; font-weight:800;
+  color:rgba(245,237,216,0.4);
+  padding:11px 4px 10px;
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  transition:all 0.2s; position:relative; letter-spacing:0.2px;
+}
+.nav-tab .ti { font-size:18px; }
+.nav-tab.active { color:var(--cream); }
+.nav-tab.active::after {
+  content:''; position:absolute; bottom:0; left:22%; right:22%;
+  height:3px; background:var(--gold); border-radius:3px 3px 0 0;
+}
+
+/* PAGES */
+.page { display:none; padding:16px; animation:fadeIn 0.22s ease; }
+.page.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+
+/* SEC TITLE */
+.sec-title {
+  font-family:'Playfair Display',serif; font-size:18px; font-weight:700;
+  color:var(--bark); margin-bottom:12px; display:flex; align-items:center; gap:8px;
+}
+
+/* STREAK */
+.streak-banner {
+  background:linear-gradient(135deg, var(--moss) 0%, var(--sage) 100%);
+  border-radius:var(--r-lg); padding:14px 18px; margin-bottom:14px;
+  display:flex; align-items:center; gap:14px; box-shadow:var(--shadow);
+  animation:fadeIn 0.3s ease 0.05s both;
+}
+.streak-fire { font-size:34px; line-height:1; }
+.streak-num { font-family:'Playfair Display',serif; font-size:25px; font-weight:900; color:var(--cream); line-height:1; }
+.streak-label { font-size:12px; font-weight:700; color:rgba(245,237,216,0.72); }
+
+/* ACTIVITY CARDS */
+.activity-cards { display:flex; flex-direction:column; gap:14px; }
+.a-card {
+  background:white; border-radius:var(--r-lg); overflow:hidden;
+  box-shadow:var(--shadow); cursor:pointer;
+  transition:transform 0.15s,box-shadow 0.15s;
+  animation:fadeIn 0.3s ease both;
+}
+.a-card:nth-child(1){animation-delay:0.06s}
+.a-card:nth-child(2){animation-delay:0.12s}
+.a-card:nth-child(3){animation-delay:0.18s}
+.a-card:active { transform:scale(0.985); }
+.a-card-top { padding:16px 18px 12px; position:relative; }
+.a-card-top::before {
+  content:''; position:absolute; inset:0; opacity:0.04; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cellipse cx='22' cy='28' rx='8' ry='7' fill='%23000'/%3E%3Ccircle cx='13' cy='18' r='4' fill='%23000'/%3E%3Ccircle cx='31' cy='18' r='4' fill='%23000'/%3E%3Ccircle cx='17' cy='12' r='3' fill='%23000'/%3E%3Ccircle cx='27' cy='12' r='3' fill='%23000'/%3E%3C/svg%3E");
+  background-size:44px 44px;
+}
+.a-row1 { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.a-title-wrap { display:flex; align-items:center; gap:10px; }
+.a-icon { width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+.a-icon.piscina   { background:var(--piscina-l); }
+.a-icon.tartufing { background:var(--tartufo-l); }
+.a-icon.guinzagli { background:var(--guinz-l); }
+.a-name { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; }
+.a-name.piscina   { color:var(--piscina-c); }
+.a-name.tartufing { color:var(--tartufo-c); }
+.a-name.guinzagli { color:var(--guinz-c); }
+
+.badge { font-size:10px; font-weight:900; padding:4px 9px; border-radius:20px; letter-spacing:0.4px; text-transform:uppercase; white-space:nowrap; }
+.b-green  { background:var(--green-l); color:var(--green); }
+.b-yellow { background:var(--yellow-l); color:var(--yellow); }
+.b-red    { background:var(--red-l); color:var(--red); }
+.b-gray   { background:#f0ebe3; color:#9a8c7e; }
+
+.a-nums { display:flex; gap:14px; margin-bottom:12px; }
+.a-num { text-align:center; }
+.a-num-val { font-family:'Playfair Display',serif; font-size:30px; font-weight:900; line-height:1; }
+.a-num-val.piscina   { color:var(--piscina-c); }
+.a-num-val.tartufing { color:var(--tartufo-c); }
+.a-num-val.guinzagli { color:var(--guinz-c); }
+.a-num-lbl { font-size:10px; font-weight:800; color:var(--stone); text-transform:uppercase; letter-spacing:0.5px; }
+
+.prog-track { background:var(--sand); border-radius:8px; height:7px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:8px; transition:width 0.6s cubic-bezier(.4,0,.2,1); }
+.prog-fill.piscina   { background:linear-gradient(90deg,var(--piscina-c),#6AABCC); }
+.prog-fill.tartufing { background:linear-gradient(90deg,var(--tartufo-c),#C4955A); }
+.prog-fill.guinzagli { background:linear-gradient(90deg,var(--guinz-c),#7BAF6E); }
+
+.stima-tag {
+  font-size:11px; font-weight:700; color:var(--bark);
+  background:var(--sand); border-radius:8px; padding:3px 8px;
+  margin-top:7px; display:inline-block;
+}
+.a-card-foot {
+  background:var(--cream); padding:9px 18px;
+  display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid var(--sand);
+}
+.a-card-meta { font-size:11px; font-weight:700; color:var(--stone); }
+.a-arrow { font-size:16px; color:var(--stone); }
+
+/* DETAIL HERO */
+.det-hero {
+  border-radius:var(--r-lg); padding:20px 18px 16px; margin-bottom:14px;
+  position:relative; overflow:hidden; box-shadow:var(--shadow);
+}
+.det-hero.piscina   { background:linear-gradient(135deg,var(--piscina-c),#5AAAD4); }
+.det-hero.tartufing { background:linear-gradient(135deg,var(--tartufo-c),#C4955A); }
+.det-hero.guinzagli { background:linear-gradient(135deg,var(--guinz-c),#7BAF6E); }
+.det-hero::after { content:''; position:absolute; top:-28px; right:-28px; width:130px; height:130px; border-radius:50%; background:rgba(255,255,255,0.08); }
+.det-hero-title { font-family:'Playfair Display',serif; font-size:23px; font-weight:900; color:white; margin-bottom:3px; position:relative; z-index:1; display:flex; align-items:center; gap:10px; }
+.det-hero-sub { font-size:12px; font-weight:700; color:rgba(255,255,255,0.68); margin-bottom:14px; position:relative; z-index:1; }
+.det-stats { display:flex; gap:10px; position:relative; z-index:1; flex-wrap:wrap; }
+.d-stat { background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.25); border-radius:var(--r); padding:10px 14px; flex:1; min-width:68px; }
+.d-stat-val { font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:white; line-height:1; }
+.d-stat-lbl { font-size:10px; font-weight:800; color:rgba(255,255,255,0.68); text-transform:uppercase; letter-spacing:0.5px; }
+.det-prog { margin-top:14px; position:relative; z-index:1; }
+.det-prog-bar { background:rgba(255,255,255,0.2); border-radius:8px; height:8px; overflow:hidden; }
+.det-prog-fill { background:rgba(255,255,255,0.85); height:100%; border-radius:8px; transition:width 0.6s ease; }
+.det-prog-lbls { display:flex; justify-content:space-between; margin-top:4px; }
+.det-prog-lbl { font-size:11px; font-weight:700; color:rgba(255,255,255,0.68); }
+
+/* STIMA BLOCK */
+.stima-block {
+  background:white; border-radius:var(--r); padding:14px 16px;
+  margin-bottom:14px; box-shadow:var(--shadow);
+  display:flex; align-items:center; gap:12px;
+}
+.stima-icon { font-size:28px; }
+.stima-title { font-size:13px; font-weight:800; color:var(--bark); }
+.stima-val { font-family:'Playfair Display',serif; font-size:17px; font-weight:700; color:var(--copper); }
+.stima-sub { font-size:11px; color:var(--stone); font-weight:600; }
+
+/* ACTIONS */
+.actions-row { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.btn { border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:800; border-radius:var(--r); transition:all 0.15s; display:inline-flex; align-items:center; gap:6px; padding:11px 18px; font-size:14px; }
+.btn:active { transform:scale(0.96); }
+.btn-soil { background:var(--soil); color:var(--cream); }
+.btn-moss { background:var(--moss); color:white; }
+.btn-sand { background:var(--sand); color:var(--bark); }
+.btn-piscina   { background:var(--piscina-c); color:white; }
+.btn-tartufing { background:var(--tartufo-c); color:white; }
+.btn-guinzagli { background:var(--guinz-c); color:white; }
+
+/* CHART */
+.chart-block { background:white; border-radius:var(--r-lg); padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow); }
+.chart-bars { display:flex; gap:4px; align-items:flex-end; height:64px; margin-top:12px; }
+.chart-bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; }
+.chart-bar { width:100%; border-radius:5px 5px 0 0; min-height:4px; }
+.chart-bar-lbl { font-size:9px; font-weight:700; color:var(--stone); }
+.chart-bar-val { font-size:10px; font-weight:800; color:var(--bark); min-height:14px; }
+
+/* LEZIONI */
+.lezioni-block { background:white; border-radius:var(--r-lg); padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow); }
+.lezioni-list { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+.lezione-item { display:flex; align-items:flex-start; gap:10px; background:var(--cream); border-radius:var(--r); padding:10px 12px; }
+.lezione-thumb { width:44px; height:44px; border-radius:10px; overflow:hidden; flex-shrink:0; background:var(--sand); display:flex; align-items:center; justify-content:center; font-size:20px; }
+.lezione-thumb img { width:100%; height:100%; object-fit:cover; }
+.lezione-body { flex:1; min-width:0; }
+.lezione-num { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--bark); }
+.lezione-date { font-size:12px; font-weight:700; color:var(--stone); }
+.lezione-note { font-size:11px; color:var(--stone); font-style:italic; margin-top:2px; }
+.btn-del { background:none; border:none; cursor:pointer; font-size:15px; color:#ccc; padding:4px; flex-shrink:0; }
+.btn-del:hover { color:var(--red); }
+.empty-list { text-align:center; color:var(--stone); font-size:13px; padding:20px 0; font-weight:700; }
+
+/* STORICO */
+.storico-block { background:white; border-radius:var(--r-lg); padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow); }
+.storico-item { border-left:3px solid var(--sand); padding:8px 12px; margin-top:8px; }
+.storico-item.cur { border-left-color:var(--moss); }
+.storico-dates { font-size:12px; font-weight:700; color:var(--stone); }
+.storico-info { font-size:13px; font-weight:800; color:var(--bark); margin-top:2px; }
+
+/* MODAL */
+.overlay { position:fixed; inset:0; background:rgba(61,43,31,0.55); z-index:100; display:none; align-items:flex-end; justify-content:center; backdrop-filter:blur(3px); }
+.overlay.open { display:flex; }
+.modal { background:var(--cream); border-radius:var(--r-lg) var(--r-lg) 0 0; padding:20px 20px 44px; width:100%; max-width:480px; max-height:88vh; overflow-y:auto; animation:slideUp 0.28s cubic-bezier(.4,0,.2,1); box-shadow:0 -8px 40px rgba(61,43,31,0.2); }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle { width:40px; height:4px; background:var(--stone); border-radius:2px; margin:0 auto 18px; }
+.modal-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--bark); margin-bottom:18px; }
+.form-group { margin-bottom:14px; }
+.form-lbl { font-size:11px; font-weight:800; color:var(--stone); text-transform:uppercase; letter-spacing:0.6px; display:block; margin-bottom:6px; }
+.form-input { width:100%; padding:12px 14px; border:2px solid var(--sand); border-radius:var(--r); font-family:'Nunito',sans-serif; font-size:15px; font-weight:600; color:var(--soil); background:white; transition:border-color 0.15s; }
+.form-input:focus { outline:none; border-color:var(--bark); }
+.modal-actions { display:flex; gap:10px; margin-top:18px; }
+.btn-cancel { background:var(--sand); color:var(--bark); border:none; cursor:pointer; border-radius:var(--r); font-family:'Nunito',sans-serif; font-weight:800; padding:12px 18px; font-size:14px; }
+.foto-area { border:2px dashed var(--stone); border-radius:var(--r); padding:16px; text-align:center; cursor:pointer; font-size:13px; font-weight:700; color:var(--stone); transition:border-color 0.15s; }
+.foto-area:hover { border-color:var(--bark); color:var(--bark); }
+.foto-preview { width:100%; height:150px; border-radius:var(--r); object-fit:cover; display:none; margin-top:8px; }
+.foto-preview.show { display:block; }
+
+@media(min-width:600px){
+  body { max-width:480px; margin:0 auto; }
+  .modal { border-radius:var(--r-lg); margin-bottom:40px; }
+  .overlay { align-items:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-paws"></div>
+  <div class="header-deco"></div>
+  <div class="header-inner">
+    <div class="header-avatar">🐾</div>
+    <div>
+      <div class="header-title">Bubu's Tracker</div>
+      <div class="header-sub">Trainer e compagna di vita: Tato</div>
+      <div style="font-size:11px;font-weight:700;color:rgba(245,237,216,0.6);margin-top:5px;letter-spacing:1px;font-family:monospace;">v2.0</div>
+    </div>
+  </div>
+  <div class="header-badges" id="hbadges"></div>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard')"><span class="ti">🏡</span>Home</button>
+    <button class="nav-tab" onclick="showPage('piscina')"><span class="ti">🏊</span>Piscina</button>
+    <button class="nav-tab" onclick="showPage('tartufing')"><span class="ti">🍄</span>Tartufing</button>
+    <button class="nav-tab" onclick="showPage('guinzagli')"><span class="ti">🐕</span>Guinzagli</button>
+  </div>
+</div>
+
+<div id="page-dashboard" class="page active">
+  <div id="streak-wrap"></div>
+  <p class="sec-title">📋 Le attività di Bubu</p>
+  <div class="activity-cards" id="dash-cards"></div>
+</div>
+<div id="page-piscina"   class="page"><div id="det-piscina"></div></div>
+<div id="page-tartufing" class="page"><div id="det-tartufing"></div></div>
+<div id="page-guinzagli" class="page"><div id="det-guinzagli"></div></div>
+
+<!-- MODAL LEZIONE -->
+<div class="overlay" id="m-lezione">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✏️ Registra lezione</div>
+    <div class="form-group">
+      <label class="form-lbl">Data lezione</label>
+      <input type="date" class="form-input" id="i-lez-data">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Note (opzionale)</label>
+      <input type="text" class="form-input" id="i-lez-note" placeholder="es. ottima sessione!">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">📸 Foto ricordo (opzionale)</label>
+      <div class="foto-area" onclick="document.getElementById('i-lez-foto').click()">Tocca per aggiungere una foto 📷</div>
+      <input type="file" id="i-lez-foto" accept="image/*" style="display:none" onchange="previewFoto(this)">
+      <img id="i-lez-preview" class="foto-preview" src="" alt="preview">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('m-lezione')">Annulla</button>
+      <button class="btn btn-soil" onclick="salvaLezione()">✓ Salva lezione</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ABBONAMENTO -->
+<div class="overlay" id="m-abbonamento">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🎟️ Nuovo abbonamento</div>
+    <div class="form-group">
+      <label class="form-lbl">N° lezioni nel pacchetto</label>
+      <input type="number" class="form-input" id="i-sub-tot" placeholder="es. 10" min="1">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Data inizio</label>
+      <input type="date" class="form-input" id="i-sub-data">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Note (opzionale)</label>
+      <input type="text" class="form-input" id="i-sub-note" placeholder="es. pacchetto estate 2025">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('m-abbonamento')">Annulla</button>
+      <button class="btn btn-moss" onclick="salvaAbbonamento()">✓ Attiva</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ACT = {
+  piscina:   { label:'Piscina',          icon:'🏊', cls:'piscina',   color:'#3A7CA5' },
+  tartufing: { label:'Tartufing',        icon:'🍄', cls:'tartufing', color:'#7B5835' },
+  guinzagli: { label:'Guinzagli Sereni', icon:'🐕', cls:'guinzagli', color:'#4A6741' }
+};
+const SOGLIE = { giallo:2, rosso:0 };
+const MESI = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+
+let state = {}, curAct = null, fotoB64 = null;
+
+function loadState(){
+  try{ state=JSON.parse(localStorage.getItem('bubu-v2')||'{}'); }catch(e){ state={}; }
+  for(const k of Object.keys(ACT)){
+    if(!state[k]) state[k]={ abbonamenti:[], lezioni:[] };
+  }
+}
+function save(){ localStorage.setItem('bubu-v2', JSON.stringify(state)); }
+function genId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function today(){ return new Date().toISOString().split('T')[0]; }
+function fmtDate(s){
+  if(!s) return '—';
+  return new Date(s+'T00:00:00').toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+function activeSub(k){ const a=state[k].abbonamenti; return a.length?a[a.length-1]:null; }
+function lezSub(k,sid){ return state[k].lezioni.filter(l=>l.subId===sid); }
+function rimanenti(k){ const s=activeSub(k); if(!s) return null; return s.totale-lezSub(k,s.id).length; }
+function getStatus(r){ if(r===null)return'none'; if(r<=SOGLIE.rosso)return'red'; if(r<=SOGLIE.giallo)return'yellow'; return'green'; }
+function makeBadge(st,r){
+  if(st==='none')   return`<span class="badge b-gray">Nessun abbonamento</span>`;
+  if(st==='red')    return`<span class="badge b-red">🔴 Da rinnovare</span>`;
+  if(st==='yellow') return`<span class="badge b-yellow">🟡 ${r} rimaste</span>`;
+  return`<span class="badge b-green">🟢 Attivo</span>`;
+}
+
+function stimaScadenza(k){
+  const sub=activeSub(k); if(!sub) return null;
+  const lez=lezSub(k,sub.id); if(lez.length<2) return null;
+  const r=rimanenti(k); if(r<=0) return null;
+  const sorted=[...lez].sort((a,b)=>a.data.localeCompare(b.data));
+  let gaps=[];
+  for(let i=1;i<sorted.length;i++){
+    const d1=new Date(sorted[i-1].data+'T00:00:00'), d2=new Date(sorted[i].data+'T00:00:00');
+    gaps.push((d2-d1)/86400000);
+  }
+  const avg=gaps.reduce((a,b)=>a+b,0)/gaps.length;
+  if(avg<=0) return null;
+  const last=new Date(sorted[sorted.length-1].data+'T00:00:00');
+  const stima=new Date(last.getTime()+r*avg*86400000);
+  return { data:stima, freqDays:Math.round(avg) };
+}
+
+function calcStreak(){
+  let allDates=[];
+  for(const k of Object.keys(ACT)) state[k].lezioni.forEach(l=>allDates.push(l.data));
+  if(!allDates.length) return 0;
+  function wk(dt){ const y=dt.getFullYear(); return`${y}-${Math.floor((dt-new Date(y,0,1))/604800000)}`; }
+  const weeks=new Set(allDates.map(d=>wk(new Date(d+'T00:00:00'))));
+  let streak=0, cur=new Date(); cur.setHours(0,0,0,0);
+  while(true){ const w=wk(cur); if(weeks.has(w))streak++; else break; cur.setDate(cur.getDate()-7); }
+  return streak;
+}
+
+function freqMensile(k){
+  const now=new Date(), months=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    months.push({label:MESI[d.getMonth()],year:d.getFullYear(),month:d.getMonth(),count:0});
+  }
+  state[k].lezioni.forEach(l=>{
+    const d=new Date(l.data+'T00:00:00');
+    const m=months.find(x=>x.year===d.getFullYear()&&x.month===d.getMonth());
+    if(m) m.count++;
+  });
+  return months;
+}
+
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  ['dashboard','piscina','tartufing','guinzagli'].forEach((p,i)=>{
+    if(p===page) document.querySelectorAll('.nav-tab')[i].classList.add('active');
+  });
+  if(page==='dashboard') renderDash();
+  else { curAct=page; renderDetail(page); }
+}
+
+function renderDash(){
+  // header badges
+  let hb='';
+  for(const [k,cfg] of Object.entries(ACT)){
+    const r=rimanenti(k), st=getStatus(r);
+    if(st==='red')    hb+=`<span class="hbadge al">🔴 ${cfg.label}: rinnova!</span>`;
+    else if(st==='yellow') hb+=`<span class="hbadge wa">🟡 ${cfg.label}: ${r} rimaste</span>`;
+  }
+  document.getElementById('hbadges').innerHTML=hb;
+
+  // streak
+  const s=calcStreak();
+  const sw=document.getElementById('streak-wrap');
+  sw.innerHTML=s>0?`<div class="streak-banner">
+    <div class="streak-fire">${s>=4?'🔥':'⭐'}</div>
+    <div><div class="streak-num">${s} settiman${s===1?'a':'e'}</div>
+    <div class="streak-label">consecutive con almeno 1 lezione · ${s>=4?'Che costanza! 💪':s>=2?'Ottimo ritmo!':'Inizia bene!'}</div></div>
+  </div>`:'';
+
+  // cards
+  const dc=document.getElementById('dash-cards'); dc.innerHTML='';
+  for(const [k,cfg] of Object.entries(ACT)){
+    const sub=activeSub(k), r=rimanenti(k), st=getStatus(r);
+    const lez=sub?lezSub(k,sub.id):[], usate=lez.length, totale=sub?sub.totale:0;
+    const perc=totale>0?Math.min(100,Math.round(usate/totale*100)):0;
+    const last=lez.length>0?[...lez].sort((a,b)=>b.data.localeCompare(a.data))[0].data:null;
+    const stima=stimaScadenza(k);
+    let h=`<div class="a-card" onclick="showPage('${k}')"><div class="a-card-top">
+      <div class="a-row1">
+        <div class="a-title-wrap"><div class="a-icon ${k}">${cfg.icon}</div><span class="a-name ${k}">${cfg.label}</span></div>
+        ${makeBadge(st,r)}
+      </div>`;
+    if(sub){
+      h+=`<div class="a-nums">
+        <div class="a-num"><div class="a-num-val ${k}">${r}</div><div class="a-num-lbl">Rimaste</div></div>
+        <div class="a-num"><div class="a-num-val ${k}">${usate}</div><div class="a-num-lbl">Fatte</div></div>
+        <div class="a-num"><div class="a-num-val ${k}">${totale}</div><div class="a-num-lbl">Pacchetto</div></div>
+      </div>
+      <div class="prog-track"><div class="prog-fill ${k}" style="width:${perc}%"></div></div>
+      ${stima?`<div class="stima-tag">📅 Stima esaurimento: ${stima.data.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})} · ogni ~${stima.freqDays}g</div>`:''}`;
+    } else {
+      h+=`<div style="font-size:13px;color:#C4B49A;font-weight:700;padding:8px 0">Nessun abbonamento — tocca per aggiungerne uno →</div>`;
+    }
+    h+=`</div><div class="a-card-foot">
+      <span class="a-card-meta">${last?'📅 Ultima: '+fmtDate(last):'📅 Nessuna lezione ancora'}</span>
+      <span class="a-arrow">›</span>
+    </div></div>`;
+    dc.innerHTML+=h;
+  }
+}
+
+function renderDetail(k){
+  const cfg=ACT[k], sub=activeSub(k), r=rimanenti(k), st=getStatus(r);
+  const lez=sub?lezSub(k,sub.id).sort((a,b)=>b.data.localeCompare(a.data)):[];
+  const usate=lez.length, totale=sub?sub.totale:0;
+  const perc=totale>0?Math.min(100,Math.round(usate/totale*100)):0;
+  const stima=stimaScadenza(k);
+  const freq=freqMensile(k), maxF=Math.max(...freq.map(m=>m.count),1);
+  let h='';
+
+  h+=`<div class="det-hero ${k}">
+    <div class="det-hero-title">${cfg.icon} ${cfg.label}</div>
+    <div class="det-hero-sub">${sub?`Dal ${fmtDate(sub.dataInizio)}`:'Nessun abbonamento'} · ${makeBadge(st,r)}</div>`;
+  if(sub){
+    h+=`<div class="det-stats">
+      <div class="d-stat"><div class="d-stat-val">${r}</div><div class="d-stat-lbl">Rimaste</div></div>
+      <div class="d-stat"><div class="d-stat-val">${usate}</div><div class="d-stat-lbl">Fatte</div></div>
+      <div class="d-stat"><div class="d-stat-val">${totale}</div><div class="d-stat-lbl">Pacchetto</div></div>
+    </div>
+    <div class="det-prog">
+      <div class="det-prog-bar"><div class="det-prog-fill" style="width:${perc}%"></div></div>
+      <div class="det-prog-lbls"><span class="det-prog-lbl">${perc}% utilizzato</span><span class="det-prog-lbl">${r} rimaste</span></div>
+    </div>`;
+  }
+  h+=`</div>`;
+
+  h+=`<div class="actions-row">`;
+  if(sub&&r>0) h+=`<button class="btn btn-${k}" onclick="openLez('${k}')">✏️ Registra lezione</button>`;
+  h+=`<button class="btn btn-sand" onclick="openSub('${k}')">🎟️ ${sub?'Rinnova':'Nuovo'} abbonamento</button>`;
+  h+=`</div>`;
+
+  if(stima) h+=`<div class="stima-block">
+    <div class="stima-icon">🗓️</div>
+    <div><div class="stima-title">Stima esaurimento lezioni</div>
+    <div class="stima-val">${stima.data.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'})}</div>
+    <div class="stima-sub">1 lezione ogni ~${stima.freqDays} giorni in media</div></div>
+  </div>`;
+
+  h+=`<div class="chart-block">
+    <div class="sec-title" style="font-size:15px;margin-bottom:0">📊 Frequenza ultimi 6 mesi</div>
+    <div class="chart-bars">`;
+  freq.forEach(m=>{
+    const hh=maxF>0?Math.round((m.count/maxF)*56):0;
+    h+=`<div class="chart-bar-wrap">
+      <div class="chart-bar-val">${m.count||''}</div>
+      <div class="chart-bar" style="height:${Math.max(hh,m.count?4:2)}px;background:${cfg.color};opacity:${m.count?0.85:0.15}"></div>
+      <div class="chart-bar-lbl">${m.label}</div>
+    </div>`;
+  });
+  h+=`</div></div>`;
+
+  h+=`<div class="lezioni-block">
+    <div class="sec-title" style="font-size:15px;margin-bottom:0">📋 Lezioni questo abbonamento</div>`;
+  if(!sub||lez.length===0){
+    h+=`<div class="empty-list">${sub?'Nessuna lezione ancora':'Attiva un abbonamento per iniziare'}</div>`;
+  } else {
+    h+=`<div class="lezioni-list">`;
+    lez.forEach((l,i)=>{
+      const num=usate-i;
+      h+=`<div class="lezione-item">
+        <div class="lezione-thumb">${l.foto?`<img src="${l.foto}" alt="foto">`:'🐾'}</div>
+        <div class="lezione-body">
+          <div class="lezione-num" style="color:${cfg.color}">#${num} · <span class="lezione-date">${fmtDate(l.data)}</span></div>
+          ${l.note?`<div class="lezione-note">${l.note}</div>`:''}
+        </div>
+        <button class="btn-del" onclick="delLez('${k}','${l.id}')">✕</button>
+      </div>`;
+    });
+    h+=`</div>`;
+  }
+  h+=`</div>`;
+
+  const storico=[...state[k].abbonamenti].reverse();
+  if(storico.length){
+    h+=`<div class="storico-block"><div class="sec-title" style="font-size:15px;margin-bottom:0">📁 Storico abbonamenti</div>`;
+    storico.forEach((s,i)=>{
+      const ls=lezSub(k,s.id);
+      h+=`<div class="storico-item ${i===0?'cur':''}">
+        <div class="storico-dates">Dal ${fmtDate(s.dataInizio)}${s.note?' · '+s.note:''} ${i===0?'· <strong>Attivo</strong>':''}</div>
+        <div class="storico-info">${ls.length} / ${s.totale} lezioni effettuate</div>
+      </div>`;
+    });
+    h+=`</div>`;
+  }
+
+  document.getElementById('det-'+k).innerHTML=h;
+}
+
+function openLez(k){
+  curAct=k; fotoB64=null;
+  document.getElementById('i-lez-data').value=today();
+  document.getElementById('i-lez-note').value='';
+  document.getElementById('i-lez-foto').value='';
+  document.getElementById('i-lez-preview').classList.remove('show');
+  document.getElementById('m-lezione').classList.add('open');
+}
+function previewFoto(inp){
+  if(!inp.files||!inp.files[0]) return;
+  const r=new FileReader();
+  r.onload=e=>{ fotoB64=e.target.result; const img=document.getElementById('i-lez-preview'); img.src=fotoB64; img.classList.add('show'); };
+  r.readAsDataURL(inp.files[0]);
+}
+function salvaLezione(){
+  const data=document.getElementById('i-lez-data').value;
+  const note=document.getElementById('i-lez-note').value.trim();
+  if(!data){ alert('Inserisci la data'); return; }
+  const sub=activeSub(curAct); if(!sub){ alert('Nessun abbonamento attivo'); return; }
+  if(rimanenti(curAct)<=0){ alert('Lezioni esaurite! Rinnova l\'abbonamento.'); return; }
+  state[curAct].lezioni.push({ id:genId(), subId:sub.id, data, note, foto:fotoB64||null });
+  save(); closeModal('m-lezione'); renderDetail(curAct);
+}
+function openSub(k){
+  curAct=k;
+  document.getElementById('i-sub-tot').value='';
+  document.getElementById('i-sub-data').value=today();
+  document.getElementById('i-sub-note').value='';
+  document.getElementById('m-abbonamento').classList.add('open');
+}
+function salvaAbbonamento(){
+  const tot=parseInt(document.getElementById('i-sub-tot').value);
+  const dataInizio=document.getElementById('i-sub-data').value;
+  const note=document.getElementById('i-sub-note').value.trim();
+  if(!tot||tot<1){ alert('Inserisci un numero valido di lezioni'); return; }
+  if(!dataInizio){ alert('Inserisci la data di inizio'); return; }
+  state[curAct].abbonamenti.push({ id:genId(), totale:tot, dataInizio, note });
+  save(); closeModal('m-abbonamento'); renderDetail(curAct);
+}
+function delLez(k,id){
+  if(!confirm('Elimina questa lezione?')) return;
+  state[k].lezioni=state[k].lezioni.filter(l=>l.id!==id);
+  save(); renderDetail(k);
+}
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(el=>{
+  el.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
+});
+
+loadState(); renderDash();
+</script>
+</body>
+</html>
