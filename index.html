@@ -371,6 +371,24 @@ body {
   color:var(--copper); margin-bottom:14px; display:flex; align-items:flex-start; gap:8px;
 }
 
+/* Update banner */
+.update-banner {
+  background:linear-gradient(135deg,var(--gold),var(--copper)); color:white;
+  padding:calc(11px + env(safe-area-inset-top)) 14px 11px 16px;
+  display:flex; align-items:center; gap:10px;
+  box-shadow:var(--shadow); position:relative; z-index:60;
+  animation:fadeIn 0.3s ease both;
+}
+.ub-text { flex:1; min-width:0; font-size:13px; font-weight:800; line-height:1.25; }
+.ub-sub { font-size:11px; font-weight:700; opacity:0.85; margin-top:1px; }
+.btn-update {
+  background:white; color:var(--copper); border:none; border-radius:20px;
+  padding:7px 14px; font-family:'Nunito',sans-serif; font-weight:900; font-size:12px;
+  cursor:pointer; white-space:nowrap; flex-shrink:0;
+}
+.btn-update:active { transform:scale(0.96); }
+.ub-close { background:none; border:none; color:rgba(255,255,255,0.85); font-size:16px; cursor:pointer; padding:4px; flex-shrink:0; }
+
 @media(min-width:600px){
   body { max-width:480px; margin:0 auto; }
   .modal { border-radius:var(--r-lg); margin-bottom:40px; }
@@ -380,6 +398,8 @@ body {
 </head>
 <body>
 
+<div id="update-banner"></div>
+
 <div class="header">
   <div class="header-paws"></div>
   <div class="header-deco"></div>
@@ -388,7 +408,7 @@ body {
     <div>
       <div class="header-title">Bubu's Tracker</div>
       <div class="header-sub">Trainer e compagna di vita: Tato</div>
-      <div style="font-size:11px;font-weight:700;color:rgba(245,237,216,0.6);margin-top:5px;letter-spacing:1px;font-family:monospace;">v2.1</div>
+      <div style="font-size:11px;font-weight:700;color:rgba(245,237,216,0.6);margin-top:5px;letter-spacing:1px;font-family:monospace;" id="app-ver"></div>
     </div>
   </div>
   <div class="header-badges" id="hbadges"></div>
@@ -559,8 +579,46 @@ const ACT = {
 const SOGLIE = { giallo:2, rosso:0 };
 const MESI = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
 
+const APP_VERSION = '2.2';
+const VERSION_URL = 'version.json';
+
 let state = {}, health = {}, curAct = null, fotoB64 = null;
 let selVaxType = '', selIllType = '';
+
+// ===== UPDATE CHECK =====
+function cmpVer(a,b){
+  const pa=String(a).split('.').map(n=>parseInt(n,10)||0);
+  const pb=String(b).split('.').map(n=>parseInt(n,10)||0);
+  for(let i=0;i<Math.max(pa.length,pb.length);i++){
+    const d=(pa[i]||0)-(pb[i]||0);
+    if(d) return d>0?1:-1;
+  }
+  return 0;
+}
+async function checkUpdate(){
+  try{
+    const ctrl=new AbortController();
+    const to=setTimeout(()=>ctrl.abort(),6000);
+    const res=await fetch(VERSION_URL+'?t='+Date.now(),{cache:'no-store',signal:ctrl.signal});
+    clearTimeout(to);
+    if(!res.ok) return;
+    const data=await res.json();
+    if(!data||!data.version) return;
+    if(cmpVer(data.version,APP_VERSION)>0) showUpdateBanner(data.version);
+  }catch(e){ /* offline, file locale o JSON non valido: nessun avviso */ }
+}
+function showUpdateBanner(v){
+  const w=document.getElementById('update-banner');
+  w.innerHTML=`<div class="update-banner">
+    <div class="ub-text">🔄 Nuova versione disponibile<div class="ub-sub" id="ub-sub"></div></div>
+    <button class="btn-update" onclick="applyUpdate()">Aggiorna</button>
+    <button class="ub-close" onclick="dismissUpdate()">✕</button>
+  </div>`;
+  document.getElementById('ub-sub').textContent='v'+v+' (stai usando v'+APP_VERSION+')';
+}
+function dismissUpdate(){ document.getElementById('update-banner').innerHTML=''; }
+function applyUpdate(){ location.href=location.pathname+'?u='+Date.now(); }
+// ===== END UPDATE CHECK =====
 
 // ===== STATE =====
 function loadState(){
@@ -1027,7 +1085,9 @@ document.querySelectorAll('.overlay').forEach(el=>{
   el.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
 });
 
+document.getElementById('app-ver').textContent='v'+APP_VERSION;
 loadState(); renderDash();
+checkUpdate();
 </script>
 </body>
 </html>
