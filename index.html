@@ -252,6 +252,66 @@ body:not([data-page="dashboard"]) .hero{display:none}
   .cel-card{animation:none !important}
 }
 
+
+/* =========================================================
+   v3.6 — Peso e Spese
+   ========================================================= */
+.spese{--c:var(--terra);--c2:var(--gold);--c-deep:#6E3714;--c-soft:rgba(181,98,42,.13);
+  --pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cg fill='none' stroke='black' stroke-width='3'%3E%3Ccircle cx='24' cy='24' r='13'/%3E%3Ccircle cx='24' cy='24' r='6'/%3E%3Ccircle cx='66' cy='64' r='13'/%3E%3Ccircle cx='66' cy='64' r='6'/%3E%3C/g%3E%3C/svg%3E");--pw:84px;--ph:84px}
+.w-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.w-tile{background:var(--card2);border-radius:16px;padding:12px 14px;min-width:0}
+.w-tile span{display:block;font:800 10.5px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.w-tile b{display:block;margin-top:5px;font:900 24px/1.1 var(--f-display);color:var(--ink)}
+.w-tile small{display:block;margin-top:3px;font:700 11.5px var(--f-body);color:var(--ink2)}
+.w-up{color:var(--warn)}.w-down{color:var(--ok)}.w-eq{color:var(--ink2)}
+.wchart{margin-top:12px}
+.wchart svg{width:100%;height:auto;display:block}
+.wchart .ln{fill:none;stroke:var(--guinz);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.wchart .ar{fill:var(--guinz);opacity:.12}
+.wchart .pt{fill:var(--card);stroke:var(--guinz);stroke-width:2.5}
+.wchart .pt.last{fill:var(--guinz)}
+.wchart .gl{stroke:var(--line);stroke-width:1}
+.wchart .cl{font:700 10px var(--f-body);fill:var(--muted)}
+.wchart .cv{font:900 11px var(--f-body);fill:var(--ink)}
+.w-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.w-row{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:14px;padding:10px 12px}
+.w-row .t{flex:1;min-width:0}
+.w-row .t b{display:block;font:900 17px var(--f-display)}
+.w-row .t span{display:block;margin-top:2px;font:700 12px var(--f-body);color:var(--ink2);overflow-wrap:anywhere}
+.w-more{display:flex;justify-content:center;margin-top:10px}
+
+.sp-nav{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:4px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.26)}
+.sp-nav button{width:34px;height:34px;border-radius:50%;border:0;cursor:pointer;background:rgba(255,255,255,.18);color:#fff;font:700 20px/1 var(--f-body);display:grid;place-items:center;padding:0}
+.sp-nav button[disabled]{opacity:.3;cursor:default}
+.sp-nav span{min-width:128px;text-align:center;font:800 14px var(--f-body);text-transform:capitalize;color:#fff}
+.sp-cats{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.sp-cat{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:10px;background:var(--card2);border-radius:14px;padding:10px 12px}
+.sp-cat i{width:12px;height:12px;border-radius:50%;display:block}
+.sp-cat .n{font:800 14px var(--f-body)}
+.sp-cat .m{font:900 15px var(--f-display);text-align:right}
+.sp-cat .a{font:700 12px var(--f-body);color:var(--ink2);text-align:right;min-width:74px}
+.sp-cat .bar{grid-column:1/-1;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.sp-cat .bar u{display:block;height:100%;border-radius:99px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.sp-head{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;padding:0 12px;font:800 10px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+.sp-head span:nth-child(3),.sp-head span:nth-child(4){text-align:right}
+.sp-chart svg{width:100%;height:auto;display:block}
+.sp-chart .cl{font:700 9.5px var(--f-body);fill:var(--muted)}
+.sp-chart .cl.now{fill:var(--terra);font-weight:900}
+.sp-chart .cv{font:900 10.5px var(--f-body);fill:var(--ink)}
+.sp-chart .sbar{cursor:pointer}
+.sp-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font:700 12px var(--f-body);color:var(--ink2)}
+.sp-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.sp-item{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:14px;padding:10px 12px}
+.sp-item .d{width:46px;flex:none;text-align:center;font:800 12px/1.2 var(--f-body);color:var(--ink2);text-transform:uppercase}
+.sp-item .d b{display:block;font:900 20px/1 var(--f-display);color:var(--ink)}
+.sp-item .t{flex:1;min-width:0}
+.sp-item .t .c{display:inline-flex;align-items:center;gap:6px;font:800 13px var(--f-body);white-space:nowrap;overflow-wrap:normal !important}
+.sp-item .t .c i{width:9px;height:9px;border-radius:50%}
+.sp-item .t span{display:block;margin-top:2px;font:600 12px/1.35 var(--f-body);color:var(--ink2);font-style:italic;overflow-wrap:anywhere}
+.sp-item .e{font:900 16px var(--f-display);white-space:nowrap}
+@media(min-width:900px){ .sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;align-items:start} }
+@media(max-width:380px){ .nav-tab{font-size:9.5px} .sp-item{gap:8px;padding:10px} .sp-item .d{width:38px} .sp-item .e{font-size:15px} }
+
 /* =========================================================
    PAGINE / LAYOUT
    ========================================================= */
@@ -573,6 +633,7 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
     <button class="nav-tab" data-page="tartufing" onclick="showPage('tartufing')"><span class="ti" data-ico="tartufing"></span><span>Tartufing</span></button>
     <button class="nav-tab" data-page="guinzagli" onclick="showPage('guinzagli')"><span class="ti" data-ico="guinzagli"></span><span>Guinzagli</span></button>
     <button class="nav-tab" data-page="salute" onclick="showPage('salute')"><span class="ti" data-ico="salute"></span><span>Salute</span><span class="nav-dot" id="nav-dot-salute"></span></button>
+    <button class="nav-tab" data-page="spese" onclick="showPage('spese')"><span class="ti" data-ico="wallet"></span><span>Spese</span></button>
   </div>
 </nav>
 
@@ -608,6 +669,7 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
 <div id="page-tartufing" class="page"><div class="wrap" id="det-tartufing"></div></div>
 <div id="page-guinzagli" class="page"><div class="wrap" id="det-guinzagli"></div></div>
 <div id="page-salute"    class="page"><div class="wrap" id="salute-content"></div></div>
+<div id="page-spese"     class="page"><div class="wrap" id="spese-content"></div></div>
 
 <!-- MODAL LEZIONE -->
 <div class="overlay" id="m-lezione">
@@ -702,6 +764,58 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
   </div>
 </div>
 
+<!-- MODAL PESO -->
+<div class="overlay" id="m-peso">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Registra il peso</div>
+    <div class="form-group">
+      <label class="form-lbl">Peso (kg)</label>
+      <input type="text" class="form-input" id="i-peso-kg" inputmode="decimal" autocomplete="off" placeholder="es. 28,4">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Data</label>
+      <input type="date" class="form-input" id="i-peso-data">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Note (opzionale)</label>
+      <input type="text" class="form-input" id="i-peso-note" placeholder="es. dal veterinario, dopo il pasto...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('m-peso')">Annulla</button>
+      <button class="btn btn-soil" onclick="salvaPeso()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SPESA -->
+<div class="overlay" id="m-spesa">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Aggiungi una spesa</div>
+    <div class="form-group">
+      <label class="form-lbl">Categoria</label>
+      <div class="vax-type-chips" id="sp-chips"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Importo (€)</label>
+      <input type="text" class="form-input" id="i-sp-importo" inputmode="decimal" autocomplete="off" placeholder="es. 45,00">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Data</label>
+      <input type="date" class="form-input" id="i-sp-data">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Note (opzionale)</label>
+      <input type="text" class="form-input" id="i-sp-note" placeholder="es. visita di controllo, sacco di crocchette...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('m-spesa')">Annulla</button>
+      <button class="btn btn-soil" onclick="salvaSpesa()">Salva</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL INDISPOSIZIONE -->
 <div class="overlay" id="m-illness">
   <div class="modal">
@@ -740,7 +854,7 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
 </div>
 
 <script>
-const APP_VERSION = '3.5';
+const APP_VERSION = '3.6';
 const VERSION_URL = 'version.json';
 
 const ACT = {
@@ -769,13 +883,14 @@ const ICON = {
   shield:    S('<path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.3 7.5 9.5 4.3-1.2 7.5-5 7.5-9.5V6z"/><path d="M12 8v5"/><circle cx="12" cy="16" r=".6" fill="currentColor"/>'),
   cal:       S('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
   plus:      S('<path d="M12 5v14M5 12h14"/>'),
+  wallet:    S('<path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h11a2 2 0 0 1 2 2v2"/><path d="M3.5 7.5V18A2 2 0 0 0 5.5 20h12.5a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 18 9H6a2.5 2.5 0 0 1-2.5-1.5z"/><circle cx="15.8" cy="14.5" r="1.1" fill="currentColor"/>'),
   ticket:    S('<path d="M3 9a2 2 0 0 0 0 6v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3a2 2 0 0 1 0-6V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1z"/><path d="M14 5v14" stroke-dasharray="2 3"/>'),
   check:     S('<path d="m5 12.5 4.5 4.5L19 7.5"/>'),
   arrow:     S('<path d="m9 6 6 6-6 6"/>'),
   paw:       `<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="16.4" rx="4.8" ry="3.9"/><circle cx="5.2" cy="11" r="2"/><circle cx="9.2" cy="5.9" r="2"/><circle cx="14.8" cy="5.9" r="2"/><circle cx="18.8" cy="11" r="2"/></svg>`
 };
 
-let state = {}, health = {}, curAct = null, fotoB64 = null, fotoBusy = false, fotoTok = 0;
+let state = {}, health = {}, extra = {pesi:[],spese:[]}, curAct = null, fotoB64 = null, fotoBusy = false, fotoTok = 0;
 let selVaxType = '', selIllType = '';
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -823,8 +938,12 @@ function loadState(){
   try{ health=JSON.parse(localStorage.getItem('bubu-health')||'{}'); }catch(e){ health={}; }
   if(!health.vaccinations) health.vaccinations=[];
   if(!health.illnesses) health.illnesses=[];
+  try{ extra=JSON.parse(localStorage.getItem('bubu-extra')||'{}')||{}; }catch(e){ extra={}; }
+  if(!Array.isArray(extra.pesi)) extra.pesi=[];
+  if(!Array.isArray(extra.spese)) extra.spese=[];
 }
 function save(){ localStorage.setItem('bubu-v2', JSON.stringify(state)); }
+function saveExtra(){ try{ localStorage.setItem('bubu-extra', JSON.stringify(extra)); return true; }catch(e){ alert('Salvataggio non riuscito (spazio insufficiente nel browser). Il dato non è stato registrato.'); return false; } }
 function saveHealth(){ localStorage.setItem('bubu-health', JSON.stringify(health)); }
 function genId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 function today(){ return new Date().toISOString().split('T')[0]; }
@@ -1207,6 +1326,7 @@ function renderSalute(){
     h+=`</div>`;
   }
   h+=`</div></div>`;
+  h+=pesoBlockHTML();
   document.getElementById('salute-content').innerHTML=h;
   updateNavDot(); armRings();
 }
@@ -1221,10 +1341,216 @@ function showPage(page){
   document.getElementById('page-'+page).classList.add('active');
   if(page==='dashboard') renderDash();
   else if(page==='salute') renderSalute();
+  else if(page==='spese') renderSpese();
   else { curAct=page; renderDetail(page); }
   if(changed) window.scrollTo({top:0});
 }
 
+
+
+/* ===== UTILITÀ NUMERI / DATE ===== */
+function parseDec(str,maxDec){
+  const t=String(str==null?'':str).trim().replace(/\s/g,'').replace(/[€]|kg/gi,'');
+  const re=new RegExp('^\\d+([.,]\\d{1,'+maxDec+'})?$');
+  if(!re.test(t)) return null;
+  const n=Number(t.replace(',','.'));
+  return isFinite(n)?n:null;
+}
+function fmtKg(kg){ return kg.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:2})+' kg'; }
+function fmtEur(cent){ return (cent/100).toLocaleString('it-IT',{style:'currency',currency:'EUR'}); }
+function fmtEurShort(cent){ return Math.round(cent/100).toLocaleString('it-IT')+' €'; }
+function fmtDay(s){ const d=new Date(s+'T00:00:00'); return {g:String(d.getDate()), m:MESI[d.getMonth()]}; }
+
+/* ===== PESO (nella scheda Salute) ===== */
+let pesoShowAll=false;
+function pesiOrdinati(){ return [...extra.pesi].filter(p=>p&&p.data&&isFinite(p.kg)).sort((a,b)=>a.data.localeCompare(b.data)||String(a.id).localeCompare(String(b.id))); }
+function pesoChartSVG(L){
+  const W=320,H=156,pl=40,pr=14,pt=16,pb=28, iw=W-pl-pr, ih=H-pt-pb;
+  let mn=Math.min(...L.map(p=>p.kg)), mx=Math.max(...L.map(p=>p.kg));
+  if(mx-mn<0.4){ const c=(mx+mn)/2; mn=c-0.5; mx=c+0.5; } else { const pd=(mx-mn)*0.12; mn-=pd; mx+=pd; }
+  const t0=new Date(L[0].data+'T00:00:00').getTime(), t1=new Date(L[L.length-1].data+'T00:00:00').getTime();
+  const X=(p,i)=> t1>t0 ? pl+(new Date(p.data+'T00:00:00').getTime()-t0)/(t1-t0)*iw : pl+i/(L.length-1)*iw;
+  const Y=kg=> pt+(1-(kg-mn)/(mx-mn))*ih;
+  const pts=L.map((p,i)=>[X(p,i),Y(p.kg)]);
+  const line=pts.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' ');
+  const area=line+' L'+pts[pts.length-1][0].toFixed(1)+' '+(pt+ih)+' L'+pts[0][0].toFixed(1)+' '+(pt+ih)+' Z';
+  let g='';
+  [mx,(mx+mn)/2,mn].forEach(v=>{ const y=Y(v); g+=`<line class="gl" x1="${pl}" x2="${W-pr}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/><text class="cl" x="${pl-6}" y="${(y+3).toFixed(1)}" text-anchor="end">${v.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1})}</text>`; });
+  const dl=s=>{ const d=fmtDay(s); return d.g+' '+d.m; };
+  let s2=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Andamento del peso">${g}<path class="ar" d="${area}"/><path class="ln" d="${line}"/>`;
+  pts.forEach((q,i)=>{ s2+=`<circle class="pt${i===pts.length-1?' last':''}" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${i===pts.length-1?5:3.6}"/>`; });
+  const lp=pts[pts.length-1], ly=Math.max(pt+8,lp[1]-11);
+  s2+=`<text class="cv" x="${Math.min(W-pr,lp[0]).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="end">${L[L.length-1].kg.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:2})}</text>`;
+  s2+=`<text class="cl" x="${pl}" y="${H-8}" text-anchor="start">${dl(L[0].data)}</text><text class="cl" x="${W-pr}" y="${H-8}" text-anchor="end">${dl(L[L.length-1].data)}</text></svg>`;
+  return s2;
+}
+function pesoBlockHTML(){
+  const L=pesiOrdinati();
+  let h=`<div class="block" id="blk-peso"><div class="blk-head"><h3>Peso</h3><button class="btn btn-soil" onclick="openPeso()">${ICON.plus} Registra</button></div>`;
+  if(!L.length) return h+`<div class="empty-list">Nessuna pesata registrata</div></div>`;
+  const last=L[L.length-1], prev=L.length>1?L[L.length-2]:null;
+  let delta='—', dcls='w-eq', dsub='Serve una seconda pesata';
+  if(prev){
+    const d=Math.round((last.kg-prev.kg)*100)/100;
+    delta=(d>0?'+':d<0?'−':'')+Math.abs(d).toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:2})+' kg';
+    dcls=d>0?'w-up':d<0?'w-down':'w-eq'; dsub='rispetto al '+fmtDate(prev.data);
+  }
+  h+=`<div class="w-tiles"><div class="w-tile"><span>Ultimo peso</span><b>${fmtKg(last.kg)}</b><small>${fmtDate(last.data)}</small></div>
+    <div class="w-tile"><span>Variazione</span><b class="${dcls}">${delta}</b><small>${dsub}</small></div></div>`;
+  if(L.length>=2) h+=`<div class="wchart">${pesoChartSVG(L.slice(-12))}</div>`;
+  else h+=`<div class="empty-list" style="padding-bottom:0">Con due pesate compare il grafico</div>`;
+  const rows=[...L].reverse(), lim=pesoShowAll?rows.length:Math.min(5,rows.length);
+  h+=`<div class="w-list">`;
+  rows.slice(0,lim).forEach(p=>{
+    h+=`<div class="w-row"><div class="t"><b>${fmtKg(p.kg)}</b><span>${fmtDate(p.data)}${p.note?' · '+esc(p.note):''}</span></div>
+      <button class="x-btn" aria-label="Elimina pesata" onclick="delPeso('${esc(p.id)}')">✕</button></div>`;
+  });
+  h+=`</div>`;
+  if(rows.length>5&&!pesoShowAll) h+=`<div class="w-more"><button type="button" class="btn btn-sand" onclick="pesoShowAll=true;renderSalute()">Mostra tutte (${rows.length})</button></div>`;
+  return h+`</div>`;
+}
+function openPeso(){
+  document.getElementById('i-peso-kg').value=''; document.getElementById('i-peso-data').value=localDate(); document.getElementById('i-peso-note').value='';
+  document.getElementById('m-peso').classList.add('open');
+}
+function salvaPeso(){
+  const kg=parseDec(document.getElementById('i-peso-kg').value,2);
+  const data=document.getElementById('i-peso-data').value;
+  const note=document.getElementById('i-peso-note').value.trim();
+  if(kg===null||kg<0.5||kg>150){ alert('Inserisci un peso valido in kg (es. 28,4).'); return; }
+  if(!data){ alert('Inserisci la data'); return; }
+  const rec={ id:genId(), data, kg:Math.round(kg*100)/100, note };
+  extra.pesi.push(rec);
+  if(!saveExtra()){ extra.pesi.pop(); return; }
+  closeModal('m-peso'); renderSalute();
+}
+function delPeso(id){
+  if(!confirm('Eliminare questa pesata?')) return;
+  const i=extra.pesi.findIndex(p=>p.id===id); if(i<0) return;
+  const rec=extra.pesi.splice(i,1)[0];
+  if(!saveExtra()){ extra.pesi.splice(i,0,rec); return; }
+  renderSalute();
+}
+
+/* ===== SPESE ===== */
+const CAT_SPESE=[
+  {k:'abbonamenti',label:'Abbonamenti',v:'--piscina'},
+  {k:'veterinario',label:'Veterinario',v:'--bad'},
+  {k:'cibo',label:'Cibo',v:'--tartufo'},
+  {k:'accessori',label:'Accessori vari',v:'--guinz'}
+];
+const CAT_KEYS=CAT_SPESE.map(c=>c.k);
+let speseMese=null, selSpCat='';
+function catOf(k){ return CAT_SPESE.find(c=>c.k===k)||CAT_SPESE[CAT_SPESE.length-1]; }
+function speseValide(){ return extra.spese.filter(x=>x&&typeof x.data==='string'&&isFinite(x.cent)); }
+function meseKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function meseLabel(key){ const [y,m]=key.split('-').map(Number); return new Date(y,m-1,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'}); }
+function speseGo(d){
+  const [y,m]=speseMese.split('-').map(Number); const k=meseKey(new Date(y,m-1+d,1));
+  if(k>localDate().slice(0,7)) return;
+  speseMese=k; renderSpese();
+}
+function speseSel(k){ speseMese=k; renderSpese(); }
+function speseSerie(endKey){
+  const [y,m]=endKey.split('-').map(Number), out=[];
+  for(let i=11;i>=0;i--){ const d=new Date(y,m-1-i,1), tot={}; CAT_KEYS.forEach(k=>tot[k]=0); out.push({key:meseKey(d),label:MESI[d.getMonth()],tot,sum:0}); }
+  const idx=new Map(out.map((o,i)=>[o.key,i]));
+  speseValide().forEach(x=>{ const i=idx.get(x.data.slice(0,7)); if(i!==undefined){ const c=CAT_KEYS.includes(x.cat)?x.cat:'accessori'; out[i].tot[c]+=x.cent; out[i].sum+=x.cent; } });
+  return out;
+}
+function speseChartSVG(serie,sel){
+  const W=340,H=170,pad=8,base=140,maxH=100,bw=18, gap=(W-2*pad-12*bw)/11;
+  const mx=Math.max(...serie.map(o=>o.sum),1);
+  let s2=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Spese degli ultimi 12 mesi"><line x1="${pad-4}" x2="${W-pad+4}" y1="${base}" y2="${base}" stroke="var(--line)" stroke-width="1.5"/>`;
+  serie.forEach((o,i)=>{
+    const x=pad+i*(bw+gap), isSel=o.key===sel, op=isSel?1:.72;
+    s2+=`<g class="sbar" onclick="speseSel('${o.key}')"><rect x="${(x-gap/2).toFixed(1)}" y="0" width="${(bw+gap).toFixed(1)}" height="${H}" fill="transparent"/>`;
+    if(o.sum>0){
+      const cid='sc'+i, th=Math.max(6,o.sum/mx*maxH);
+      s2+=`<clipPath id="${cid}"><rect x="${x.toFixed(1)}" y="${(base-th).toFixed(1)}" width="${bw}" height="${th.toFixed(1)}" rx="5"/></clipPath><g clip-path="url(#${cid})" opacity="${op}">`;
+      let y=base;
+      CAT_SPESE.forEach(c=>{ const v=o.tot[c.k]; if(v>0){ const hh=v/o.sum*th; y-=hh; s2+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw}" height="${(hh+0.4).toFixed(1)}" fill="var(${c.v})"/>`; } });
+      s2+=`</g>`;
+      if(isSel) s2+=`<text class="cv" x="${(x+bw/2).toFixed(1)}" y="${(base-th-6).toFixed(1)}" text-anchor="middle">${fmtEurShort(o.sum)}</text>`;
+    } else s2+=`<rect x="${x.toFixed(1)}" y="${base-3}" width="${bw}" height="3" rx="1.5" fill="var(--line)"/>`;
+    s2+=`<text class="cl${isSel?' now':''}" x="${(x+bw/2).toFixed(1)}" y="${base+17}" text-anchor="middle">${o.label}</text></g>`;
+  });
+  return s2+`</svg>`;
+}
+function renderSpese(){
+  const curKey=localDate().slice(0,7);
+  if(!speseMese) speseMese=curKey;
+  const y=speseMese.slice(0,4), all=speseValide();
+  const inMese=all.filter(x=>x.data.slice(0,7)===speseMese), inAnno=all.filter(x=>x.data.slice(0,4)===y);
+  const sum=a=>a.reduce((n,x)=>n+x.cent,0), totM=sum(inMese), totA=sum(inAnno);
+  const catSum=(a,k)=>a.filter(x=>(CAT_KEYS.includes(x.cat)?x.cat:'accessori')===k).reduce((n,x)=>n+x.cent,0);
+  let h=`<section class="det-hero spese">
+    <div class="dh-main">
+      <div class="dh-title"><span class="dh-ico">${ICON.wallet}</span><h1>Spese di Bubu</h1></div>
+      <div class="sp-nav"><button type="button" aria-label="Mese precedente" onclick="speseGo(-1)">‹</button><span>${meseLabel(speseMese)}</span><button type="button" aria-label="Mese successivo" onclick="speseGo(1)" ${speseMese>=curKey?'disabled':''}>›</button></div>
+      <div class="dh-actions"><button class="btn btn-light" onclick="openSpesa()">${ICON.plus} Aggiungi spesa</button></div>
+    </div>
+    <div class="dh-gauge light"><div class="dh-stats">
+      <div class="dh-stat"><span>Totale del mese</span><b>${fmtEur(totM)}</b></div>
+      <div class="dh-stat"><span>Totale ${y}</span><b>${fmtEur(totA)}</b></div>
+    </div></div>
+  </section>
+  <div class="sp-grid"><div class="col">
+  <div class="block"><h3>Per categoria</h3>
+    <div class="sp-head"><span></span><span></span><span>Mese</span><span>Anno ${y}</span></div>
+    <div class="sp-cats">`;
+  CAT_SPESE.forEach(c=>{
+    const m=catSum(inMese,c.k), a=catSum(inAnno,c.k), pct=totM>0?Math.round(m/totM*100):0;
+    h+=`<div class="sp-cat"><i style="background:var(${c.v})"></i><span class="n">${c.label}</span><span class="m">${fmtEur(m)}</span><span class="a">${fmtEur(a)}</span><div class="bar"><u style="width:${pct}%;background:var(${c.v})"></u></div></div>`;
+  });
+  h+=`</div></div>
+  <div class="block"><h3>Ultimi 12 mesi</h3><div class="sp-chart">${speseChartSVG(speseSerie(speseMese),speseMese)}</div>
+    <div class="sp-legend">${CAT_SPESE.map(c=>`<span><i style="background:var(${c.v})"></i>${c.label}</span>`).join('')}</div></div>
+  </div><div class="col">
+  <div class="block"><h3>Spese di ${meseLabel(speseMese)}</h3>`;
+  if(!inMese.length) h+=`<div class="empty-list">Nessuna spesa in questo mese</div>`;
+  else {
+    h+=`<div class="w-list">`;
+    [...inMese].sort((a,b)=>b.data.localeCompare(a.data)||String(b.id).localeCompare(String(a.id))).forEach(x=>{
+      const c=catOf(x.cat), d=fmtDay(x.data);
+      h+=`<div class="sp-item"><div class="d"><b>${d.g}</b>${d.m}</div>
+        <div class="t"><span class="c" style="font-style:normal;margin:0"><i style="background:var(${c.v})"></i>${c.label}</span>${x.note?`<span>${esc(x.note)}</span>`:''}</div>
+        <div class="e">${fmtEur(x.cent)}</div>
+        <button class="x-btn" aria-label="Elimina spesa" onclick="delSpesa('${esc(x.id)}')">✕</button></div>`;
+    });
+    h+=`</div>`;
+  }
+  h+=`</div></div></div>`;
+  document.getElementById('spese-content').innerHTML=h;
+  armRings();
+}
+function openSpesa(){
+  selSpCat='';
+  document.getElementById('sp-chips').innerHTML=CAT_SPESE.map(c=>`<div class="vax-chip" data-k="${c.k}" onclick="selSpChip(this)">${c.label}</div>`).join('');
+  document.getElementById('i-sp-importo').value=''; document.getElementById('i-sp-data').value=localDate(); document.getElementById('i-sp-note').value='';
+  document.getElementById('m-spesa').classList.add('open');
+}
+function selSpChip(el){ document.querySelectorAll('#sp-chips .vax-chip').forEach(c=>c.classList.remove('sel')); el.classList.add('sel'); selSpCat=el.dataset.k; }
+function salvaSpesa(){
+  const imp=parseDec(document.getElementById('i-sp-importo').value,2);
+  const data=document.getElementById('i-sp-data').value;
+  const note=document.getElementById('i-sp-note').value.trim();
+  if(!selSpCat){ alert('Scegli la categoria'); return; }
+  if(imp===null||imp<=0||imp>100000){ alert('Inserisci un importo valido in euro (es. 45,00).'); return; }
+  if(!data){ alert('Inserisci la data'); return; }
+  const rec={ id:genId(), data, cent:Math.round(imp*100), cat:selSpCat, note };
+  extra.spese.push(rec);
+  if(!saveExtra()){ extra.spese.pop(); return; }
+  speseMese=data.slice(0,7);
+  closeModal('m-spesa'); renderSpese();
+}
+function delSpesa(id){
+  if(!confirm('Eliminare questa spesa?')) return;
+  const i=extra.spese.findIndex(x=>x.id===id); if(i<0) return;
+  const rec=extra.spese.splice(i,1)[0];
+  if(!saveExtra()){ extra.spese.splice(i,0,rec); return; }
+  renderSpese();
+}
 
 /* ===== GALLERIA ===== */
 let galleryList=[], galleryShowAll=false, lbIdx=0;
@@ -1462,13 +1788,13 @@ function markBackup(){
   try{ const m=getMeta(); m.ultimoBackup=localDate(); localStorage.setItem('bubu-meta',JSON.stringify(m)); }catch(e){}
   document.getElementById('dash-backup').innerHTML=backupHTML();
 }
-function countData(s,h){
+function countData(s,h,e){
   let ab=0,le=0; for(const k of Object.keys(ACT)){ ab+=s[k].abbonamenti.length; le+=s[k].lezioni.length; }
-  return { ab, le, vx:h.vaccinations.length, il:h.illnesses.length };
+  return { ab, le, vx:h.vaccinations.length, il:h.illnesses.length, pe:e?e.pesi.length:null, sp:e?e.spese.length:null };
 }
 function fmtCount(c){
   const n=(x,s,p)=>x+' '+(x===1?s:p);
-  return [n(c.ab,'abbonamento','abbonamenti'),n(c.le,'lezione','lezioni'),n(c.vx,'vaccinazione','vaccinazioni'),n(c.il,'indisposizione','indisposizioni')].join(', ');
+  return [n(c.ab,'abbonamento','abbonamenti'),n(c.le,'lezione','lezioni'),n(c.vx,'vaccinazione','vaccinazioni'),n(c.il,'indisposizione','indisposizioni')].concat(c.pe===null?[]:[n(c.pe,'pesata','pesate'),n(c.sp,'spesa','spese')]).join(', ');
 }
 function backupHTML(){
   const m=getMeta(); let st;
@@ -1480,7 +1806,7 @@ function backupHTML(){
     st=`<div class="bk-status ${days>30?'warn':'ok'}">Ultimo backup: ${fmtDate(m.ultimoBackup)} (${when})${days>30?' · conviene rifarlo':''}</div>`;
   }
   return `<div class="block bk" style="margin-top:0">
-    <p>I dati (abbonamenti, lezioni, foto, vaccinazioni) sono salvati solo su questo dispositivo, nel browser. Un file di backup permette di recuperarli se il browser li cancella e di trasferirli su un altro dispositivo.</p>
+    <p>I dati (abbonamenti, lezioni, foto, vaccinazioni, peso, spese) sono salvati solo su questo dispositivo, nel browser. Un file di backup permette di recuperarli se il browser li cancella e di trasferirli su un altro dispositivo.</p>
     ${st}
     <div class="bk-actions">
       <button class="btn btn-soil" onclick="exportBackup()">${ICON.check} Esporta backup</button>
@@ -1491,7 +1817,7 @@ function backupHTML(){
   </div>`;
 }
 async function exportBackup(){
-  const payload={ app:'bubu-tracker', formato:1, versioneApp:APP_VERSION, esportatoIl:new Date().toISOString(), attivita:state, salute:health };
+  const payload={ app:'bubu-tracker', formato:1, versioneApp:APP_VERSION, esportatoIl:new Date().toISOString(), attivita:state, salute:health, extra:extra };
   const name='bubu-backup_'+localDate()+'.json';
   const file=new File([JSON.stringify(payload)],name,{type:'application/json'});
   try{
@@ -1515,6 +1841,12 @@ function validaBackup(o){
     if(!a||!Array.isArray(a.abbonamenti)||!Array.isArray(a.lezioni)) return 'dati di '+ACT[k].label+' non validi';
   }
   if(!o.salute||!Array.isArray(o.salute.vaccinations)||!Array.isArray(o.salute.illnesses)) return 'dati di salute non validi';
+  if(o.extra!==undefined){
+    const x=o.extra;
+    if(!x||typeof x!=='object'||!Array.isArray(x.pesi)||!Array.isArray(x.spese)) return 'dati di peso e spese non validi';
+    if(!x.pesi.every(p=>p&&typeof p.data==='string'&&typeof p.kg==='number'&&isFinite(p.kg))) return 'dati del peso non validi';
+    if(!x.spese.every(p=>p&&typeof p.data==='string'&&typeof p.cent==='number'&&isFinite(p.cent)&&CAT_KEYS.includes(p.cat))) return 'dati delle spese non validi';
+  }
   return null;
 }
 function importBackup(inp){
@@ -1527,18 +1859,20 @@ function importBackup(inp){
     const err=validaBackup(o);
     if(err){ alert('Ripristino annullato: '+err+'. I dati attuali non sono stati modificati.'); return; }
     const quando=o.esportatoIl?fmtDate(String(o.esportatoIl).slice(0,10)):'data sconosciuta';
-    const msg='Ripristinare il backup del '+quando+'?\n\nNel backup: '+fmtCount(countData(o.attivita,o.salute))+
-      '.\nSu questo dispositivo ora: '+fmtCount(countData(state,health))+'.\n\nIl ripristino SOSTITUISCE i dati attuali.';
+    const msg='Ripristinare il backup del '+quando+'?\n\nNel backup: '+fmtCount(countData(o.attivita,o.salute,o.extra||null))+
+      '.\nSu questo dispositivo ora: '+fmtCount(countData(state,health,extra))+'.\n\nIl ripristino SOSTITUISCE i dati attuali'+(o.extra?'.':' (peso e spese attuali restano: il backup non li contiene).');
     if(!confirm(msg)) return;
-    const prevS=localStorage.getItem('bubu-v2'), prevH=localStorage.getItem('bubu-health');
+    const prevS=localStorage.getItem('bubu-v2'), prevH=localStorage.getItem('bubu-health'), prevE=localStorage.getItem('bubu-extra');
     try{
       localStorage.setItem('bubu-v2',JSON.stringify(o.attivita));
       localStorage.setItem('bubu-health',JSON.stringify(o.salute));
+      if(o.extra) localStorage.setItem('bubu-extra',JSON.stringify(o.extra));
     }catch(ex){
-      try{ if(prevS!=null) localStorage.setItem('bubu-v2',prevS); if(prevH!=null) localStorage.setItem('bubu-health',prevH); }catch(_){}
+      try{ if(prevS!=null) localStorage.setItem('bubu-v2',prevS); if(prevH!=null) localStorage.setItem('bubu-health',prevH); if(prevE!=null) localStorage.setItem('bubu-extra',prevE); else localStorage.removeItem('bubu-extra'); }catch(_){}
       alert('Ripristino non riuscito (spazio insufficiente nel browser). I dati attuali non sono stati modificati.'); return;
     }
     state=o.attivita; health=o.salute;
+    if(o.extra){ extra={pesi:o.extra.pesi,spese:o.extra.spese}; }
     renderDash();
     alert('Backup ripristinato.');
   };
