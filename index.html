@@ -740,7 +740,7 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
 </div>
 
 <script>
-const APP_VERSION = '3.4';
+const APP_VERSION = '3.5';
 const VERSION_URL = 'version.json';
 
 const ACT = {
@@ -775,7 +775,7 @@ const ICON = {
   paw:       `<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="16.4" rx="4.8" ry="3.9"/><circle cx="5.2" cy="11" r="2"/><circle cx="9.2" cy="5.9" r="2"/><circle cx="14.8" cy="5.9" r="2"/><circle cx="18.8" cy="11" r="2"/></svg>`
 };
 
-let state = {}, health = {}, curAct = null, fotoB64 = null;
+let state = {}, health = {}, curAct = null, fotoB64 = null, fotoBusy = false, fotoTok = 0;
 let selVaxType = '', selIllType = '';
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -1294,18 +1294,49 @@ function confetti(){
 
 /* ===== LEZIONI / ABBONAMENTI ===== */
 function openLez(k){
-  curAct=k; fotoB64=null;
+  curAct=k; fotoB64=null; fotoBusy=false; fotoTok++;
   document.getElementById('i-lez-data').value=today();
   document.getElementById('i-lez-note').value='';
   document.getElementById('i-lez-foto').value='';
   document.getElementById('i-lez-preview').classList.remove('show');
   document.getElementById('m-lezione').classList.add('open');
 }
+const FOTO_MAX=1200, FOTO_Q=0.8, FOTO_KEEP=350*1024;
+// Ridimensiona la foto (lato lungo max FOTO_MAX px, JPEG): evita di riempire lo spazio del browser.
+// Se qualcosa va storto, usa la foto originale come prima.
+function riduciFoto(file,orig){
+  return new Promise(res=>{
+    const url=URL.createObjectURL(file), im=new Image();
+    im.onload=()=>{
+      try{
+        const w=im.naturalWidth, h=im.naturalHeight, sc=Math.min(1,FOTO_MAX/Math.max(w,h));
+        if(sc>=1&&file.size<=FOTO_KEEP){ URL.revokeObjectURL(url); res(orig); return; }
+        const cw=Math.max(1,Math.round(w*sc)), ch=Math.max(1,Math.round(h*sc));
+        const cv=document.createElement('canvas'); cv.width=cw; cv.height=ch;
+        const c=cv.getContext('2d'); c.fillStyle='#fff'; c.fillRect(0,0,cw,ch); c.drawImage(im,0,0,cw,ch);
+        const out=cv.toDataURL('image/jpeg',FOTO_Q);
+        URL.revokeObjectURL(url);
+        res((out&&out.startsWith('data:image/jpeg')&&out.length<orig.length)?out:orig);
+      }catch(e){ URL.revokeObjectURL(url); res(orig); }
+    };
+    im.onerror=()=>{ URL.revokeObjectURL(url); res(orig); };
+    im.src=url;
+  });
+}
 function previewFoto(inp){
   if(!inp.files||!inp.files[0]) return;
+  const file=inp.files[0], tok=++fotoTok;
+  fotoB64=null; fotoBusy=true;
   const r=new FileReader();
-  r.onload=e=>{ fotoB64=e.target.result; const img=document.getElementById('i-lez-preview'); img.src=fotoB64; img.classList.add('show'); };
-  r.readAsDataURL(inp.files[0]);
+  r.onerror=()=>{ if(tok===fotoTok) fotoBusy=false; };
+  r.onload=async e=>{
+    let out=e.target.result;
+    try{ out=await riduciFoto(file,out); }catch(err){}
+    if(tok!==fotoTok) return;            // il modulo è stato chiuso/riaperto nel frattempo
+    fotoB64=out; fotoBusy=false;
+    const img=document.getElementById('i-lez-preview'); img.src=fotoB64; img.classList.add('show');
+  };
+  r.readAsDataURL(file);
 }
 function salvaLezione(){
   const data=document.getElementById('i-lez-data').value;
@@ -1313,6 +1344,7 @@ function salvaLezione(){
   if(!data){ alert('Inserisci la data'); return; }
   const sub=activeSub(curAct); if(!sub){ alert('Nessun abbonamento attivo'); return; }
   if(rimanenti(curAct)<=0){ alert('Lezioni esaurite! Rinnova l\'abbonamento.'); return; }
+  if(fotoBusy){ alert('Sto preparando la foto: riprova tra un istante.'); return; }
   const k=curAct;
   const stPrima=calcStreak();
   state[k].lezioni.push({ id:genId(), subId:sub.id, data, note, foto:fotoB64||null });
