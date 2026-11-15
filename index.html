@@ -3,448 +3,482 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#17301F">
+<meta name="color-scheme" content="light dark">
 <title>🐾 Bubu's Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root {
-  --soil:    #3D2B1F;
-  --bark:    #6B4226;
-  --moss:    #4A6741;
-  --sage:    #7A9E6E;
-  --fern:    #A8C49A;
-  --cream:   #F5EDD8;
-  --sand:    #E8D5B0;
-  --stone:   #C4B49A;
-  --warm:    #D4956A;
-  --copper:  #B5622A;
-  --gold:    #C8922A;
-  --piscina-c:  #3A7CA5;
-  --piscina-l:  #EAF4FB;
-  --tartufo-c:  #7B5835;
-  --tartufo-l:  #F5EDE2;
-  --guinz-c:    #4A6741;
-  --guinz-l:    #EBF3E8;
-  --red:    #C0392B;
-  --red-l:  #FDECEA;
-  --yellow: #C8922A;
-  --yellow-l: #FEF6E4;
-  --green:  #4A6741;
-  --green-l:#EBF3E8;
-  --r: 16px;
-  --r-lg: 22px;
-  --shadow: 0 4px 24px rgba(61,43,31,0.10);
-  --shadow-lg: 0 8px 40px rgba(61,43,31,0.16);
+/* =========================================================
+   TOKENS
+   ========================================================= */
+:root{
+  color-scheme: light dark;
+  --bg:#F4ECDA; --bg2:#EBDFC4;
+  --ink:#2A1C13; --ink2:#6A5545; --muted:#9A8670;
+  --card:#FFFCF5; --card2:#F6EFDF; --line:rgba(60,42,28,.11);
+  --shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 12px 30px -14px rgba(60,42,28,.30);
+  --shadow-lg:0 28px 60px -22px rgba(40,28,18,.50);
+  --forest:#17301F; --forest2:#244A33; --cream:#F6EEDB; --gold:#D9A441; --terra:#B5622A;
+
+  --piscina:#2F82B8;  --piscina-2:#6BBBE3; --piscina-deep:#1B5C86; --piscina-soft:rgba(47,130,184,.13);
+  --tartufo:#8E5B2A;  --tartufo-2:#D8A263; --tartufo-deep:#5C3917; --tartufo-soft:rgba(142,91,42,.13);
+  --guinz:#4C7C43;    --guinz-2:#93C57F;   --guinz-deep:#2C5528;   --guinz-soft:rgba(76,124,67,.14);
+
+  --ok:#2B8350; --warn:#B87607; --bad:#C23B2B;
+  --ok-soft:rgba(43,131,80,.13); --warn-soft:rgba(201,133,18,.16); --bad-soft:rgba(194,59,43,.13);
+
+  --r:18px; --r-lg:26px;
+  --f-display:'Fraunces','Playfair Display',Georgia,serif;
+  --f-body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
-*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
-body {
-  font-family: 'Nunito', sans-serif;
-  background: var(--cream);
-  color: var(--soil);
-  min-height: 100vh;
-  padding-bottom: 90px;
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#120E0B; --bg2:#1A140F;
+    --ink:#F4ECDA; --ink2:#CDBEA5; --muted:#9B8A74;
+    --card:#1E1712; --card2:#271E17; --line:rgba(244,236,218,.11);
+    --shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 14px 34px -16px rgba(0,0,0,.75);
+    --shadow-lg:0 30px 60px -24px rgba(0,0,0,.85);
+    --ok:#6CCB8E; --warn:#EBB44C; --bad:#F2796A;
+    --ok-soft:rgba(108,203,142,.15); --warn-soft:rgba(235,180,76,.16); --bad-soft:rgba(242,121,106,.16);
+    --piscina:#5FB3E3; --piscina-soft:rgba(95,179,227,.16);
+    --tartufo:#D79E5F; --tartufo-soft:rgba(215,158,95,.16);
+    --guinz:#8AC278;   --guinz-soft:rgba(138,194,120,.16);
+  }
+}
+.piscina  {--c:var(--piscina); --c2:var(--piscina-2); --c-deep:var(--piscina-deep); --c-soft:var(--piscina-soft)}
+.tartufing{--c:var(--tartufo); --c2:var(--tartufo-2); --c-deep:var(--tartufo-deep); --c-soft:var(--tartufo-soft)}
+.guinzagli{--c:var(--guinz);   --c2:var(--guinz-2);   --c-deep:var(--guinz-deep);   --c-soft:var(--guinz-soft)}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--f-body);color:var(--ink);background-color:var(--bg);
+  min-height:100vh;
+  padding-bottom:calc(104px + env(safe-area-inset-bottom));
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"),
-    linear-gradient(160deg, #F5EDD8 0%, #EDE0C4 100%);
+    radial-gradient(1100px 620px at 92% -8%, rgba(217,164,65,.13), transparent 62%),
+    radial-gradient(900px 520px at -8% 38%, rgba(76,124,67,.11), transparent 62%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+button{font-family:inherit}
+svg{display:block}
+
+/* =========================================================
+   NAV  (mobile: barra in basso · desktop: barra in alto)
+   ========================================================= */
+.nav{
+  position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;
+  background:rgba(23,48,31,.90);
+  -webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
+  border:1px solid rgba(246,238,219,.14);border-radius:26px;padding:6px;
+  box-shadow:0 20px 44px -14px rgba(0,0,0,.6);
+}
+.nav-brand{display:none}
+.nav-tabs{display:flex;gap:2px}
+.nav-tab{
+  flex:1;border:0;background:transparent;cursor:pointer;position:relative;
+  color:rgba(246,238,219,.55);font:800 10px var(--f-body);letter-spacing:.02em;
+  padding:8px 2px 7px;border-radius:20px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;transition:background .2s,color .2s;
+}
+.nav-tab .ti svg{width:22px;height:22px}
+.nav-tab.active{color:var(--cream);background:rgba(246,238,219,.13)}
+.nav-tab.active .ti{color:var(--gold)}
+.nav-dot{position:absolute;top:6px;right:calc(50% - 17px);width:10px;height:10px;border-radius:50%;
+  background:#E5533F;border:2px solid #17301F;display:none}
+.nav-dot.show{display:block}
+
+/* =========================================================
+   HERO (solo Home)
+   ========================================================= */
+body:not([data-page="dashboard"]) .hero{display:none}
+.hero{
+  position:relative;overflow:hidden;isolation:isolate;color:var(--cream);
+  border-radius:0 0 36px 36px;
+  background:
+    radial-gradient(700px 360px at 88% 0%, rgba(217,164,65,.30), transparent 62%),
+    radial-gradient(620px 420px at 0% 100%, rgba(76,124,67,.50), transparent 62%),
+    linear-gradient(160deg,#1F4029 0%,#12241A 100%);
+}
+.hero-paws{position:absolute;inset:0;z-index:-1;opacity:.055;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='white'%3E%3Cellipse cx='36' cy='46' rx='11' ry='9'/%3E%3Ccircle cx='22' cy='31' r='5.5'/%3E%3Ccircle cx='50' cy='31' r='5.5'/%3E%3Ccircle cx='28' cy='20' r='4.5'/%3E%3Ccircle cx='44' cy='20' r='4.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:72px 72px}
+.hero-photo{
+  position:absolute;z-index:-2;top:0;left:0;width:100%;height:350px;
+  object-fit:cover;object-position:50% 30%;
+  -webkit-mask-image:linear-gradient(to bottom,#000 52%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 52%,transparent 100%);
+  animation:photoIn 1.1s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes photoIn{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
+.hero-inner{position:relative;padding:calc(266px + env(safe-area-inset-top)) 20px 28px}
+.eyebrow{font:800 11px var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.hero-title{font:900 clamp(40px,11vw,72px)/.95 var(--f-display);letter-spacing:-.025em;margin-top:8px;
+  text-shadow:0 2px 26px rgba(0,0,0,.4)}
+.hero-sub{font:800 clamp(17px,4.4vw,22px)/1.25 var(--f-body);margin-top:10px;color:rgba(246,238,219,.94)}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.hero-badges:empty{display:none}
+.hbadge{font:800 12px var(--f-body);padding:6px 12px;border-radius:999px;color:var(--cream);
+  background:rgba(246,238,219,.12);border:1px solid rgba(246,238,219,.22);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.hbadge.al{background:rgba(229,83,63,.38);border-color:rgba(255,160,145,.55);color:#FFDAD3}
+.hbadge.wa{background:rgba(217,164,65,.36);border-color:rgba(240,200,120,.55);color:#FFEFC4}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.hstat{padding:12px 12px 11px;border-radius:18px;background:rgba(246,238,219,.10);border:1px solid rgba(246,238,219,.17);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);min-width:0}
+.hstat b{display:block;font:900 28px/1 var(--f-display)}
+.hstat span{display:block;margin-top:5px;font:800 10px/1.2 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:rgba(246,238,219,.72)}
+.hstat.txt b{font:800 16px/1.25 var(--f-body);padding-top:5px;display:flex;align-items:center;gap:7px}
+.hstat .dot{width:10px;height:10px;border-radius:50%;flex:none;background:#9B8A74}
+.hstat .dot.ok{background:#6CCB8E;box-shadow:0 0 0 3px rgba(108,203,142,.25)}
+.hstat .dot.warn{background:#EBB44C;box-shadow:0 0 0 3px rgba(235,180,76,.25)}
+.hstat .dot.bad{background:#F2796A;box-shadow:0 0 0 3px rgba(242,121,106,.28)}
+.ver-pill{display:inline-block;margin-top:16px;font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.12em;
+  color:rgba(246,238,219,.72);border:1px solid rgba(246,238,219,.25);border-radius:999px;padding:3px 11px}
+
+/* =========================================================
+   PAGINE / LAYOUT
+   ========================================================= */
+.page{display:none}
+.page.active{display:block;animation:rise .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.wrap{width:min(1200px,100% - 32px);margin:0 auto;padding-top:calc(18px + env(safe-area-inset-top))}
+body[data-page="dashboard"] .wrap{padding-top:0}
+.sec{font:800 22px var(--f-display);letter-spacing:-.01em;display:flex;align-items:center;gap:12px;margin:30px 0 14px}
+.sec::after{content:'';flex:1;height:1px;background:var(--line)}
+
+/* ---------- banner di allerta ---------- */
+.alert{display:flex;align-items:center;gap:14px;padding:16px 18px;margin-top:16px;border-radius:var(--r-lg);color:#fff;
+  background:linear-gradient(135deg,#A92E20,#E0533F);box-shadow:0 18px 36px -18px rgba(194,59,43,.8);
+  animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+.alert .ai{width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.18);display:grid;place-items:center;flex:none}
+.alert .ai svg{width:25px;height:25px}
+.alert b{display:block;font:800 17px/1.2 var(--f-display)}
+.alert span{display:block;margin-top:3px;font:700 12.5px/1.35 var(--f-body);opacity:.9}
+
+/* ---------- card attività ---------- */
+.cards{display:grid;gap:16px;grid-template-columns:1fr}
+.a-card{position:relative;overflow:hidden;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);
+  opacity:0;animation:rise .6s cubic-bezier(.2,.8,.2,1) forwards;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+.a-card:nth-child(2){animation-delay:.08s}
+.a-card:nth-child(3){animation-delay:.16s}
+.a-card::before{content:'';position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--c),var(--c2))}
+.a-card .glow{position:absolute;right:-70px;top:-70px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,var(--c-soft),transparent 66%);pointer-events:none}
+@media(hover:hover){.a-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}}
+.a-card:active{transform:scale(.985)}
+.ac-head{position:relative;display:flex;align-items:center;gap:12px;padding:22px 20px 0}
+.ac-ico{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;flex:none;background:var(--c-soft);color:var(--c)}
+.ac-ico svg{width:25px;height:25px}
+.ac-name{font:800 20px var(--f-display);letter-spacing:-.01em;flex:1;min-width:0}
+.ac-body{position:relative;display:flex;align-items:center;gap:18px;padding:18px 20px 20px}
+.ac-side{flex:1;min-width:0;display:grid;gap:9px}
+.kv{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-bottom:8px;border-bottom:1px dashed var(--line)}
+.kv span{font:800 10.5px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.kv b{font:900 22px/1 var(--f-display);color:var(--ink)}
+.stima-tag{font:700 12px/1.35 var(--f-body);color:var(--ink2);background:var(--c-soft);border-radius:12px;padding:7px 10px}
+.stima-tag b{color:var(--c);font-weight:900}
+.ac-empty{font:700 13.5px/1.4 var(--f-body);color:var(--muted)}
+.ac-foot{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;background:var(--card2);
+  border-top:1px solid var(--line);font:700 12.5px var(--f-body);color:var(--ink2)}
+.ac-foot svg{width:18px;height:18px;color:var(--muted)}
+
+/* badge */
+.badge{font:900 10px var(--f-body);letter-spacing:.07em;text-transform:uppercase;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.b-green{background:var(--ok-soft);color:var(--ok)}
+.b-yellow{background:var(--warn-soft);color:var(--warn)}
+.b-red{background:var(--bad-soft);color:var(--bad)}
+.b-gray{background:var(--card2);color:var(--muted);border:1px solid var(--line)}
+
+/* ---------- anello di progresso ---------- */
+.ring{position:relative;width:var(--sz,116px);height:var(--sz,116px);flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--c-soft)}
+.ring-fg{fill:none;stroke-linecap:round;stroke-dasharray:276.46;stroke-dashoffset:276.46;
+  transition:stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1) .15s}
+.ring.in .ring-fg{stroke-dashoffset:var(--off)}
+.ring-c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring-c b{font:900 calc(var(--sz,116px)*.31)/1 var(--f-display);color:var(--ink)}
+.ring-c span{margin-top:3px;font:800 9px var(--f-body);letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.light .ring-bg{stroke:rgba(255,255,255,.22)}
+.light .ring-c b{color:#fff}
+.light .ring-c span{color:rgba(255,255,255,.75)}
+
+/* ---------- salute in breve ---------- */
+.hs{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:16px;cursor:pointer}
+.hs-grid{display:grid;gap:10px;grid-template-columns:1fr}
+.hs-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:16px;background:var(--card2)}
+.hs-row .t{flex:1;min-width:0}
+.hs-row .t b{display:block;font:800 14.5px var(--f-body)}
+.hs-row .t span{display:block;margin-top:2px;font:700 12px var(--f-body);color:var(--ink2)}
+.hs-empty{padding:18px 10px;text-align:center;font:700 13.5px/1.4 var(--f-body);color:var(--muted)}
+.sdot{width:14px;height:14px;border-radius:50%;flex:none}
+.sdot.green{background:var(--ok);box-shadow:0 0 0 4px var(--ok-soft)}
+.sdot.yellow{background:var(--warn);box-shadow:0 0 0 4px var(--warn-soft)}
+.sdot.red{background:var(--bad);box-shadow:0 0 0 4px var(--bad-soft);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+
+/* ---------- dettaglio attività ---------- */
+.det-hero{position:relative;overflow:hidden;isolation:isolate;color:#fff;border-radius:var(--r-lg);padding:22px 20px 22px;
+  background:linear-gradient(150deg,var(--c-deep),var(--c));box-shadow:var(--shadow-lg);
+  display:grid;gap:20px}
+.det-hero::before{content:'';position:absolute;inset:0;z-index:-1;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='white'%3E%3Cellipse cx='36' cy='46' rx='11' ry='9'/%3E%3Ccircle cx='22' cy='31' r='5.5'/%3E%3Ccircle cx='50' cy='31' r='5.5'/%3E%3Ccircle cx='28' cy='20' r='4.5'/%3E%3Ccircle cx='44' cy='20' r='4.5'/%3E%3C/g%3E%3C/svg%3E");background-size:72px 72px}
+.det-hero::after{content:'';position:absolute;z-index:-1;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.22),transparent 68%)}
+.dh-title{display:flex;align-items:center;gap:14px}
+.dh-ico{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28)}
+.dh-ico svg{width:29px;height:29px}
+.dh-title h1{font:900 clamp(28px,7vw,40px)/1 var(--f-display);letter-spacing:-.02em}
+.dh-sub{margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font:700 13px var(--f-body);color:rgba(255,255,255,.85)}
+.det-hero .badge{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.dh-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.dh-gauge{display:flex;align-items:center;gap:18px}
+.dh-stats{flex:1;display:grid;gap:8px}
+.dh-stat{display:flex;align-items:baseline;justify-content:space-between;padding:9px 13px;border-radius:14px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2)}
+.dh-stat span{font:800 10.5px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.78)}
+.dh-stat b{font:900 22px/1 var(--f-display)}
+.det-grid{display:grid;gap:0;grid-template-columns:1fr}
+.block{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px 20px;margin-top:16px}
+.block h3{font:800 18px var(--f-display);letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.blk-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.stima-block{display:flex;align-items:center;gap:16px}
+.stima-ic{width:50px;height:50px;border-radius:16px;background:var(--c-soft);color:var(--c);display:grid;place-items:center;flex:none}
+.stima-ic svg{width:26px;height:26px}
+.stima-title{font:800 11px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stima-val{font:800 20px/1.2 var(--f-display);color:var(--c);margin-top:3px;text-transform:capitalize}
+.stima-sub{font:700 12px var(--f-body);color:var(--ink2);margin-top:3px}
+
+.chart{margin-top:10px}
+.chart svg{width:100%;height:auto}
+.chart .cv{font:900 11px var(--f-body);fill:var(--ink)}
+.chart .cl{font:700 10px var(--f-body);fill:var(--muted)}
+.chart .cl.now{fill:var(--c);font-weight:900}
+.chart .bar{transform-box:fill-box;transform-origin:bottom;animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(0)}}
+
+.lezioni-list{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.lezione-item{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:16px;padding:10px 12px}
+.lezione-thumb{width:48px;height:48px;border-radius:13px;overflow:hidden;flex:none;display:grid;place-items:center;background:var(--c-soft);color:var(--c)}
+.lezione-thumb svg{width:22px;height:22px}
+.lezione-thumb img{width:100%;height:100%;object-fit:cover}
+.lezione-body{flex:1;min-width:0}
+.lezione-num{font:800 16px var(--f-display);color:var(--c)}
+.lezione-num small{font:700 12.5px var(--f-body);color:var(--ink2);margin-left:4px}
+.lezione-note{font:600 12px/1.35 var(--f-body);color:var(--ink2);font-style:italic;margin-top:2px;overflow-wrap:anywhere}
+.x-btn{background:none;border:0;cursor:pointer;color:var(--muted);font-size:16px;padding:6px 8px;border-radius:10px;flex:none}
+.x-btn:hover{color:var(--bad);background:var(--bad-soft)}
+.empty-list{text-align:center;color:var(--muted);font:700 13.5px var(--f-body);padding:24px 0 8px}
+.storico-item{border-left:3px solid var(--line);padding:6px 0 6px 14px;margin-top:12px}
+.storico-item.cur{border-left-color:var(--c)}
+.storico-dates{font:700 12.5px var(--f-body);color:var(--ink2)}
+.storico-info{font:800 14px var(--f-body);margin-top:2px}
+
+/* ---------- salute ---------- */
+.page-head{margin:4px 0 4px}
+.page-head h1{font:900 clamp(30px,7vw,42px)/1 var(--f-display);letter-spacing:-.02em}
+.page-head p{font:700 14px/1.4 var(--f-body);color:var(--ink2);margin-top:8px;max-width:60ch}
+.health-grid{display:grid;grid-template-columns:1fr;gap:0 18px;align-items:start}
+.vax-list,.ill-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.vax-item{display:flex;gap:14px;padding:14px;border-radius:18px;background:var(--card2);border:1px solid var(--line)}
+.vax-item .sdot{margin-top:5px}
+.vax-body{flex:1;min-width:0}
+.vax-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vax-name{font:800 16px var(--f-display);overflow-wrap:anywhere}
+.vax-meta{font:700 12px/1.4 var(--f-body);color:var(--muted);margin-top:4px}
+.vax-bar{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
+.vax-bar i{display:block;height:100%;border-radius:99px;width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1) .2s}
+.vax-item.green .vax-bar i{background:var(--ok)}
+.vax-item.yellow .vax-bar i{background:var(--warn)}
+.vax-item.red .vax-bar i{background:var(--bad)}
+.vax-msg{font:800 12.5px/1.35 var(--f-body);margin-top:8px}
+.vax-item.green .vax-msg{color:var(--ok)}
+.vax-item.yellow .vax-msg{color:var(--warn)}
+.vax-item.red .vax-msg{color:var(--bad)}
+.vax-note{font:600 12px var(--f-body);font-style:italic;color:var(--ink2);margin-top:4px;overflow-wrap:anywhere}
+.ill-item{display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--card2)}
+.ill-item.active-ill{background:var(--bad-soft);border-color:rgba(194,59,43,.3)}
+.ill-item.past-ill{opacity:.8}
+.ill-ic{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;flex:none;background:var(--ok-soft);color:var(--ok)}
+.ill-item.active-ill .ill-ic{background:var(--bad-soft);color:var(--bad)}
+.ill-ic svg{width:21px;height:21px}
+.ill-body{flex:1;min-width:0}
+.ill-name{font:800 16px var(--f-display);overflow-wrap:anywhere}
+.ill-dates{font:700 12px var(--f-body);color:var(--muted);margin-top:3px}
+.ill-note{font:600 12px var(--f-body);font-style:italic;color:var(--ink2);margin-top:4px;overflow-wrap:anywhere}
+
+/* ---------- bottoni ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:15px;padding:12px 18px;
+  font:800 14px var(--f-body);cursor:pointer;transition:transform .15s,filter .15s,background .15s}
+.btn svg{width:18px;height:18px}
+.btn:active{transform:scale(.96)}
+@media(hover:hover){.btn:hover{filter:brightness(1.06)}}
+.btn-light{background:#fff;color:var(--c-deep)}
+.btn-glass{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.32)}
+.btn-soil{background:var(--forest);color:var(--cream)}
+.btn-moss{background:var(--guinz);color:#fff}
+.btn-red{background:var(--bad);color:#fff}
+.btn-sand{background:var(--card2);color:var(--ink);border:1px solid var(--line)}
+.btn-cancel{background:var(--card2);color:var(--ink2);border:1px solid var(--line);border-radius:15px;padding:12px 18px;font:800 14px var(--f-body);cursor:pointer}
+@media (prefers-color-scheme:dark){.btn-soil{background:#2E5A3B}}
+
+/* ---------- modali ---------- */
+.overlay{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;justify-content:center;background:rgba(15,10,6,.58);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.overlay.open{display:flex;animation:fade .2s ease}
+@keyframes fade{from{opacity:0}}
+.modal{background:var(--card);color:var(--ink);width:100%;max-width:520px;max-height:90vh;max-height:90dvh;overflow-y:auto;
+  border-radius:28px 28px 0 0;padding:12px 22px calc(26px + env(safe-area-inset-bottom));
+  box-shadow:var(--shadow-lg);animation:sheet .38s cubic-bezier(.2,.8,.2,1)}
+@keyframes sheet{from{transform:translateY(100%)}}
+.modal-handle{width:44px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 18px}
+.modal-title{font:800 23px var(--f-display);letter-spacing:-.01em;margin-bottom:18px}
+.form-group{margin-bottom:15px}
+.form-lbl{display:block;font:800 11px var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.form-input{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:14px;background:var(--card2);color:var(--ink);
+  font:700 16px var(--f-body);transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none}
+select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1.5 7 7.5l6-6' fill='none' stroke='%239A8670' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 15px center;padding-right:40px}
+.form-input:focus{outline:none;border-color:var(--c-focus,#4C7C43);box-shadow:0 0 0 4px rgba(76,124,67,.18)}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.modal-actions .btn{flex:1}
+.vax-type-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.vax-chip{padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card2);color:var(--ink2);font:800 13px var(--f-body);cursor:pointer;transition:.15s}
+.vax-chip.sel{background:var(--forest);border-color:var(--forest);color:var(--cream)}
+.info-box{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;margin-bottom:16px;border-radius:14px;
+  background:var(--warn-soft);color:var(--warn);font:800 12.5px/1.4 var(--f-body)}
+.foto-area{border:2px dashed var(--line);border-radius:16px;padding:18px;text-align:center;cursor:pointer;font:800 13.5px var(--f-body);color:var(--muted);transition:.15s}
+.foto-area:hover{border-color:var(--muted);color:var(--ink2)}
+.foto-preview{width:100%;height:160px;border-radius:16px;object-fit:cover;display:none;margin-top:10px}
+.foto-preview.show{display:block}
+
+/* ---------- banner aggiornamento ---------- */
+.update-banner{background:linear-gradient(135deg,#C8922A,#B5622A);color:#fff;
+  padding:calc(11px + env(safe-area-inset-top)) 14px 11px 16px;display:flex;align-items:center;gap:10px;
+  position:relative;z-index:70;animation:rise .35s ease both}
+.ub-text{flex:1;min-width:0;font:800 13px/1.25 var(--f-body)}
+.ub-sub{font:700 11px var(--f-body);opacity:.88;margin-top:1px}
+.btn-update{background:#fff;color:#8E4519;border:0;border-radius:999px;padding:8px 15px;font:900 12px var(--f-body);cursor:pointer;white-space:nowrap;flex:none}
+.btn-update:active{transform:scale(.96)}
+.ub-close{background:none;border:0;color:rgba(255,255,255,.9);font-size:16px;cursor:pointer;padding:4px;flex:none}
+
+/* =========================================================
+   TABLET  ≥ 700px
+   ========================================================= */
+@media(min-width:700px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .hs-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-photo{height:400px;object-position:50% 36%}
+  .hero-inner{padding:300px 32px 34px}
+  .hero-inner > *{max-width:640px}
+  .overlay{align-items:center}
+  .modal{border-radius:28px;padding:24px 28px 28px}
+  .modal-handle{display:none}
+  .det-hero{grid-template-columns:1.1fr 1fr;align-items:center;padding:28px}
 }
 
-/* HEADER */
-.header {
-  background: linear-gradient(145deg, var(--bark) 0%, var(--soil) 100%);
-  padding: 52px 22px 44px;
-  position: relative; overflow: hidden;
-}
-.header-deco {
-  position:absolute; inset:0; pointer-events:none;
-  background-image:
-    radial-gradient(circle at 88% 18%, rgba(200,146,42,0.28) 0%, transparent 52%),
-    radial-gradient(circle at 12% 82%, rgba(74,103,65,0.32) 0%, transparent 50%);
-}
-.header-paws {
-  position:absolute; inset:0; pointer-events:none; opacity:0.06;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cellipse cx='30' cy='38' rx='10' ry='8' fill='white'/%3E%3Ccircle cx='19' cy='26' r='5' fill='white'/%3E%3Ccircle cx='41' cy='26' r='5' fill='white'/%3E%3Ccircle cx='24' cy='18' r='4' fill='white'/%3E%3Ccircle cx='36' cy='18' r='4' fill='white'/%3E%3C/svg%3E");
-  background-size:60px 60px;
-}
-.header-inner { position:relative; z-index:1; display:flex; align-items:center; gap:16px; }
-.header-avatar {
-  width:62px; height:62px;
-  background: linear-gradient(135deg, var(--gold), var(--warm));
-  border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-size:32px; flex-shrink:0;
-  box-shadow:0 4px 16px rgba(0,0,0,0.3), 0 0 0 3px rgba(255,255,255,0.15);
-  animation:pulse-av 3s ease-in-out infinite;
-}
-@keyframes pulse-av {
-  0%,100%{box-shadow:0 4px 16px rgba(0,0,0,0.3),0 0 0 3px rgba(255,255,255,0.15)}
-  50%{box-shadow:0 4px 20px rgba(0,0,0,0.35),0 0 0 6px rgba(200,146,42,0.25)}
-}
-.header-title { font-family:'Playfair Display',serif; font-size:27px; font-weight:900; color:var(--cream); line-height:1; }
-.header-sub { font-size:15px; font-weight:800; color:rgba(245,237,216,0.85); margin-top:6px; letter-spacing:0.2px; }
-.header-badges { position:relative; z-index:1; display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
-.hbadge {
-  background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
-  border-radius:20px; padding:4px 12px; font-size:11px; font-weight:800;
-  color:rgba(245,237,216,0.9);
-}
-.hbadge.al { background:rgba(192,57,43,0.45); border-color:rgba(192,57,43,0.6); color:#FFCAC5; }
-.hbadge.wa { background:rgba(200,146,42,0.45); border-color:rgba(200,146,42,0.6); color:#FFE8A0; }
-.hbadge.health-red { background:rgba(192,57,43,0.55); border-color:rgba(192,57,43,0.7); color:#FFCAC5; animation:pulse-badge 2s ease-in-out infinite; }
-.hbadge.health-yellow { background:rgba(200,146,42,0.55); border-color:rgba(200,146,42,0.7); color:#FFE8A0; }
-@keyframes pulse-badge { 0%,100%{opacity:1} 50%{opacity:0.7} }
+/* =========================================================
+   DESKTOP / MAC  ≥ 900px  → barra in alto
+   ========================================================= */
+@media(min-width:900px){
+  body{padding-bottom:64px}
+  .nav{
+    position:sticky;top:0;left:auto;right:auto;bottom:auto;border-radius:0;border:0;
+    border-bottom:1px solid rgba(246,238,219,.10);
+    padding:0 max(32px,calc((100% - 1200px)/2));
+    display:flex;align-items:center;justify-content:space-between;
+    background:rgba(18,38,26,.86);box-shadow:0 10px 30px -14px rgba(0,0,0,.6)}
+  .nav-brand{display:flex;align-items:center;gap:11px;color:var(--cream);font:900 21px var(--f-display);letter-spacing:-.01em}
+  .nav-brand svg{width:26px;height:26px;color:var(--gold)}
+  .nav-ver{font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.1em;color:rgba(246,238,219,.55);border:1px solid rgba(246,238,219,.22);border-radius:999px;padding:2px 9px;margin-left:2px}
+  .nav-tabs{gap:6px}
+  .nav-tab{flex:none;flex-direction:row;gap:9px;font-size:14px;padding:9px 17px;margin:9px 0;border-radius:999px}
+  .nav-tab .ti svg{width:19px;height:19px}
+  .nav-dot{top:6px;right:8px}
+  .wrap{padding-top:28px}
+  body[data-page="dashboard"] .wrap{padding-top:0}
 
-/* NAV */
-.nav-wrap { background:var(--soil); position:sticky; top:0; z-index:50; box-shadow:0 2px 12px rgba(61,43,31,0.25); }
-.nav-tabs { display:flex; }
-.nav-tab {
-  flex:1; border:none; background:transparent; cursor:pointer;
-  font-family:'Nunito',sans-serif; font-size:10px; font-weight:800;
-  color:rgba(245,237,216,0.4);
-  padding:11px 2px 10px;
-  display:flex; flex-direction:column; align-items:center; gap:2px;
-  transition:all 0.2s; position:relative; letter-spacing:0.2px;
-}
-.nav-tab .ti { font-size:17px; }
-.nav-tab.active { color:var(--cream); }
-.nav-tab.active::after {
-  content:''; position:absolute; bottom:0; left:22%; right:22%;
-  height:3px; background:var(--gold); border-radius:3px 3px 0 0;
-}
-.nav-tab .nav-dot {
-  position:absolute; top:7px; right:calc(50% - 14px);
-  width:7px; height:7px; border-radius:50%;
-  background:var(--red); border:1.5px solid var(--soil);
-  display:none;
-}
-.nav-tab .nav-dot.show { display:block; }
+  .hero{border-radius:0 0 48px 48px;min-height:480px}
+  .hero-photo{left:auto;right:0;width:52%;height:100%;object-position:50% 20%;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 40%);mask-image:linear-gradient(to right,transparent 0,#000 40%)}
+  .hero-inner{width:min(1200px,100% - 64px);margin:0 auto;padding:92px 0 70px}
+  .hero-inner > *{max-width:560px}
+  .hero-title{font-size:clamp(56px,6vw,76px)}
+  .hero-sub{font-size:23px}
+  .hstat b{font-size:34px}
+  .hstat.txt b{font-size:18px}
 
-/* PAGES */
-.page { display:none; padding:16px; animation:fadeIn 0.22s ease; }
-.page.active { display:block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
-
-/* SEC TITLE */
-.sec-title {
-  font-family:'Playfair Display',serif; font-size:18px; font-weight:700;
-  color:var(--bark); margin-bottom:12px; display:flex; align-items:center; gap:8px;
+  .cards{grid-template-columns:repeat(3,1fr);gap:20px}
+  .hs-grid{grid-template-columns:repeat(3,1fr)}
+  .det-grid{grid-template-columns:1fr 1fr;gap:0 18px;align-items:start}
+  .health-grid{grid-template-columns:1fr 1fr}
+  .det-hero{padding:32px 34px}
+  .dh-gauge{gap:26px}
+}
+@media(min-width:1200px){
+  .hero-photo{width:50%}
 }
 
-/* INDISPOSIZIONE BANNER */
-.illness-banner {
-  background:linear-gradient(135deg, #C0392B 0%, #E74C3C 100%);
-  border-radius:var(--r-lg); padding:14px 18px; margin-bottom:14px;
-  display:flex; align-items:center; gap:14px; box-shadow:var(--shadow-lg);
-  animation:fadeIn 0.3s ease both;
-  position:relative; overflow:hidden;
-}
-.illness-banner::after {
-  content:'🤒'; position:absolute; right:16px; top:50%; transform:translateY(-50%);
-  font-size:40px; opacity:0.18;
-}
-.illness-icon { font-size:30px; flex-shrink:0; }
-.illness-title { font-family:'Playfair Display',serif; font-size:16px; font-weight:900; color:white; line-height:1.2; }
-.illness-sub { font-size:11px; font-weight:700; color:rgba(255,255,255,0.75); margin-top:3px; }
-
-/* STREAK */
-.streak-banner {
-  background:linear-gradient(135deg, var(--moss) 0%, var(--sage) 100%);
-  border-radius:var(--r-lg); padding:14px 18px; margin-bottom:14px;
-  display:flex; align-items:center; gap:14px; box-shadow:var(--shadow);
-  animation:fadeIn 0.3s ease 0.05s both;
-}
-.streak-fire { font-size:34px; line-height:1; }
-.streak-num { font-family:'Playfair Display',serif; font-size:25px; font-weight:900; color:var(--cream); line-height:1; }
-.streak-label { font-size:12px; font-weight:700; color:rgba(245,237,216,0.72); }
-
-/* ACTIVITY CARDS */
-.activity-cards { display:flex; flex-direction:column; gap:14px; }
-.a-card {
-  background:white; border-radius:var(--r-lg); overflow:hidden;
-  box-shadow:var(--shadow); cursor:pointer;
-  transition:transform 0.15s,box-shadow 0.15s;
-  animation:fadeIn 0.3s ease both;
-}
-.a-card:nth-child(1){animation-delay:0.06s}
-.a-card:nth-child(2){animation-delay:0.12s}
-.a-card:nth-child(3){animation-delay:0.18s}
-.a-card:active { transform:scale(0.985); }
-.a-card-top { padding:16px 18px 12px; position:relative; }
-.a-card-top::before {
-  content:''; position:absolute; inset:0; opacity:0.04; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cellipse cx='22' cy='28' rx='8' ry='7' fill='%23000'/%3E%3Ccircle cx='13' cy='18' r='4' fill='%23000'/%3E%3Ccircle cx='31' cy='18' r='4' fill='%23000'/%3E%3Ccircle cx='17' cy='12' r='3' fill='%23000'/%3E%3Ccircle cx='27' cy='12' r='3' fill='%23000'/%3E%3C/svg%3E");
-  background-size:44px 44px;
-}
-.a-row1 { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-.a-title-wrap { display:flex; align-items:center; gap:10px; }
-.a-icon { width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; }
-.a-icon.piscina   { background:var(--piscina-l); }
-.a-icon.tartufing { background:var(--tartufo-l); }
-.a-icon.guinzagli { background:var(--guinz-l); }
-.a-name { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; }
-.a-name.piscina   { color:var(--piscina-c); }
-.a-name.tartufing { color:var(--tartufo-c); }
-.a-name.guinzagli { color:var(--guinz-c); }
-
-.badge { font-size:10px; font-weight:900; padding:4px 9px; border-radius:20px; letter-spacing:0.4px; text-transform:uppercase; white-space:nowrap; }
-.b-green  { background:var(--green-l); color:var(--green); }
-.b-yellow { background:var(--yellow-l); color:var(--yellow); }
-.b-red    { background:var(--red-l); color:var(--red); }
-.b-gray   { background:#f0ebe3; color:#9a8c7e; }
-
-.a-nums { display:flex; gap:14px; margin-bottom:12px; }
-.a-num { text-align:center; }
-.a-num-val { font-family:'Playfair Display',serif; font-size:30px; font-weight:900; line-height:1; }
-.a-num-val.piscina   { color:var(--piscina-c); }
-.a-num-val.tartufing { color:var(--tartufo-c); }
-.a-num-val.guinzagli { color:var(--guinz-c); }
-.a-num-lbl { font-size:10px; font-weight:800; color:var(--stone); text-transform:uppercase; letter-spacing:0.5px; }
-
-.prog-track { background:var(--sand); border-radius:8px; height:7px; overflow:hidden; }
-.prog-fill { height:100%; border-radius:8px; transition:width 0.6s cubic-bezier(.4,0,.2,1); }
-.prog-fill.piscina   { background:linear-gradient(90deg,var(--piscina-c),#6AABCC); }
-.prog-fill.tartufing { background:linear-gradient(90deg,var(--tartufo-c),#C4955A); }
-.prog-fill.guinzagli { background:linear-gradient(90deg,var(--guinz-c),#7BAF6E); }
-
-.stima-tag {
-  font-size:11px; font-weight:700; color:var(--bark);
-  background:var(--sand); border-radius:8px; padding:3px 8px;
-  margin-top:7px; display:inline-block;
-}
-.a-card-foot {
-  background:var(--cream); padding:9px 18px;
-  display:flex; justify-content:space-between; align-items:center;
-  border-top:1px solid var(--sand);
-}
-.a-card-meta { font-size:11px; font-weight:700; color:var(--stone); }
-.a-arrow { font-size:16px; color:var(--stone); }
-
-/* DETAIL HERO */
-.det-hero {
-  border-radius:var(--r-lg); padding:20px 18px 16px; margin-bottom:14px;
-  position:relative; overflow:hidden; box-shadow:var(--shadow);
-}
-.det-hero.piscina   { background:linear-gradient(135deg,var(--piscina-c),#5AAAD4); }
-.det-hero.tartufing { background:linear-gradient(135deg,var(--tartufo-c),#C4955A); }
-.det-hero.guinzagli { background:linear-gradient(135deg,var(--guinz-c),#7BAF6E); }
-.det-hero::after { content:''; position:absolute; top:-28px; right:-28px; width:130px; height:130px; border-radius:50%; background:rgba(255,255,255,0.08); }
-.det-hero-title { font-family:'Playfair Display',serif; font-size:23px; font-weight:900; color:white; margin-bottom:3px; position:relative; z-index:1; display:flex; align-items:center; gap:10px; }
-.det-hero-sub { font-size:12px; font-weight:700; color:rgba(255,255,255,0.68); margin-bottom:14px; position:relative; z-index:1; }
-.det-stats { display:flex; gap:10px; position:relative; z-index:1; flex-wrap:wrap; }
-.d-stat { background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.25); border-radius:var(--r); padding:10px 14px; flex:1; min-width:68px; }
-.d-stat-val { font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:white; line-height:1; }
-.d-stat-lbl { font-size:10px; font-weight:800; color:rgba(255,255,255,0.68); text-transform:uppercase; letter-spacing:0.5px; }
-.det-prog { margin-top:14px; position:relative; z-index:1; }
-.det-prog-bar { background:rgba(255,255,255,0.2); border-radius:8px; height:8px; overflow:hidden; }
-.det-prog-fill { background:rgba(255,255,255,0.85); height:100%; border-radius:8px; transition:width 0.6s ease; }
-.det-prog-lbls { display:flex; justify-content:space-between; margin-top:4px; }
-.det-prog-lbl { font-size:11px; font-weight:700; color:rgba(255,255,255,0.68); }
-
-/* STIMA BLOCK */
-.stima-block {
-  background:white; border-radius:var(--r); padding:14px 16px;
-  margin-bottom:14px; box-shadow:var(--shadow);
-  display:flex; align-items:center; gap:12px;
-}
-.stima-icon { font-size:28px; }
-.stima-title { font-size:13px; font-weight:800; color:var(--bark); }
-.stima-val { font-family:'Playfair Display',serif; font-size:17px; font-weight:700; color:var(--copper); }
-.stima-sub { font-size:11px; color:var(--stone); font-weight:600; }
-
-/* ACTIONS */
-.actions-row { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
-.btn { border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:800; border-radius:var(--r); transition:all 0.15s; display:inline-flex; align-items:center; gap:6px; padding:11px 18px; font-size:14px; }
-.btn:active { transform:scale(0.96); }
-.btn-soil { background:var(--soil); color:var(--cream); }
-.btn-moss { background:var(--moss); color:white; }
-.btn-sand { background:var(--sand); color:var(--bark); }
-.btn-red  { background:var(--red); color:white; }
-.btn-piscina   { background:var(--piscina-c); color:white; }
-.btn-tartufing { background:var(--tartufo-c); color:white; }
-.btn-guinzagli { background:var(--guinz-c); color:white; }
-
-/* CHART */
-.chart-block { background:white; border-radius:var(--r-lg); padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow); }
-.chart-bars { display:flex; gap:4px; align-items:flex-end; height:64px; margin-top:12px; }
-.chart-bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; }
-.chart-bar { width:100%; border-radius:5px 5px 0 0; min-height:4px; }
-.chart-bar-lbl { font-size:9px; font-weight:700; color:var(--stone); }
-.chart-bar-val { font-size:10px; font-weight:800; color:var(--bark); min-height:14px; }
-
-/* LEZIONI */
-.lezioni-block { background:white; border-radius:var(--r-lg); padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow); }
-.lezioni-list { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
-.lezione-item { display:flex; align-items:flex-start; gap:10px; background:var(--cream); border-radius:var(--r); padding:10px 12px; }
-.lezione-thumb { width:44px; height:44px; border-radius:10px; overflow:hidden; flex-shrink:0; background:var(--sand); display:flex; align-items:center; justify-content:center; font-size:20px; }
-.lezione-thumb img { width:100%; height:100%; object-fit:cover; }
-.lezione-body { flex:1; min-width:0; }
-.lezione-num { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--bark); }
-.lezione-date { font-size:12px; font-weight:700; color:var(--stone); }
-.lezione-note { font-size:11px; color:var(--stone); font-style:italic; margin-top:2px; }
-.btn-del { background:none; border:none; cursor:pointer; font-size:15px; color:#ccc; padding:4px; flex-shrink:0; }
-.btn-del:hover { color:var(--red); }
-.empty-list { text-align:center; color:var(--stone); font-size:13px; padding:20px 0; font-weight:700; }
-
-/* STORICO */
-.storico-block { background:white; border-radius:var(--r-lg); padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow); }
-.storico-item { border-left:3px solid var(--sand); padding:8px 12px; margin-top:8px; }
-.storico-item.cur { border-left-color:var(--moss); }
-.storico-dates { font-size:12px; font-weight:700; color:var(--stone); }
-.storico-info { font-size:13px; font-weight:800; color:var(--bark); margin-top:2px; }
-
-/* ===== HEALTH PAGE ===== */
-.health-section { background:white; border-radius:var(--r-lg); padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow); }
-
-/* Vaccino card */
-.vax-list { display:flex; flex-direction:column; gap:10px; margin-top:10px; }
-.vax-item {
-  display:flex; align-items:center; gap:12px;
-  background:var(--cream); border-radius:var(--r); padding:12px 14px;
-  position:relative;
-}
-.vax-semaforo {
-  width:14px; height:14px; border-radius:50%; flex-shrink:0;
-  box-shadow:0 0 0 3px rgba(0,0,0,0.08);
-}
-.vax-semaforo.green  { background:#27AE60; box-shadow:0 0 0 3px rgba(39,174,96,0.2); }
-.vax-semaforo.yellow { background:#F39C12; box-shadow:0 0 0 3px rgba(243,156,18,0.25); }
-.vax-semaforo.red    { background:#C0392B; box-shadow:0 0 0 3px rgba(192,57,43,0.25); animation:pulse-dot 1.5s ease-in-out infinite; }
-@keyframes pulse-dot { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
-
-.vax-body { flex:1; min-width:0; }
-.vax-name { font-size:14px; font-weight:800; color:var(--soil); }
-.vax-dates { font-size:11px; font-weight:600; color:var(--stone); margin-top:2px; }
-.vax-status { font-size:11px; font-weight:800; margin-top:3px; }
-.vax-status.green  { color:#27AE60; }
-.vax-status.yellow { color:#F39C12; }
-.vax-status.red    { color:#C0392B; }
-.btn-del-vax { background:none; border:none; cursor:pointer; font-size:15px; color:#ccc; padding:4px; }
-.btn-del-vax:hover { color:var(--red); }
-
-/* Indisposizione card */
-.ill-list { display:flex; flex-direction:column; gap:10px; margin-top:10px; }
-.ill-item {
-  display:flex; align-items:flex-start; gap:12px;
-  border-radius:var(--r); padding:12px 14px;
-  position:relative;
-}
-.ill-item.active-ill { background:var(--red-l); border:1.5px solid rgba(192,57,43,0.2); }
-.ill-item.past-ill   { background:var(--cream); border:1.5px solid var(--sand); opacity:0.75; }
-.ill-icon { font-size:26px; flex-shrink:0; }
-.ill-body { flex:1; min-width:0; }
-.ill-name { font-size:13px; font-weight:800; color:var(--soil); }
-.ill-dates { font-size:11px; font-weight:600; color:var(--stone); margin-top:2px; }
-.ill-note { font-size:11px; font-style:italic; color:var(--stone); margin-top:2px; }
-.ill-badge-active { display:inline-block; background:var(--red); color:white; font-size:9px; font-weight:900; padding:2px 7px; border-radius:10px; letter-spacing:0.4px; margin-left:6px; text-transform:uppercase; vertical-align:middle; }
-.btn-close-ill { background:none; border:none; cursor:pointer; font-size:13px; color:var(--stone); padding:4px; font-weight:800; white-space:nowrap; }
-.btn-close-ill:hover { color:var(--moss); }
-
-/* Vax types */
-.vax-type-chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:10px; }
-.vax-chip {
-  padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800;
-  border:2px solid var(--sand); background:white; color:var(--bark);
-  cursor:pointer; transition:all 0.15s;
-}
-.vax-chip.sel { background:var(--bark); color:var(--cream); border-color:var(--bark); }
-
-/* MODAL */
-.overlay { position:fixed; inset:0; background:rgba(61,43,31,0.55); z-index:100; display:none; align-items:flex-end; justify-content:center; backdrop-filter:blur(3px); }
-.overlay.open { display:flex; }
-.modal { background:var(--cream); border-radius:var(--r-lg) var(--r-lg) 0 0; padding:20px 20px 44px; width:100%; max-width:480px; max-height:88vh; overflow-y:auto; animation:slideUp 0.28s cubic-bezier(.4,0,.2,1); box-shadow:0 -8px 40px rgba(61,43,31,0.2); }
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.modal-handle { width:40px; height:4px; background:var(--stone); border-radius:2px; margin:0 auto 18px; }
-.modal-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--bark); margin-bottom:18px; }
-.form-group { margin-bottom:14px; }
-.form-lbl { font-size:11px; font-weight:800; color:var(--stone); text-transform:uppercase; letter-spacing:0.6px; display:block; margin-bottom:6px; }
-.form-input { width:100%; padding:12px 14px; border:2px solid var(--sand); border-radius:var(--r); font-family:'Nunito',sans-serif; font-size:15px; font-weight:600; color:var(--soil); background:white; transition:border-color 0.15s; }
-.form-input:focus { outline:none; border-color:var(--bark); }
-.modal-actions { display:flex; gap:10px; margin-top:18px; }
-.btn-cancel { background:var(--sand); color:var(--bark); border:none; cursor:pointer; border-radius:var(--r); font-family:'Nunito',sans-serif; font-weight:800; padding:12px 18px; font-size:14px; }
-.foto-area { border:2px dashed var(--stone); border-radius:var(--r); padding:16px; text-align:center; cursor:pointer; font-size:13px; font-weight:700; color:var(--stone); transition:border-color 0.15s; }
-.foto-area:hover { border-color:var(--bark); color:var(--bark); }
-.foto-preview { width:100%; height:150px; border-radius:var(--r); object-fit:cover; display:none; margin-top:8px; }
-.foto-preview.show { display:block; }
-
-/* Info box */
-.info-box {
-  background:var(--yellow-l); border:1px solid rgba(200,146,42,0.3);
-  border-radius:var(--r); padding:10px 14px; font-size:12px; font-weight:700;
-  color:var(--copper); margin-bottom:14px; display:flex; align-items:flex-start; gap:8px;
-}
-
-/* Update banner */
-.update-banner {
-  background:linear-gradient(135deg,var(--gold),var(--copper)); color:white;
-  padding:calc(11px + env(safe-area-inset-top)) 14px 11px 16px;
-  display:flex; align-items:center; gap:10px;
-  box-shadow:var(--shadow); position:relative; z-index:60;
-  animation:fadeIn 0.3s ease both;
-}
-.ub-text { flex:1; min-width:0; font-size:13px; font-weight:800; line-height:1.25; }
-.ub-sub { font-size:11px; font-weight:700; opacity:0.85; margin-top:1px; }
-.btn-update {
-  background:white; color:var(--copper); border:none; border-radius:20px;
-  padding:7px 14px; font-family:'Nunito',sans-serif; font-weight:900; font-size:12px;
-  cursor:pointer; white-space:nowrap; flex-shrink:0;
-}
-.btn-update:active { transform:scale(0.96); }
-.ub-close { background:none; border:none; color:rgba(255,255,255,0.85); font-size:16px; cursor:pointer; padding:4px; flex-shrink:0; }
-
-@media(min-width:600px){
-  body { max-width:480px; margin:0 auto; }
-  .modal { border-radius:var(--r-lg); margin-bottom:40px; }
-  .overlay { align-items:center; }
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
 }
 </style>
 </head>
-<body>
+<body data-page="dashboard">
 
 <div id="update-banner"></div>
 
-<div class="header">
-  <div class="header-paws"></div>
-  <div class="header-deco"></div>
-  <div class="header-inner">
-    <div class="header-avatar">🐾</div>
-    <div>
-      <div class="header-title">Bubu's Tracker</div>
-      <div class="header-sub">Trainer e compagna di vita: Tato</div>
-      <div style="font-size:11px;font-weight:700;color:rgba(245,237,216,0.6);margin-top:5px;letter-spacing:1px;font-family:monospace;" id="app-ver"></div>
-    </div>
-  </div>
-  <div class="header-badges" id="hbadges"></div>
-</div>
-
-<div class="nav-wrap">
+<nav class="nav" id="nav">
+  <div class="nav-brand"><span id="brand-ico"></span><span>Bubu's Tracker</span><span class="nav-ver" id="nav-ver"></span></div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('dashboard')"><span class="ti">🏡</span>Home</button>
-    <button class="nav-tab" onclick="showPage('piscina')"><span class="ti">🏊</span>Piscina</button>
-    <button class="nav-tab" onclick="showPage('tartufing')"><span class="ti">🍄</span>Tartufing</button>
-    <button class="nav-tab" onclick="showPage('guinzagli')"><span class="ti">🐕</span>Guinzagli</button>
-    <button class="nav-tab" onclick="showPage('salute')"><span class="ti">🏥</span>Salute<span class="nav-dot" id="nav-dot-salute"></span></button>
+    <button class="nav-tab active" data-page="dashboard" onclick="showPage('dashboard')"><span class="ti" data-ico="home"></span><span>Home</span></button>
+    <button class="nav-tab" data-page="piscina" onclick="showPage('piscina')"><span class="ti" data-ico="piscina"></span><span>Piscina</span></button>
+    <button class="nav-tab" data-page="tartufing" onclick="showPage('tartufing')"><span class="ti" data-ico="tartufing"></span><span>Tartufing</span></button>
+    <button class="nav-tab" data-page="guinzagli" onclick="showPage('guinzagli')"><span class="ti" data-ico="guinzagli"></span><span>Guinzagli</span></button>
+    <button class="nav-tab" data-page="salute" onclick="showPage('salute')"><span class="ti" data-ico="salute"></span><span>Salute</span><span class="nav-dot" id="nav-dot-salute"></span></button>
   </div>
-</div>
+</nav>
+
+<header class="hero" id="hero">
+  <img class="hero-photo" src="bubu.jpg" alt="Bubu in giardino" onerror="this.style.display='none'">
+  <div class="hero-paws"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Cani per Caso · Diario di addestramento</div>
+    <h1 class="hero-title">Bubu's Tracker</h1>
+    <p class="hero-sub">Trainer e compagna di vita: Tato</p>
+    <div class="hero-badges" id="hbadges"></div>
+    <div class="hero-stats" id="hero-stats"></div>
+    <span class="ver-pill" id="app-ver"></span>
+  </div>
+</header>
 
 <div id="page-dashboard" class="page active">
-  <div id="illness-banner-wrap"></div>
-  <div id="streak-wrap"></div>
-  <p class="sec-title">📋 Le attività di Bubu</p>
-  <div class="activity-cards" id="dash-cards"></div>
+  <div class="wrap">
+    <div id="banner-wrap"></div>
+    <h2 class="sec">Le attività di Bubu</h2>
+    <div class="cards" id="dash-cards"></div>
+    <h2 class="sec">Salute in breve</h2>
+    <div id="dash-health"></div>
+  </div>
 </div>
 
-<div id="page-piscina"   class="page"><div id="det-piscina"></div></div>
-<div id="page-tartufing" class="page"><div id="det-tartufing"></div></div>
-<div id="page-guinzagli" class="page"><div id="det-guinzagli"></div></div>
-
-<!-- PAGINA SALUTE -->
-<div id="page-salute" class="page">
-  <div id="salute-content"></div>
-</div>
+<div id="page-piscina"   class="page"><div class="wrap" id="det-piscina"></div></div>
+<div id="page-tartufing" class="page"><div class="wrap" id="det-tartufing"></div></div>
+<div id="page-guinzagli" class="page"><div class="wrap" id="det-guinzagli"></div></div>
+<div id="page-salute"    class="page"><div class="wrap" id="salute-content"></div></div>
 
 <!-- MODAL LEZIONE -->
 <div class="overlay" id="m-lezione">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">✏️ Registra lezione</div>
+    <div class="modal-title">Registra lezione</div>
     <div class="form-group">
       <label class="form-lbl">Data lezione</label>
       <input type="date" class="form-input" id="i-lez-data">
@@ -454,14 +488,14 @@ body {
       <input type="text" class="form-input" id="i-lez-note" placeholder="es. ottima sessione!">
     </div>
     <div class="form-group">
-      <label class="form-lbl">📸 Foto ricordo (opzionale)</label>
+      <label class="form-lbl">Foto ricordo (opzionale)</label>
       <div class="foto-area" onclick="document.getElementById('i-lez-foto').click()">Tocca per aggiungere una foto 📷</div>
       <input type="file" id="i-lez-foto" accept="image/*" style="display:none" onchange="previewFoto(this)">
-      <img id="i-lez-preview" class="foto-preview" src="" alt="preview">
+      <img id="i-lez-preview" class="foto-preview" src="" alt="anteprima">
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('m-lezione')">Annulla</button>
-      <button class="btn btn-soil" onclick="salvaLezione()">✓ Salva lezione</button>
+      <button class="btn btn-soil" onclick="salvaLezione()">Salva lezione</button>
     </div>
   </div>
 </div>
@@ -470,10 +504,10 @@ body {
 <div class="overlay" id="m-abbonamento">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">🎟️ Nuovo abbonamento</div>
+    <div class="modal-title">Nuovo abbonamento</div>
     <div class="form-group">
       <label class="form-lbl">N° lezioni nel pacchetto</label>
-      <input type="number" class="form-input" id="i-sub-tot" placeholder="es. 10" min="1">
+      <input type="number" class="form-input" id="i-sub-tot" placeholder="es. 10" min="1" inputmode="numeric">
     </div>
     <div class="form-group">
       <label class="form-lbl">Data inizio</label>
@@ -485,7 +519,7 @@ body {
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('m-abbonamento')">Annulla</button>
-      <button class="btn btn-moss" onclick="salvaAbbonamento()">✓ Attiva</button>
+      <button class="btn btn-moss" onclick="salvaAbbonamento()">Attiva</button>
     </div>
   </div>
 </div>
@@ -494,7 +528,7 @@ body {
 <div class="overlay" id="m-vaccino">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">💉 Aggiungi vaccinazione</div>
+    <div class="modal-title">Aggiungi vaccinazione</div>
     <div class="form-group">
       <label class="form-lbl">Tipo vaccino</label>
       <div class="vax-type-chips" id="vax-chips">
@@ -505,14 +539,14 @@ body {
         <div class="vax-chip" onclick="selVaxChip(this,'Antiparassitario')">Antiparassitario</div>
         <div class="vax-chip" onclick="selVaxChip(this,'Altro')">Altro</div>
       </div>
-      <input type="text" class="form-input" id="i-vax-tipo" placeholder="o scrivi qui il tipo..." style="margin-top:6px">
+      <input type="text" class="form-input" id="i-vax-tipo" placeholder="o scrivi qui il tipo...">
     </div>
     <div class="form-group">
       <label class="form-lbl">Data somministrazione</label>
       <input type="date" class="form-input" id="i-vax-data">
     </div>
     <div class="form-group">
-      <label class="form-lbl">Validità (mesi)</label>
+      <label class="form-lbl">Validità</label>
       <select class="form-input" id="i-vax-validita">
         <option value="1">1 mese (antiparassitario mensile)</option>
         <option value="3">3 mesi (antiparassitario trimestrale)</option>
@@ -528,7 +562,7 @@ body {
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('m-vaccino')">Annulla</button>
-      <button class="btn btn-soil" onclick="salvaVaccino()">✓ Salva</button>
+      <button class="btn btn-soil" onclick="salvaVaccino()">Salva</button>
     </div>
   </div>
 </div>
@@ -537,8 +571,8 @@ body {
 <div class="overlay" id="m-illness">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">🤒 Segnala indisposizione</div>
-    <div class="info-box">⚠️ Il banner apparirà sulla Home finché l'indisposizione è attiva.</div>
+    <div class="modal-title">Segnala indisposizione</div>
+    <div class="info-box">⚠️ Il banner resta sulla Home finché l'indisposizione è attiva.</div>
     <div class="form-group">
       <label class="form-lbl">Tipo problema</label>
       <div class="vax-type-chips" id="ill-chips">
@@ -549,7 +583,7 @@ body {
         <div class="vax-chip" onclick="selIllChip(this,'Ferita')">Ferita</div>
         <div class="vax-chip" onclick="selIllChip(this,'Altro')">Altro</div>
       </div>
-      <input type="text" class="form-input" id="i-ill-tipo" placeholder="o descrivi qui..." style="margin-top:6px">
+      <input type="text" class="form-input" id="i-ill-tipo" placeholder="o descrivi qui...">
     </div>
     <div class="form-group">
       <label class="form-lbl">Data inizio</label>
@@ -565,27 +599,48 @@ body {
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('m-illness')">Annulla</button>
-      <button class="btn btn-red" onclick="salvaIllness()">✓ Segnala</button>
+      <button class="btn btn-red" onclick="salvaIllness()">Segnala</button>
     </div>
   </div>
 </div>
 
 <script>
+const APP_VERSION = '3.0';
+const VERSION_URL = 'version.json';
+
 const ACT = {
-  piscina:   { label:'Piscina',          icon:'🏊', cls:'piscina',   color:'#3A7CA5' },
-  tartufing: { label:'Tartufing',        icon:'🍄', cls:'tartufing', color:'#7B5835' },
-  guinzagli: { label:'Guinzagli Sereni', icon:'🐕', cls:'guinzagli', color:'#4A6741' }
+  piscina:   { label:'Piscina' },
+  tartufing: { label:'Tartufing' },
+  guinzagli: { label:'Guinzagli Sereni' }
 };
 const SOGLIE = { giallo:2, rosso:0 };
 const MESI = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+// Tipi di profilassi che, se scaduti, NON bloccano l'accesso ai campi (non sono vaccini)
+const NO_BLOCK_TYPES = ['Antiparassitario'];
 
-const APP_VERSION = '2.2';
-const VERSION_URL = 'version.json';
+/* ===== ICONE (SVG inline) ===== */
+const S = (p,extra='') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" ${extra}>${p}</svg>`;
+const ICON = {
+  home:      S('<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'),
+  piscina:   S('<path d="M2 7.5c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M2 13c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M2 18.5c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/>'),
+  tartufing: S('<path d="M3.5 12.5a8.5 7.5 0 0 1 17 0z"/><path d="M9.5 12.5V17a2.5 2.5 0 0 0 5 0v-4.5"/><circle cx="8.5" cy="9.3" r=".7" fill="currentColor"/><circle cx="12.5" cy="7.5" r=".7" fill="currentColor"/><circle cx="15.5" cy="10" r=".7" fill="currentColor"/>'),
+  guinzagli: S('<ellipse cx="12" cy="16.4" rx="4.6" ry="3.7"/><circle cx="5.4" cy="11" r="1.9"/><circle cx="9.3" cy="6.3" r="1.9"/><circle cx="14.7" cy="6.3" r="1.9"/><circle cx="18.6" cy="11" r="1.9"/>'),
+  salute:    S('<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>'),
+  shield:    S('<path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.3 7.5 9.5 4.3-1.2 7.5-5 7.5-9.5V6z"/><path d="M12 8v5"/><circle cx="12" cy="16" r=".6" fill="currentColor"/>'),
+  cal:       S('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
+  plus:      S('<path d="M12 5v14M5 12h14"/>'),
+  ticket:    S('<path d="M3 9a2 2 0 0 0 0 6v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3a2 2 0 0 1 0-6V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1z"/><path d="M14 5v14" stroke-dasharray="2 3"/>'),
+  check:     S('<path d="m5 12.5 4.5 4.5L19 7.5"/>'),
+  arrow:     S('<path d="m9 6 6 6-6 6"/>'),
+  paw:       `<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="16.4" rx="4.8" ry="3.9"/><circle cx="5.2" cy="11" r="2"/><circle cx="9.2" cy="5.9" r="2"/><circle cx="14.8" cy="5.9" r="2"/><circle cx="18.8" cy="11" r="2"/></svg>`
+};
 
 let state = {}, health = {}, curAct = null, fotoB64 = null;
 let selVaxType = '', selIllType = '';
 
-// ===== UPDATE CHECK =====
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ===== CONTROLLO AGGIORNAMENTI ===== */
 function cmpVer(a,b){
   const pa=String(a).split('.').map(n=>parseInt(n,10)||0);
   const pb=String(b).split('.').map(n=>parseInt(n,10)||0);
@@ -618,9 +673,8 @@ function showUpdateBanner(v){
 }
 function dismissUpdate(){ document.getElementById('update-banner').innerHTML=''; }
 function applyUpdate(){ location.href=location.pathname+'?u='+Date.now(); }
-// ===== END UPDATE CHECK =====
 
-// ===== STATE =====
+/* ===== STATE ===== */
 function loadState(){
   try{ state=JSON.parse(localStorage.getItem('bubu-v2')||'{}'); }catch(e){ state={}; }
   for(const k of Object.keys(ACT)){
@@ -639,16 +693,16 @@ function fmtDate(s){
   return new Date(s+'T00:00:00').toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
 }
 
-// ===== ATTIVITA' =====
+/* ===== LOGICA ATTIVITÀ ===== */
 function activeSub(k){ const a=state[k].abbonamenti; return a.length?a[a.length-1]:null; }
 function lezSub(k,sid){ return state[k].lezioni.filter(l=>l.subId===sid); }
 function rimanenti(k){ const s=activeSub(k); if(!s) return null; return s.totale-lezSub(k,s.id).length; }
 function getStatus(r){ if(r===null)return'none'; if(r<=SOGLIE.rosso)return'red'; if(r<=SOGLIE.giallo)return'yellow'; return'green'; }
 function makeBadge(st,r){
   if(st==='none')   return`<span class="badge b-gray">Nessun abbonamento</span>`;
-  if(st==='red')    return`<span class="badge b-red">🔴 Da rinnovare</span>`;
-  if(st==='yellow') return`<span class="badge b-yellow">🟡 ${r} rimaste</span>`;
-  return`<span class="badge b-green">🟢 Attivo</span>`;
+  if(st==='red')    return`<span class="badge b-red">Da rinnovare</span>`;
+  if(st==='yellow') return`<span class="badge b-yellow">${r} rimast${r===1?'a':'e'}</span>`;
+  return`<span class="badge b-green">Attivo</span>`;
 }
 function stimaScadenza(k){
   const sub=activeSub(k); if(!sub) return null;
@@ -690,21 +744,21 @@ function freqMensile(k){
   return months;
 }
 
-// ===== HEALTH LOGIC =====
+/* ===== LOGICA SALUTE ===== */
 function vaxStatus(v){
   const somm=new Date(v.date+'T00:00:00');
   const scad=new Date(somm); scad.setMonth(scad.getMonth()+v.validityMonths);
   const now=new Date(); now.setHours(0,0,0,0);
   const diffDays=Math.round((scad-now)/86400000);
-  if(diffDays<0)   return { cls:'red',   label:'SCADUTO', days:diffDays, scad };
-  if(diffDays<=30) return { cls:'yellow', label:`Scade tra ${diffDays}g`, days:diffDays, scad };
-  return { cls:'green', label:`OK · scade tra ${diffDays}g`, days:diffDays, scad };
+  const total=scad-somm;
+  const pct=total>0?Math.min(100,Math.max(0,Math.round((now-somm)/total*100))):100;
+  const block=!NO_BLOCK_TYPES.includes(v.type);
+  if(diffDays<0)   return { cls:'red',    label:'Scaduto', msg:block?'Accesso ai campi non consentito':'Trattamento scaduto: da rinnovare', days:diffDays, scad, pct:100, block };
+  if(diffDays<=30) return { cls:'yellow', label:diffDays===0?'Scade oggi':`${diffDays} giorni`, msg:'Prenota il richiamo', days:diffDays, scad, pct, block };
+  return { cls:'green', label:'Valido', msg:`Copertura valida · mancano ${diffDays} giorni`, days:diffDays, scad, pct, block };
 }
-function activeIllness(){
-  return health.illnesses.find(i=>i.active);
-}
+function activeIllness(){ return health.illnesses.find(i=>i.active); }
 function healthAlerts(){
-  // restituisce {red:[], yellow:[]}
   const out={red:[],yellow:[]};
   health.vaccinations.forEach(v=>{
     const s=vaxStatus(v);
@@ -714,257 +768,278 @@ function healthAlerts(){
   if(activeIllness()) out.red.push('Bubu non sta bene');
   return out;
 }
-
-// ===== RENDER NAV DOT =====
 function updateNavDot(){
-  const alerts=healthAlerts();
-  const dot=document.getElementById('nav-dot-salute');
-  if(alerts.red.length||alerts.yellow.length) dot.classList.add('show');
-  else dot.classList.remove('show');
+  const a=healthAlerts();
+  document.getElementById('nav-dot-salute').classList.toggle('show', !!(a.red.length||a.yellow.length));
 }
 
-// ===== RENDER DASH =====
-function renderDash(){
-  // illness banner
+/* ===== COMPONENTI GRAFICI ===== */
+function ringSVG(k,pct,o={}){
+  const {id='x',light=false,sw=9}=o;
+  const C=2*Math.PI*44, off=C*(1-Math.min(1,Math.max(0,pct)));
+  const gid=`rg-${k}-${id}`;
+  const s0=light?'#FFFFFF':'var(--c)', s1=light?'#FFE2A0':'var(--c2)';
+  return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:${s0}"/><stop offset="1" style="stop-color:${s1}"/></linearGradient></defs>
+    <circle class="ring-bg" cx="50" cy="50" r="44" stroke-width="${sw}"/>
+    <circle class="ring-fg" cx="50" cy="50" r="44" stroke-width="${sw}" stroke="url(#${gid})" style="--off:${off.toFixed(2)}px"/></svg>`;
+}
+function armRings(){
+  setTimeout(()=>{
+    document.querySelectorAll('.ring').forEach(r=>r.classList.add('in'));
+    document.querySelectorAll('.vax-bar i').forEach(b=>{ b.style.width=b.dataset.w+'%'; });
+  },60);
+}
+function chartSVG(k,freq){
+  const W=320,H=150,pad=18,base=118,bw=32;
+  const maxF=Math.max(...freq.map(m=>m.count),1);
+  const gap=(W-2*pad-6*bw)/5;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Lezioni negli ultimi 6 mesi"><defs><linearGradient id="cg-${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c2)"/><stop offset="1" style="stop-color:var(--c)"/></linearGradient></defs>
+    <line x1="${pad-6}" x2="${W-pad+6}" y1="${base}" y2="${base}" stroke="var(--line)" stroke-width="1.5"/>`;
+  freq.forEach((m,i)=>{
+    const x=pad+i*(bw+gap), h=m.count?Math.max(12,Math.round(m.count/maxF*84)):4, y=base-h, now=i===5;
+    s+=`<rect class="bar" x="${x.toFixed(1)}" y="${y}" width="${bw}" height="${h}" rx="9" fill="url(#cg-${k})" opacity="${m.count?(now?1:.72):.28}" style="animation-delay:${(i*70)}ms"/>`;
+    if(m.count) s+=`<text class="cv" x="${(x+bw/2).toFixed(1)}" y="${y-7}" text-anchor="middle">${m.count}</text>`;
+    s+=`<text class="cl${now?' now':''}" x="${(x+bw/2).toFixed(1)}" y="${base+19}" text-anchor="middle">${m.label}</text>`;
+  });
+  return s+`</svg>`;
+}
+function alertBanner(icon,title,sub){
+  return `<div class="alert"><div class="ai">${icon}</div><div><b>${title}</b><span>${sub}</span></div></div>`;
+}
+
+/* ===== RENDER HOME ===== */
+function bannersHTML(){
+  let h='';
   const ill=activeIllness();
-  const ibw=document.getElementById('illness-banner-wrap');
   if(ill){
     const fine=ill.endDate?` · fine prevista: ${fmtDate(ill.endDate)}`:'';
-    ibw.innerHTML=`<div class="illness-banner">
-      <div class="illness-icon">🤒</div>
-      <div>
-        <div class="illness-title">Bubu non sta bene: ${ill.type}</div>
-        <div class="illness-sub">Dal ${fmtDate(ill.startDate)}${fine}${ill.note?' · '+ill.note:''}</div>
-      </div>
-    </div>`;
-  } else ibw.innerHTML='';
-
-  // header badges attività
+    h+=alertBanner(ICON.salute,`Bubu non sta bene: ${esc(ill.type)}`,`Dal ${fmtDate(ill.startDate)}${fine}${ill.note?' · '+esc(ill.note):''}`);
+  }
+  const blocked=health.vaccinations.filter(v=>{ const s=vaxStatus(v); return s.cls==='red'&&s.block; });
+  if(blocked.length){
+    const names=[...new Set(blocked.map(v=>esc(v.type)))].join(', ');
+    h+=alertBanner(ICON.shield,'Copertura vaccinale scaduta',`${names} · Accesso ai campi non consentito`);
+  }
+  return h;
+}
+function renderHero(){
   let hb='';
   for(const [k,cfg] of Object.entries(ACT)){
     const r=rimanenti(k), st=getStatus(r);
-    if(st==='red')    hb+=`<span class="hbadge al">🔴 ${cfg.label}: rinnova!</span>`;
-    else if(st==='yellow') hb+=`<span class="hbadge wa">🟡 ${cfg.label}: ${r} rimaste</span>`;
+    if(st==='red')    hb+=`<span class="hbadge al">${cfg.label}: rinnova!</span>`;
+    else if(st==='yellow') hb+=`<span class="hbadge wa">${cfg.label}: ${r} rimast${r===1?'a':'e'}</span>`;
   }
-  // header badges salute
-  const alerts=healthAlerts();
-  alerts.red.filter(a=>a!=='Bubu non sta bene').forEach(a=>{ hb+=`<span class="hbadge health-red">💉 ${a}</span>`; });
-  alerts.yellow.forEach(a=>{ hb+=`<span class="hbadge health-yellow">💉 ${a}</span>`; });
+  const al=healthAlerts();
+  al.red.filter(a=>a!=='Bubu non sta bene').forEach(a=>{ hb+=`<span class="hbadge al">💉 ${esc(a)}</span>`; });
+  al.yellow.forEach(a=>{ hb+=`<span class="hbadge wa">💉 ${esc(a)}</span>`; });
   document.getElementById('hbadges').innerHTML=hb;
 
-  // streak
-  const s=calcStreak();
-  const sw=document.getElementById('streak-wrap');
-  sw.innerHTML=s>0?`<div class="streak-banner">
-    <div class="streak-fire">${s>=4?'🔥':'⭐'}</div>
-    <div><div class="streak-num">${s} settiman${s===1?'a':'e'}</div>
-    <div class="streak-label">consecutive con almeno 1 lezione · ${s>=4?'Che costanza! 💪':s>=2?'Ottimo ritmo!':'Inizia bene!'}</div></div>
-  </div>`:'';
-
-  // cards
-  const dc=document.getElementById('dash-cards'); dc.innerHTML='';
-  for(const [k,cfg] of Object.entries(ACT)){
-    const sub=activeSub(k), r=rimanenti(k), st=getStatus(r);
-    const lez=sub?lezSub(k,sub.id):[], usate=lez.length, totale=sub?sub.totale:0;
-    const perc=totale>0?Math.min(100,Math.round(usate/totale*100)):0;
-    const last=lez.length>0?[...lez].sort((a,b)=>b.data.localeCompare(a.data))[0].data:null;
-    const stima=stimaScadenza(k);
-    let h=`<div class="a-card" onclick="showPage('${k}')"><div class="a-card-top">
-      <div class="a-row1">
-        <div class="a-title-wrap"><div class="a-icon ${k}">${cfg.icon}</div><span class="a-name ${k}">${cfg.label}</span></div>
-        ${makeBadge(st,r)}
+  const tot=Object.keys(ACT).reduce((n,k)=>n+state[k].lezioni.length,0);
+  const streak=calcStreak();
+  let hcls='', htxt='';
+  if(activeIllness()){ hcls='bad'; htxt='Non sta bene'; }
+  else if(al.red.length){ hcls='bad'; htxt='Scadenza vaccino'; }
+  else if(al.yellow.length){ hcls='warn'; htxt='In scadenza'; }
+  else if(!health.vaccinations.length){ hcls=''; htxt='Da compilare'; }
+  else { hcls='ok'; htxt='Tutto in regola'; }
+  // Secondo riquadro: serie di settimane se > 0, altrimenti giorni dall'ultima lezione registrata
+  let lastD=null;
+  for(const k of Object.keys(ACT)) state[k].lezioni.forEach(l=>{ if(!lastD||l.data>lastD) lastD=l.data; });
+  let t2;
+  if(streak>0) t2=`<div class="hstat"><b>${streak}</b><span>Settimane di fila</span></div>`;
+  else if(lastD){
+    const t0=new Date(); t0.setHours(0,0,0,0);
+    const dd=Math.max(0,Math.round((t0-new Date(lastD+'T00:00:00'))/86400000));
+    t2=`<div class="hstat"><b>${dd}</b><span>${dd===1?'Giorno':'Giorni'} dall'ultima lezione</span></div>`;
+  } else t2=`<div class="hstat"><b>—</b><span>Nessuna lezione</span></div>`;
+  document.getElementById('hero-stats').innerHTML=`
+    <div class="hstat"><b>${tot}</b><span>Lezioni totali</span></div>
+    ${t2}
+    <div class="hstat txt"><b><i class="dot ${hcls}"></i>${htxt}</b><span>Salute</span></div>`;
+}
+function cardHTML(k){
+  const cfg=ACT[k], sub=activeSub(k), r=rimanenti(k), st=getStatus(r);
+  const lez=sub?lezSub(k,sub.id):[], usate=lez.length, totale=sub?sub.totale:0;
+  const frac=totale>0?usate/totale:0;
+  const last=lez.length?[...lez].sort((a,b)=>b.data.localeCompare(a.data))[0].data:null;
+  const stima=stimaScadenza(k);
+  let body;
+  if(sub){
+    body=`<div class="ring" style="--sz:116px">${ringSVG(k,frac,{id:'card'})}<div class="ring-c"><b>${r}</b><span>rimaste</span></div></div>
+      <div class="ac-side">
+        <div class="kv"><span>Fatte</span><b>${usate}</b></div>
+        <div class="kv"><span>Pacchetto</span><b>${totale}</b></div>
+        ${stima?`<div class="stima-tag">Esaurimento stimato <b>${stima.data.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})}</b> · 1 ogni ~${stima.freqDays}g</div>`:''}
       </div>`;
-    if(sub){
-      h+=`<div class="a-nums">
-        <div class="a-num"><div class="a-num-val ${k}">${r}</div><div class="a-num-lbl">Rimaste</div></div>
-        <div class="a-num"><div class="a-num-val ${k}">${usate}</div><div class="a-num-lbl">Fatte</div></div>
-        <div class="a-num"><div class="a-num-val ${k}">${totale}</div><div class="a-num-lbl">Pacchetto</div></div>
-      </div>
-      <div class="prog-track"><div class="prog-fill ${k}" style="width:${perc}%"></div></div>
-      ${stima?`<div class="stima-tag">📅 Stima esaurimento: ${stima.data.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})} · ogni ~${stima.freqDays}g</div>`:''}`;
-    } else {
-      h+=`<div style="font-size:13px;color:#C4B49A;font-weight:700;padding:8px 0">Nessun abbonamento — tocca per aggiungerne uno →</div>`;
-    }
-    h+=`</div><div class="a-card-foot">
-      <span class="a-card-meta">${last?'📅 Ultima: '+fmtDate(last):'📅 Nessuna lezione ancora'}</span>
-      <span class="a-arrow">›</span>
-    </div></div>`;
-    dc.innerHTML+=h;
+  } else {
+    body=`<div class="ring" style="--sz:116px">${ringSVG(k,0,{id:'card'})}<div class="ring-c"><b>—</b><span>nessuno</span></div></div>
+      <div class="ac-side"><div class="ac-empty">Nessun abbonamento attivo. Tocca per aggiungerne uno.</div></div>`;
   }
-  updateNavDot();
+  return `<article class="a-card ${k}" onclick="showPage('${k}')">
+    <div class="glow"></div>
+    <div class="ac-head"><span class="ac-ico">${ICON[k]}</span><span class="ac-name">${cfg.label}</span>${makeBadge(st,r)}</div>
+    <div class="ac-body">${body}</div>
+    <div class="ac-foot"><span>${last?'Ultima lezione: '+fmtDate(last):'Nessuna lezione ancora'}</span>${ICON.arrow}</div>
+  </article>`;
+}
+function healthSummaryHTML(){
+  const rows=[];
+  const ill=activeIllness();
+  if(ill) rows.push(`<div class="hs-row"><span class="sdot red"></span><div class="t"><b>${esc(ill.type)}</b><span>In corso dal ${fmtDate(ill.startDate)}</span></div><span class="badge b-red">Indisposto</span></div>`);
+  [...health.vaccinations].sort((a,b)=>vaxStatus(a).days-vaxStatus(b).days).forEach(v=>{
+    const s=vaxStatus(v);
+    rows.push(`<div class="hs-row"><span class="sdot ${s.cls}"></span><div class="t"><b>${esc(v.type)}</b><span>${s.msg} · scade ${s.scad.toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'})}</span></div><span class="badge b-${s.cls==='green'?'green':s.cls==='yellow'?'yellow':'red'}">${s.label}</span></div>`);
+  });
+  if(!rows.length) return `<div class="hs" onclick="showPage('salute')"><div class="hs-empty">Nessuna vaccinazione registrata.<br>Tocca per aprire la sezione Salute e aggiungerle.</div></div>`;
+  return `<div class="hs" onclick="showPage('salute')"><div class="hs-grid">${rows.join('')}</div></div>`;
+}
+function renderDash(){
+  document.getElementById('banner-wrap').innerHTML=bannersHTML();
+  renderHero();
+  document.getElementById('dash-cards').innerHTML=Object.keys(ACT).map(cardHTML).join('');
+  document.getElementById('dash-health').innerHTML=healthSummaryHTML();
+  updateNavDot(); armRings();
 }
 
-// ===== RENDER SALUTE =====
-function renderSalute(){
-  let h='';
-
-  // --- VACCINI ---
-  h+=`<div class="health-section">
-    <div class="sec-title">💉 Vaccinazioni & Profilassi</div>`;
-
-  const vaxList=health.vaccinations;
-  if(vaxList.length===0){
-    h+=`<div class="empty-list">Nessuna vaccinazione registrata</div>`;
-  } else {
-    h+=`<div class="vax-list">`;
-    [...vaxList].reverse().forEach((v,i)=>{
-      const s=vaxStatus(v);
-      const realIdx=vaxList.length-1-i;
-      const scadStr=s.scad.toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
-      h+=`<div class="vax-item">
-        <div class="vax-semaforo ${s.cls}"></div>
-        <div class="vax-body">
-          <div class="vax-name">${v.type}</div>
-          <div class="vax-dates">Somministrato: ${fmtDate(v.date)} · Scadenza: ${scadStr}</div>
-          <div class="vax-status ${s.cls}">${s.cls==='red'?'🔴':s.cls==='yellow'?'🟡':'🟢'} ${s.label}</div>
-          ${v.note?`<div class="vax-dates" style="margin-top:2px;font-style:italic">${v.note}</div>`:''}
-        </div>
-        <button class="btn-del-vax" onclick="delVax(${realIdx})">✕</button>
-      </div>`;
-    });
-    h+=`</div>`;
-  }
-  h+=`<div style="margin-top:14px">
-    <button class="btn btn-soil" onclick="openVaccino()">💉 Aggiungi vaccinazione</button>
-  </div></div>`;
-
-  // --- INDISPOSIZIONI ---
-  h+=`<div class="health-section">
-    <div class="sec-title">🤒 Indisposizioni & Malanni</div>`;
-
-  const illList=health.illnesses;
-  if(illList.length===0){
-    h+=`<div class="empty-list">Nessuna indisposizione registrata</div>`;
-  } else {
-    h+=`<div class="ill-list">`;
-    [...illList].reverse().forEach((ill,i)=>{
-      const realIdx=illList.length-1-i;
-      const fine=ill.endDate?` → ${fmtDate(ill.endDate)}`:'';
-      h+=`<div class="ill-item ${ill.active?'active-ill':'past-ill'}">
-        <div class="ill-icon">${ill.active?'🤒':'✅'}</div>
-        <div class="ill-body">
-          <div class="ill-name">${ill.type}${ill.active?'<span class="ill-badge-active">In corso</span>':''}</div>
-          <div class="ill-dates">${fmtDate(ill.startDate)}${fine}</div>
-          ${ill.note?`<div class="ill-note">${ill.note}</div>`:''}
-        </div>
-        ${ill.active
-          ?`<button class="btn-close-ill" onclick="closeIllness(${realIdx})">✓ Guarito</button>`
-          :`<button class="btn-del-vax" onclick="delIllness(${realIdx})">✕</button>`
-        }
-      </div>`;
-    });
-    h+=`</div>`;
-  }
-  h+=`<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-    <button class="btn btn-red" onclick="openIllness()">🤒 Segnala indisposizione</button>
-  </div></div>`;
-
-  document.getElementById('salute-content').innerHTML=h;
-  updateNavDot();
-}
-
-// ===== RENDER DETAIL =====
+/* ===== RENDER DETTAGLIO ATTIVITÀ ===== */
 function renderDetail(k){
   const cfg=ACT[k], sub=activeSub(k), r=rimanenti(k), st=getStatus(r);
   const lez=sub?lezSub(k,sub.id).sort((a,b)=>b.data.localeCompare(a.data)):[];
   const usate=lez.length, totale=sub?sub.totale:0;
-  const perc=totale>0?Math.min(100,Math.round(usate/totale*100)):0;
-  const stima=stimaScadenza(k);
-  const freq=freqMensile(k), maxF=Math.max(...freq.map(m=>m.count),1);
-  let h='';
-
-  h+=`<div class="det-hero ${k}">
-    <div class="det-hero-title">${cfg.icon} ${cfg.label}</div>
-    <div class="det-hero-sub">${sub?`Dal ${fmtDate(sub.dataInizio)}`:'Nessun abbonamento'} · ${makeBadge(st,r)}</div>`;
-  if(sub){
-    h+=`<div class="det-stats">
-      <div class="d-stat"><div class="d-stat-val">${r}</div><div class="d-stat-lbl">Rimaste</div></div>
-      <div class="d-stat"><div class="d-stat-val">${usate}</div><div class="d-stat-lbl">Fatte</div></div>
-      <div class="d-stat"><div class="d-stat-val">${totale}</div><div class="d-stat-lbl">Pacchetto</div></div>
+  const frac=totale>0?Math.min(1,usate/totale):0;
+  const stima=stimaScadenza(k), freq=freqMensile(k);
+  let h=`<section class="det-hero ${k}">
+    <div class="dh-main">
+      <div class="dh-title"><span class="dh-ico">${ICON[k]}</span><h1>${cfg.label}</h1></div>
+      <div class="dh-sub">${sub?`Abbonamento dal ${fmtDate(sub.dataInizio)}`:'Nessun abbonamento'} ${makeBadge(st,r)}</div>
+      <div class="dh-actions">
+        ${sub&&r>0?`<button class="btn btn-light" onclick="openLez('${k}')">${ICON.plus} Registra lezione</button>`:''}
+        <button class="btn btn-glass" onclick="openSub('${k}')">${ICON.ticket} ${sub?'Rinnova':'Nuovo'} abbonamento</button>
+      </div>
     </div>
-    <div class="det-prog">
-      <div class="det-prog-bar"><div class="det-prog-fill" style="width:${perc}%"></div></div>
-      <div class="det-prog-lbls"><span class="det-prog-lbl">${perc}% utilizzato</span><span class="det-prog-lbl">${r} rimaste</span></div>
-    </div>`;
-  }
-  h+=`</div>`;
+    <div class="dh-gauge light">
+      <div class="ring" style="--sz:132px">${ringSVG(k,frac,{id:'det',light:true,sw:10})}<div class="ring-c"><b>${sub?r:'—'}</b><span>rimaste</span></div></div>
+      <div class="dh-stats">
+        <div class="dh-stat"><span>Fatte</span><b>${usate}</b></div>
+        <div class="dh-stat"><span>Pacchetto</span><b>${totale}</b></div>
+        <div class="dh-stat"><span>Utilizzato</span><b>${Math.round(frac*100)}%</b></div>
+      </div>
+    </div>
+  </section>
+  <div class="det-grid"><div class="col">`;
 
-  h+=`<div class="actions-row">`;
-  if(sub&&r>0) h+=`<button class="btn btn-${k}" onclick="openLez('${k}')">✏️ Registra lezione</button>`;
-  h+=`<button class="btn btn-sand" onclick="openSub('${k}')">🎟️ ${sub?'Rinnova':'Nuovo'} abbonamento</button>`;
-  h+=`</div>`;
-
-  if(stima) h+=`<div class="stima-block">
-    <div class="stima-icon">🗓️</div>
+  if(stima) h+=`<div class="block stima-block"><div class="stima-ic">${ICON.cal}</div>
     <div><div class="stima-title">Stima esaurimento lezioni</div>
     <div class="stima-val">${stima.data.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'})}</div>
-    <div class="stima-sub">1 lezione ogni ~${stima.freqDays} giorni in media</div></div>
-  </div>`;
+    <div class="stima-sub">1 lezione ogni ~${stima.freqDays} giorni in media</div></div></div>`;
 
-  h+=`<div class="chart-block">
-    <div class="sec-title" style="font-size:15px;margin-bottom:0">📊 Frequenza ultimi 6 mesi</div>
-    <div class="chart-bars">`;
-  freq.forEach(m=>{
-    const hh=maxF>0?Math.round((m.count/maxF)*56):0;
-    h+=`<div class="chart-bar-wrap">
-      <div class="chart-bar-val">${m.count||''}</div>
-      <div class="chart-bar" style="height:${Math.max(hh,m.count?4:2)}px;background:${cfg.color};opacity:${m.count?0.85:0.15}"></div>
-      <div class="chart-bar-lbl">${m.label}</div>
-    </div>`;
-  });
-  h+=`</div></div>`;
-
-  h+=`<div class="lezioni-block">
-    <div class="sec-title" style="font-size:15px;margin-bottom:0">📋 Lezioni questo abbonamento</div>`;
+  h+=`<div class="block"><h3>Frequenza ultimi 6 mesi</h3><div class="chart">${chartSVG(k,freq)}</div></div>
+  </div><div class="col">
+  <div class="block"><h3>Lezioni di questo abbonamento</h3>`;
   if(!sub||lez.length===0){
     h+=`<div class="empty-list">${sub?'Nessuna lezione ancora':'Attiva un abbonamento per iniziare'}</div>`;
   } else {
     h+=`<div class="lezioni-list">`;
     lez.forEach((l,i)=>{
-      const num=usate-i;
       h+=`<div class="lezione-item">
-        <div class="lezione-thumb">${l.foto?`<img src="${l.foto}" alt="foto">`:'🐾'}</div>
+        <div class="lezione-thumb">${l.foto?`<img src="${l.foto}" alt="foto">`:ICON.guinzagli}</div>
         <div class="lezione-body">
-          <div class="lezione-num" style="color:${cfg.color}">#${num} · <span class="lezione-date">${fmtDate(l.data)}</span></div>
-          ${l.note?`<div class="lezione-note">${l.note}</div>`:''}
+          <div class="lezione-num">#${usate-i}<small>${fmtDate(l.data)}</small></div>
+          ${l.note?`<div class="lezione-note">${esc(l.note)}</div>`:''}
         </div>
-        <button class="btn-del" onclick="delLez('${k}','${l.id}')">✕</button>
+        <button class="x-btn" aria-label="Elimina lezione" onclick="delLez('${k}','${l.id}')">✕</button>
       </div>`;
     });
     h+=`</div>`;
   }
   h+=`</div>`;
-
   const storico=[...state[k].abbonamenti].reverse();
   if(storico.length){
-    h+=`<div class="storico-block"><div class="sec-title" style="font-size:15px;margin-bottom:0">📁 Storico abbonamenti</div>`;
+    h+=`<div class="block"><h3>Storico abbonamenti</h3>`;
     storico.forEach((s,i)=>{
       const ls=lezSub(k,s.id);
       h+=`<div class="storico-item ${i===0?'cur':''}">
-        <div class="storico-dates">Dal ${fmtDate(s.dataInizio)}${s.note?' · '+s.note:''} ${i===0?'· <strong>Attivo</strong>':''}</div>
+        <div class="storico-dates">Dal ${fmtDate(s.dataInizio)}${s.note?' · '+esc(s.note):''}${i===0?' · <strong>Attivo</strong>':''}</div>
         <div class="storico-info">${ls.length} / ${s.totale} lezioni effettuate</div>
       </div>`;
     });
     h+=`</div>`;
   }
-
-  document.getElementById('det-'+k).innerHTML=h;
+  h+=`</div></div>`;
+  const el=document.getElementById('det-'+k);
+  el.className='wrap '+k;
+  el.innerHTML=h;
+  armRings();
 }
 
-// ===== SHOW PAGE =====
+/* ===== RENDER SALUTE ===== */
+function renderSalute(){
+  let h=`<div class="page-head"><h1>Salute di Bubu</h1>
+    <p>Vaccinazioni e profilassi con scadenze, e indisposizioni temporanee. Senza copertura vaccinale valida l'accesso ai campi non è consentito.</p></div>
+  <div class="health-grid"><div class="block"><div class="blk-head"><h3>Vaccinazioni e profilassi</h3>
+    <button class="btn btn-soil" onclick="openVaccino()">${ICON.plus} Aggiungi</button></div>`;
+  const vl=health.vaccinations;
+  if(!vl.length) h+=`<div class="empty-list">Nessuna vaccinazione registrata</div>`;
+  else {
+    h+=`<div class="vax-list">`;
+    [...vl].map((v,i)=>({v,i})).sort((a,b)=>vaxStatus(a.v).days-vaxStatus(b.v).days).forEach(({v,i})=>{
+      const s=vaxStatus(v);
+      const scadStr=s.scad.toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
+      h+=`<div class="vax-item ${s.cls}">
+        <span class="sdot ${s.cls}"></span>
+        <div class="vax-body">
+          <div class="vax-top"><span class="vax-name">${esc(v.type)}</span><span class="badge b-${s.cls==='green'?'green':s.cls==='yellow'?'yellow':'red'}">${s.label}</span></div>
+          <div class="vax-meta">Somministrato ${fmtDate(v.date)} · scade ${scadStr}</div>
+          <div class="vax-bar"><i data-w="${s.pct}"></i></div>
+          <div class="vax-msg">${s.msg}</div>
+          ${v.note?`<div class="vax-note">${esc(v.note)}</div>`:''}
+        </div>
+        <button class="x-btn" aria-label="Elimina vaccinazione" onclick="delVax(${i})">✕</button>
+      </div>`;
+    });
+    h+=`</div>`;
+  }
+  h+=`</div><div class="block"><div class="blk-head"><h3>Indisposizioni e malanni</h3>
+    <button class="btn btn-red" onclick="openIllness()">${ICON.plus} Segnala</button></div>`;
+  const il=health.illnesses;
+  if(!il.length) h+=`<div class="empty-list">Nessuna indisposizione registrata</div>`;
+  else {
+    h+=`<div class="ill-list">`;
+    [...il].map((x,i)=>({x,i})).reverse().forEach(({x:ill,i})=>{
+      const fine=ill.endDate?` → ${fmtDate(ill.endDate)}`:'';
+      h+=`<div class="ill-item ${ill.active?'active-ill':'past-ill'}">
+        <div class="ill-ic">${ill.active?ICON.salute:ICON.check}</div>
+        <div class="ill-body">
+          <div class="ill-name">${esc(ill.type)} ${ill.active?'<span class="badge b-red">In corso</span>':''}</div>
+          <div class="ill-dates">${fmtDate(ill.startDate)}${fine}</div>
+          ${ill.note?`<div class="ill-note">${esc(ill.note)}</div>`:''}
+        </div>
+        ${ill.active?`<button class="btn btn-sand" onclick="closeIllness(${i})">${ICON.check} Guarito</button>`
+                    :`<button class="x-btn" aria-label="Elimina record" onclick="delIllness(${i})">✕</button>`}
+      </div>`;
+    });
+    h+=`</div>`;
+  }
+  h+=`</div></div>`;
+  document.getElementById('salute-content').innerHTML=h;
+  updateNavDot(); armRings();
+}
+
+/* ===== NAVIGAZIONE ===== */
+const PAGES=['dashboard','piscina','tartufing','guinzagli','salute'];
 function showPage(page){
+  const changed=document.body.dataset.page!==page;
+  document.body.dataset.page=page;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.page===page));
   document.getElementById('page-'+page).classList.add('active');
-  ['dashboard','piscina','tartufing','guinzagli','salute'].forEach((p,i)=>{
-    if(p===page) document.querySelectorAll('.nav-tab')[i].classList.add('active');
-  });
   if(page==='dashboard') renderDash();
   else if(page==='salute') renderSalute();
   else { curAct=page; renderDetail(page); }
+  if(changed) window.scrollTo({top:0});
 }
 
-// ===== LEZIONI =====
+/* ===== LEZIONI / ABBONAMENTI ===== */
 function openLez(k){
   curAct=k; fotoB64=null;
   document.getElementById('i-lez-data').value=today();
@@ -1010,7 +1085,7 @@ function delLez(k,id){
   save(); renderDetail(k);
 }
 
-// ===== VACCINI =====
+/* ===== VACCINI ===== */
 function selVaxChip(el,val){
   document.querySelectorAll('#vax-chips .vax-chip').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel'); selVaxType=val;
@@ -1033,15 +1108,15 @@ function salvaVaccino(){
   if(!type){ alert('Specifica il tipo di vaccino'); return; }
   if(!date){ alert('Inserisci la data di somministrazione'); return; }
   health.vaccinations.push({ id:genId(), type, date, validityMonths, note });
-  saveHealth(); closeModal('m-vaccino'); renderSalute(); renderDash();
+  saveHealth(); closeModal('m-vaccino'); renderSalute();
 }
 function delVax(idx){
   if(!confirm('Eliminare questa vaccinazione?')) return;
   health.vaccinations.splice(idx,1);
-  saveHealth(); renderSalute(); renderDash();
+  saveHealth(); renderSalute();
 }
 
-// ===== INDISPOSIZIONI =====
+/* ===== INDISPOSIZIONI ===== */
 function selIllChip(el,val){
   document.querySelectorAll('#ill-chips .vax-chip').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel'); selIllType=val;
@@ -1063,29 +1138,32 @@ function salvaIllness(){
   const note=document.getElementById('i-ill-note').value.trim();
   if(!type){ alert('Descrivi l\'indisposizione'); return; }
   if(!startDate){ alert('Inserisci la data di inizio'); return; }
-  // disattiva eventuali indisposizioni attive precedenti
   health.illnesses.forEach(i=>{ i.active=false; });
   health.illnesses.push({ id:genId(), type, startDate, endDate, note, active:true });
-  saveHealth(); closeModal('m-illness'); renderSalute(); renderDash();
+  saveHealth(); closeModal('m-illness'); renderSalute();
 }
 function closeIllness(idx){
   health.illnesses[idx].active=false;
   health.illnesses[idx].endDate=today();
-  saveHealth(); renderSalute(); renderDash();
+  saveHealth(); renderSalute();
 }
 function delIllness(idx){
   if(!confirm('Eliminare questo record?')) return;
   health.illnesses.splice(idx,1);
-  saveHealth(); renderSalute(); renderDash();
+  saveHealth(); renderSalute();
 }
 
-// ===== MODALS =====
+/* ===== MODALI ===== */
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.overlay').forEach(el=>{
   el.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
 });
 
+/* ===== AVVIO ===== */
+document.querySelectorAll('[data-ico]').forEach(el=>{ el.innerHTML=ICON[el.dataset.ico]||''; });
+document.getElementById('brand-ico').innerHTML=ICON.paw;
 document.getElementById('app-ver').textContent='v'+APP_VERSION;
+document.getElementById('nav-ver').textContent='v'+APP_VERSION;
 loadState(); renderDash();
 checkUpdate();
 </script>
