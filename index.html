@@ -99,6 +99,8 @@ svg{display:block}
 body:not([data-page="dashboard"]) .hero{display:none}
 .hero{
   position:relative;overflow:hidden;isolation:isolate;color:var(--cream);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:min(calc(100vh - 96px),860px);min-height:min(calc(100svh - 96px - env(safe-area-inset-bottom)),860px);
   border-radius:0 0 36px 36px;
   background:
     radial-gradient(700px 360px at 88% 0%, rgba(217,164,65,.30), transparent 62%),
@@ -109,14 +111,15 @@ body:not([data-page="dashboard"]) .hero{display:none}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='white'%3E%3Cellipse cx='36' cy='46' rx='11' ry='9'/%3E%3Ccircle cx='22' cy='31' r='5.5'/%3E%3Ccircle cx='50' cy='31' r='5.5'/%3E%3Ccircle cx='28' cy='20' r='4.5'/%3E%3Ccircle cx='44' cy='20' r='4.5'/%3E%3C/g%3E%3C/svg%3E");
   background-size:72px 72px}
 .hero-photo{
-  position:absolute;z-index:-2;top:0;left:0;width:100%;height:350px;
+  position:absolute;z-index:-2;top:0;left:0;width:100%;height:max(350px,62vh);height:max(350px,62svh);
+  transform:translate3d(0,var(--py,0px),0) scale(var(--ps,1));will-change:transform;
   object-fit:cover;object-position:50% 30%;
   -webkit-mask-image:linear-gradient(to bottom,#000 52%,transparent 100%);
   mask-image:linear-gradient(to bottom,#000 52%,transparent 100%);
-  animation:photoIn 1.1s cubic-bezier(.2,.8,.2,1) both;
+  animation:photoIn 1.1s cubic-bezier(.2,.8,.2,1) backwards;
 }
 @keyframes photoIn{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
-.hero-inner{position:relative;padding:calc(266px + env(safe-area-inset-top)) 20px 28px}
+.hero-inner{position:relative;padding:calc(120px + env(safe-area-inset-top)) 20px 56px}
 .eyebrow{font:800 11px var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
 .hero-title{font:900 clamp(40px,11vw,72px)/.95 var(--f-display);letter-spacing:-.025em;margin-top:8px;
   text-shadow:0 2px 26px rgba(0,0,0,.4)}
@@ -140,6 +143,49 @@ body:not([data-page="dashboard"]) .hero{display:none}
 .hstat .dot.bad{background:#F2796A;box-shadow:0 0 0 3px rgba(242,121,106,.28)}
 .ver-pill{display:inline-block;margin-top:16px;font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.12em;
   color:rgba(246,238,219,.72);border:1px solid rgba(246,238,219,.25);border-radius:999px;padding:3px 11px}
+
+
+/* =========================================================
+   v3.3 — SCENOGRAFIA: temi per attività, ingresso, reveal
+   ========================================================= */
+.piscina{--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='28'%3E%3Cpath d='M0 14Q10 2 20 14T40 14T60 14T80 14' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");--pw:80px;--ph:28px}
+.tartufing{--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='black'%3E%3Cpath d='M16 72C12 50 26 34 48 30c3 22-9 38-32 42z'/%3E%3Ccircle cx='72' cy='22' r='8'/%3E%3Ccircle cx='86' cy='36' r='4.5'/%3E%3Ccircle cx='66' cy='40' r='3.2'/%3E%3Ccircle cx='80' cy='80' r='6'/%3E%3C/g%3E%3C/svg%3E");--pw:96px;--ph:96px}
+.guinzagli{--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='40'%3E%3Cg fill='none' stroke='black' stroke-width='3'%3E%3Crect x='3' y='8' width='41' height='24' rx='12'/%3E%3Crect x='33' y='8' width='41' height='24' rx='12'/%3E%3C/g%3E%3C/svg%3E");--pw:76px;--ph:40px}
+.a-card::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.07;background:var(--c);
+  -webkit-mask-image:var(--pat);mask-image:var(--pat);-webkit-mask-size:var(--pw) var(--ph);mask-size:var(--pw) var(--ph);
+  -webkit-mask-repeat:repeat;mask-repeat:repeat}
+.ac-head,.ac-body{z-index:1}
+
+/* ingresso hero a cascata */
+.hero-inner>*{animation:rise .75s cubic-bezier(.2,.8,.2,1) both}
+.hero-inner>*:nth-child(1){animation-delay:.12s}
+.hero-inner>*:nth-child(2){animation-delay:.2s}
+.hero-inner>*:nth-child(3){animation-delay:.28s}
+.hero-inner>*:nth-child(4){animation-delay:.34s}
+.hero-inner>*:nth-child(5){animation-delay:.4s}
+.hero-inner>*:nth-child(6){animation-delay:.5s}
+.hstat{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+.hstat:nth-child(1){animation-delay:.45s}
+.hstat:nth-child(2){animation-delay:.55s}
+.hstat:nth-child(3){animation-delay:.65s}
+
+/* invito a scorrere (solo telefono/tablet) */
+.hero-cue{position:absolute;left:50%;bottom:14px;width:34px;height:34px;padding:0;border-radius:50%;cursor:pointer;
+  border:1px solid rgba(246,238,219,.32);background:rgba(246,238,219,.10);color:var(--cream);display:grid;place-items:center;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  transform:translateX(-50%);animation:bob 2.2s ease-in-out infinite}
+.hero-cue svg{width:17px;height:17px}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
+
+/* comparsa allo scroll */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv.vis{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  .det-hero::before,.hero-cue{animation:none !important}
+  .hero-photo{will-change:auto}
+  .rv{opacity:1;transform:none;transition:none}
+}
 
 /* =========================================================
    PAGINE / LAYOUT
@@ -229,8 +275,11 @@ body[data-page="dashboard"] .wrap{padding-top:0}
 .det-hero{position:relative;overflow:hidden;isolation:isolate;color:#fff;border-radius:var(--r-lg);padding:22px 20px 22px;
   background:linear-gradient(150deg,var(--c-deep),var(--c));box-shadow:var(--shadow-lg);
   display:grid;gap:20px}
-.det-hero::before{content:'';position:absolute;inset:0;z-index:-1;opacity:.07;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='white'%3E%3Cellipse cx='36' cy='46' rx='11' ry='9'/%3E%3Ccircle cx='22' cy='31' r='5.5'/%3E%3Ccircle cx='50' cy='31' r='5.5'/%3E%3Ccircle cx='28' cy='20' r='4.5'/%3E%3Ccircle cx='44' cy='20' r='4.5'/%3E%3C/g%3E%3C/svg%3E");background-size:72px 72px}
+.det-hero::before{content:'';position:absolute;inset:0;z-index:-1;opacity:.085;background:#fff;
+  -webkit-mask-image:var(--pat);mask-image:var(--pat);-webkit-mask-size:var(--pw) var(--ph);mask-size:var(--pw) var(--ph);
+  -webkit-mask-repeat:repeat;mask-repeat:repeat}
+.det-hero.piscina::before{animation:waveDrift 24s linear infinite}
+@keyframes waveDrift{to{-webkit-mask-position:160px 0;mask-position:160px 0}}
 .det-hero::after{content:'';position:absolute;z-index:-1;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;
   background:radial-gradient(circle,rgba(255,255,255,.22),transparent 68%)}
 .dh-title{display:flex;align-items:center;gap:14px}
@@ -383,8 +432,8 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
 @media(min-width:700px){
   .cards{grid-template-columns:repeat(2,1fr)}
   .hs-grid{grid-template-columns:repeat(2,1fr)}
-  .hero-photo{height:400px;object-position:50% 36%}
-  .hero-inner{padding:300px 32px 34px}
+  .hero-photo{height:max(400px,62vh);height:max(400px,62svh);object-position:50% 36%}
+  .hero-inner{padding:140px 32px 60px}
   .hero-inner > *{max-width:640px}
   .overlay{align-items:center}
   .modal{border-radius:28px;padding:24px 28px 28px}
@@ -413,7 +462,8 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
   .wrap{padding-top:28px}
   body[data-page="dashboard"] .wrap{padding-top:0}
 
-  .hero{border-radius:0 0 48px 48px;min-height:480px}
+  .hero{border-radius:0 0 48px 48px;justify-content:center;min-height:clamp(540px,calc(100vh - 64px),760px);min-height:clamp(540px,calc(100svh - 64px),760px)}
+  .hero-cue{display:none}
   .hero-photo{left:auto;right:0;width:52%;height:100%;object-position:50% 20%;
     -webkit-mask-image:linear-gradient(to right,transparent 0,#000 40%);mask-image:linear-gradient(to right,transparent 0,#000 40%)}
   .hero-inner{width:min(1200px,100% - 64px);margin:0 auto;padding:92px 0 70px}
@@ -465,6 +515,7 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
     <div class="hero-stats" id="hero-stats"></div>
     <span class="ver-pill" id="app-ver"></span>
   </div>
+  <button class="hero-cue" type="button" aria-label="Scorri alle attività" onclick="scrollToContent()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
 </header>
 
 <div id="page-dashboard" class="page active">
@@ -615,7 +666,7 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
 </div>
 
 <script>
-const APP_VERSION = '3.2';
+const APP_VERSION = '3.3';
 const VERSION_URL = 'version.json';
 
 const ACT = {
@@ -798,12 +849,51 @@ function ringSVG(k,pct,o={}){
     <circle class="ring-bg" cx="50" cy="50" r="44" stroke-width="${sw}"/>
     <circle class="ring-fg" cx="50" cy="50" r="44" stroke-width="${sw}" stroke="url(#${gid})" style="--off:${off.toFixed(2)}px"/></svg>`;
 }
+const REDUCE = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+function scrollToContent(){ const w=document.querySelector('#page-dashboard .wrap'); if(w) w.scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'}); }
+// numeri che "salgono" fino al valore reale (il valore finale è sempre quello calcolato)
+function zeroCounters(){ if(REDUCE) return; document.querySelectorAll('[data-n]').forEach(el=>{ const n=+el.dataset.n; if(isFinite(n)&&n>0) el.textContent='0'; }); }
+function runCounters(){
+  document.querySelectorAll('[data-n]').forEach(el=>{
+    const n=+el.dataset.n; if(!isFinite(n)||n<=0) return;
+    if(REDUCE){ el.textContent=String(n); return; }
+    const d=900, t0=performance.now();
+    const fin=()=>{ el.textContent=String(n); };
+    setTimeout(fin,d+250);
+    (function step(t){ const p=Math.min(1,(t-t0)/d); if(p>=1){ fin(); return; } el.textContent=String(Math.round(n*(1-Math.pow(1-p,3)))); requestAnimationFrame(step); })(t0);
+  });
+}
+// comparsa delle sezioni quando entrano nello schermo
+let revealIO=null;
+function armReveal(){
+  if(REDUCE||!('IntersectionObserver' in window)) return;
+  if(!revealIO) revealIO=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('vis'); revealIO.unobserve(e.target); } }); },{threshold:.06,rootMargin:'0px 0px -5% 0px'});
+  document.querySelectorAll('.page.active .sec, .page.active .hs, .page.active .block, .page.active #dash-backup').forEach(el=>{
+    if(el.classList.contains('rv')) return;
+    el.classList.add('rv'); revealIO.observe(el);
+  });
+}
 function armRings(){
+  zeroCounters();
+  armReveal();
   setTimeout(()=>{
     document.querySelectorAll('.ring').forEach(r=>r.classList.add('in'));
     document.querySelectorAll('.vax-bar i').forEach(b=>{ b.style.width=b.dataset.w+'%'; });
+    runCounters();
   },60);
 }
+// parallasse della foto nella Home
+(function(){
+  const hero=document.getElementById('hero'); if(!hero||REDUCE) return;
+  let tick=false;
+  function upd(){ tick=false;
+    if(document.body.dataset.page!=='dashboard') return;
+    const y=Math.max(0,window.scrollY||0); if(y>hero.offsetHeight+60) return;
+    hero.style.setProperty('--py',(y*0.3).toFixed(1)+'px');
+    hero.style.setProperty('--ps',(1+Math.min(y,700)/7000).toFixed(4));
+  }
+  window.addEventListener('scroll',()=>{ if(!tick){ tick=true; requestAnimationFrame(upd); } },{passive:true});
+})();
 function chartSVG(k,freq){
   const W=320,H=150,pad=18,base=118,bw=32;
   const maxF=Math.max(...freq.map(m=>m.count),1);
@@ -861,14 +951,14 @@ function renderHero(){
   let lastD=null;
   for(const k of Object.keys(ACT)) state[k].lezioni.forEach(l=>{ if(!lastD||l.data>lastD) lastD=l.data; });
   let t2;
-  if(streak>0) t2=`<div class="hstat"><b>${streak}</b><span>${streak===1?'Settimana':'Settimane'} di fila</span></div>`;
+  if(streak>0) t2=`<div class="hstat"><b data-n="${streak}">${streak}</b><span>${streak===1?'Settimana':'Settimane'} di fila</span></div>`;
   else if(lastD){
     const t0=new Date(); t0.setHours(0,0,0,0);
     const dd=Math.max(0,Math.round((t0-new Date(lastD+'T00:00:00'))/86400000));
-    t2=`<div class="hstat"><b>${dd}</b><span>${dd===1?'Giorno':'Giorni'} dall'ultima lezione</span></div>`;
+    t2=`<div class="hstat"><b data-n="${dd}">${dd}</b><span>${dd===1?'Giorno':'Giorni'} dall'ultima lezione</span></div>`;
   } else t2=`<div class="hstat"><b>—</b><span>Nessuna lezione</span></div>`;
   document.getElementById('hero-stats').innerHTML=`
-    <div class="hstat"><b>${tot}</b><span>Lezioni totali</span></div>
+    <div class="hstat"><b data-n="${tot}">${tot}</b><span>Lezioni totali</span></div>
     ${t2}
     <div class="hstat txt"><b><i class="dot ${hcls}"></i>${htxt}</b><span>Salute</span></div>`;
 }
@@ -880,10 +970,10 @@ function cardHTML(k){
   const stima=stimaScadenza(k);
   let body;
   if(sub){
-    body=`<div class="ring" style="--sz:116px">${ringSVG(k,frac,{id:'card'})}<div class="ring-c"><b>${r}</b><span>rimaste</span></div></div>
+    body=`<div class="ring" style="--sz:116px">${ringSVG(k,frac,{id:'card'})}<div class="ring-c"><b data-n="${r}">${r}</b><span>rimaste</span></div></div>
       <div class="ac-side">
-        <div class="kv"><span>Fatte</span><b>${usate}</b></div>
-        <div class="kv"><span>Pacchetto</span><b>${totale}</b></div>
+        <div class="kv"><span>Fatte</span><b data-n="${usate}">${usate}</b></div>
+        <div class="kv"><span>Pacchetto</span><b data-n="${totale}">${totale}</b></div>
         ${stima?`<div class="stima-tag">Esaurimento stimato <b>${stima.data.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})}</b> · 1 ogni ~${stima.freqDays}g</div>`:''}
       </div>`;
   } else {
@@ -934,10 +1024,10 @@ function renderDetail(k){
       </div>
     </div>
     <div class="dh-gauge light">
-      <div class="ring" style="--sz:132px">${ringSVG(k,frac,{id:'det',light:true,sw:10})}<div class="ring-c"><b>${sub?r:'—'}</b><span>rimaste</span></div></div>
+      <div class="ring" style="--sz:132px">${ringSVG(k,frac,{id:'det',light:true,sw:10})}<div class="ring-c"><b${sub?` data-n="${r}"`:''}>${sub?r:'—'}</b><span>rimaste</span></div></div>
       <div class="dh-stats">
-        <div class="dh-stat"><span>Fatte</span><b>${usate}</b></div>
-        <div class="dh-stat"><span>Pacchetto</span><b>${totale}</b></div>
+        <div class="dh-stat"><span>Fatte</span><b data-n="${usate}">${usate}</b></div>
+        <div class="dh-stat"><span>Pacchetto</span><b data-n="${totale}">${totale}</b></div>
         <div class="dh-stat"><span>Utilizzato</span><b>${Math.round(frac*100)}%</b></div>
       </div>
     </div>
