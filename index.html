@@ -359,6 +359,14 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
 .foto-preview{width:100%;height:160px;border-radius:16px;object-fit:cover;display:none;margin-top:10px}
 .foto-preview.show{display:block}
 
+/* ---------- backup ---------- */
+.bk p{font:700 13.5px/1.5 var(--f-body);color:var(--ink2);max-width:68ch}
+.bk-status{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 14px;border-radius:999px;font:800 12.5px var(--f-body)}
+.bk-status.ok{background:var(--ok-soft);color:var(--ok)}
+.bk-status.warn{background:var(--warn-soft);color:var(--warn)}
+.bk-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.bk-note{margin-top:12px;font:700 12px/1.45 var(--f-body);color:var(--muted)}
+
 /* ---------- banner aggiornamento ---------- */
 .update-banner{background:linear-gradient(135deg,#C8922A,#B5622A);color:#fff;
   padding:calc(11px + env(safe-area-inset-top)) 14px 11px 16px;display:flex;align-items:center;gap:10px;
@@ -466,6 +474,8 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
     <div class="cards" id="dash-cards"></div>
     <h2 class="sec">Salute in breve</h2>
     <div id="dash-health"></div>
+    <h2 class="sec">Backup dei dati</h2>
+    <div id="dash-backup"></div>
   </div>
 </div>
 
@@ -605,7 +615,7 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
 </div>
 
 <script>
-const APP_VERSION = '3.1';
+const APP_VERSION = '3.2';
 const VERSION_URL = 'version.json';
 
 const ACT = {
@@ -903,6 +913,7 @@ function renderDash(){
   renderHero();
   document.getElementById('dash-cards').innerHTML=Object.keys(ACT).map(cardHTML).join('');
   document.getElementById('dash-health').innerHTML=healthSummaryHTML();
+  document.getElementById('dash-backup').innerHTML=backupHTML();
   updateNavDot(); armRings();
 }
 
@@ -1163,6 +1174,96 @@ function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.overlay').forEach(el=>{
   el.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
 });
+
+/* ===== BACKUP ===== */
+function localDate(){ const d=new Date(), p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+function getMeta(){ try{ return JSON.parse(localStorage.getItem('bubu-meta')||'{}')||{}; }catch(e){ return {}; } }
+function markBackup(){
+  try{ const m=getMeta(); m.ultimoBackup=localDate(); localStorage.setItem('bubu-meta',JSON.stringify(m)); }catch(e){}
+  document.getElementById('dash-backup').innerHTML=backupHTML();
+}
+function countData(s,h){
+  let ab=0,le=0; for(const k of Object.keys(ACT)){ ab+=s[k].abbonamenti.length; le+=s[k].lezioni.length; }
+  return { ab, le, vx:h.vaccinations.length, il:h.illnesses.length };
+}
+function fmtCount(c){
+  const n=(x,s,p)=>x+' '+(x===1?s:p);
+  return [n(c.ab,'abbonamento','abbonamenti'),n(c.le,'lezione','lezioni'),n(c.vx,'vaccinazione','vaccinazioni'),n(c.il,'indisposizione','indisposizioni')].join(', ');
+}
+function backupHTML(){
+  const m=getMeta(); let st;
+  if(!m.ultimoBackup) st=`<div class="bk-status warn">Nessun backup eseguito su questo dispositivo</div>`;
+  else {
+    const t0=new Date(); t0.setHours(0,0,0,0);
+    const days=Math.max(0,Math.round((t0-new Date(m.ultimoBackup+'T00:00:00'))/86400000));
+    const when=days===0?'oggi':days===1?'ieri':days+' giorni fa';
+    st=`<div class="bk-status ${days>30?'warn':'ok'}">Ultimo backup: ${fmtDate(m.ultimoBackup)} (${when})${days>30?' · conviene rifarlo':''}</div>`;
+  }
+  return `<div class="block bk" style="margin-top:0">
+    <p>I dati (abbonamenti, lezioni, foto, vaccinazioni) sono salvati solo su questo dispositivo, nel browser. Un file di backup permette di recuperarli se il browser li cancella e di trasferirli su un altro dispositivo.</p>
+    ${st}
+    <div class="bk-actions">
+      <button class="btn btn-soil" onclick="exportBackup()">${ICON.check} Esporta backup</button>
+      <button class="btn btn-sand" onclick="document.getElementById('bk-file').click()">${ICON.plus} Ripristina da file</button>
+      <input type="file" id="bk-file" accept=".json,application/json" style="display:none" onchange="importBackup(this)">
+    </div>
+    <div class="bk-note">Il ripristino sostituisce tutti i dati presenti su questo dispositivo.</div>
+  </div>`;
+}
+async function exportBackup(){
+  const payload={ app:'bubu-tracker', formato:1, versioneApp:APP_VERSION, esportatoIl:new Date().toISOString(), attivita:state, salute:health };
+  const name='bubu-backup_'+localDate()+'.json';
+  const file=new File([JSON.stringify(payload)],name,{type:'application/json'});
+  try{
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:"Backup Bubu's Tracker"});
+      markBackup(); return;
+    }
+  }catch(e){
+    if(e && e.name==='AbortError') return;   // condivisione annullata: nessun backup registrato
+  }
+  const url=URL.createObjectURL(file), a=document.createElement('a');
+  a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  markBackup();
+}
+function validaBackup(o){
+  if(!o||typeof o!=='object'||o.app!=='bubu-tracker') return "il file non è un backup di Bubu's Tracker";
+  if(!o.attivita||typeof o.attivita!=='object') return 'dati delle attività mancanti';
+  for(const k of Object.keys(ACT)){
+    const a=o.attivita[k];
+    if(!a||!Array.isArray(a.abbonamenti)||!Array.isArray(a.lezioni)) return 'dati di '+ACT[k].label+' non validi';
+  }
+  if(!o.salute||!Array.isArray(o.salute.vaccinations)||!Array.isArray(o.salute.illnesses)) return 'dati di salute non validi';
+  return null;
+}
+function importBackup(inp){
+  const f=inp.files&&inp.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onerror=()=>{ alert('Impossibile leggere il file.'); inp.value=''; };
+  r.onload=e=>{
+    inp.value='';
+    let o; try{ o=JSON.parse(e.target.result); }catch(err){ alert('Ripristino annullato: il file non è un JSON valido. I dati attuali non sono stati modificati.'); return; }
+    const err=validaBackup(o);
+    if(err){ alert('Ripristino annullato: '+err+'. I dati attuali non sono stati modificati.'); return; }
+    const quando=o.esportatoIl?fmtDate(String(o.esportatoIl).slice(0,10)):'data sconosciuta';
+    const msg='Ripristinare il backup del '+quando+'?\n\nNel backup: '+fmtCount(countData(o.attivita,o.salute))+
+      '.\nSu questo dispositivo ora: '+fmtCount(countData(state,health))+'.\n\nIl ripristino SOSTITUISCE i dati attuali.';
+    if(!confirm(msg)) return;
+    const prevS=localStorage.getItem('bubu-v2'), prevH=localStorage.getItem('bubu-health');
+    try{
+      localStorage.setItem('bubu-v2',JSON.stringify(o.attivita));
+      localStorage.setItem('bubu-health',JSON.stringify(o.salute));
+    }catch(ex){
+      try{ if(prevS!=null) localStorage.setItem('bubu-v2',prevS); if(prevH!=null) localStorage.setItem('bubu-health',prevH); }catch(_){}
+      alert('Ripristino non riuscito (spazio insufficiente nel browser). I dati attuali non sono stati modificati.'); return;
+    }
+    state=o.attivita; health=o.salute;
+    renderDash();
+    alert('Backup ripristinato.');
+  };
+  r.readAsText(f);
+}
 
 /* ===== AVVIO ===== */
 document.querySelectorAll('[data-ico]').forEach(el=>{ el.innerHTML=ICON[el.dataset.ico]||''; });
