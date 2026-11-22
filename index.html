@@ -662,6 +662,75 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
 }
+
+/* =========================================================
+   v3.8 — METEO (pannello dalla Home)
+   ========================================================= */
+:root{--rain:#38b6ff;--rain-ink:#1C86C6;--rain-pill-ink:#06131d}
+@media (prefers-color-scheme:dark){:root{--rain-ink:#38b6ff}}
+.meteo-btn{display:inline-flex;align-items:center;gap:9px;margin-top:16px;margin-right:10px;cursor:pointer;
+  font:800 14px var(--f-body);color:var(--cream);padding:10px 16px 10px 13px;border-radius:999px;
+  background:rgba(246,238,219,.13);border:1px solid rgba(246,238,219,.26);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);vertical-align:middle}
+.meteo-btn svg{width:20px;height:20px;color:var(--gold)}
+.meteo-btn:active{transform:scale(.97)}
+@media(hover:hover){.meteo-btn:hover{background:rgba(246,238,219,.2)}}
+.hero-inner .ver-pill{vertical-align:middle}
+
+.modal.met-modal{max-width:640px}
+.met-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px}
+.met-head .modal-title{margin-bottom:2px}
+.met-x{background:var(--card2);border:1px solid var(--line);color:var(--ink2);border-radius:999px;width:34px;height:34px;flex:none;cursor:pointer;font:800 15px var(--f-body)}
+.met-sub{font:700 12px var(--f-body);color:var(--muted);margin-bottom:14px}
+.met-sub a{color:var(--ink2);font-weight:900}
+.met-chips,.met-days{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.met-chip{border:1.5px solid var(--line);background:var(--card2);color:var(--ink2);border-radius:999px;padding:8px 14px;font:800 13px var(--f-body);cursor:pointer}
+.met-chip.on{background:var(--forest);border-color:var(--forest);color:var(--cream)}
+@media (prefers-color-scheme:dark){.met-chip.on{background:#2E5A3B;border-color:#2E5A3B}}
+.met-days .met-chip{flex:1;text-align:center;padding:9px 6px}
+.met-diff{font:700 12px/1.4 var(--f-body);color:var(--ink2);background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:8px 11px;margin-bottom:12px}
+.met-alerts{display:grid;gap:6px;margin-bottom:12px}
+.met-alert{display:flex;gap:9px;align-items:flex-start;border-radius:13px;padding:9px 12px;font:700 13px/1.35 var(--f-body)}
+.met-alert b{font-weight:900}
+.met-alert.warn{background:var(--warn-soft);color:var(--ink)}
+.met-alert.bad{background:var(--bad-soft);color:var(--ink)}
+.met-alert.cold{background:var(--piscina-soft);color:var(--ink)}
+.met-alert .e{font-size:16px;line-height:1.1}
+.met-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.met-kv{background:var(--card2);border-radius:14px;padding:9px 10px;min-width:0}
+.met-kv span{display:block;font:800 10px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.met-kv b{display:block;font:900 16px/1.25 var(--f-body);margin-top:3px}
+.met-fasce{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.met-fascia{border:1.5px solid var(--line);border-radius:16px;padding:10px;min-width:0;text-align:center}
+.met-fascia.warn{border-color:var(--warn)}.met-fascia.bad{border-color:var(--bad)}.met-fascia.cold{border-color:var(--piscina)}
+.met-fascia.past{opacity:.5}
+.met-fascia h4{font:900 13px var(--f-body);margin:0}
+.met-fascia small{display:block;font:700 10px var(--f-body);color:var(--muted)}
+.met-fascia .ic{font-size:26px;line-height:1.2;margin:4px 0 2px}
+.met-fascia .t{font:900 17px var(--f-display)}
+.met-fascia .r{font:700 11px/1.45 var(--f-body);color:var(--ink2)}
+.met-hours{border-top:1px solid var(--line)}
+.met-band{font:900 11px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--forest2);background:var(--guinz-soft);padding:6px 10px;border-radius:9px;margin:10px 0 4px}
+@media (prefers-color-scheme:dark){.met-band{color:var(--guinz)}}
+.met-row{display:grid;grid-template-columns:44px 26px 1fr auto;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid var(--line);font:700 13px var(--f-body)}
+.met-row .h{font:900 13px ui-monospace,Menlo,monospace;color:var(--ink2)}
+.met-row .ic{font-size:18px;text-align:center}
+.met-row .tt b{font:900 15px var(--f-body)}
+.met-row .tt small{color:var(--muted);font-weight:700;margin-left:5px}
+.met-row .w{display:block;color:var(--muted);font-size:11px;font-weight:700}
+.met-row .m{font:800 9px ui-monospace,Menlo,monospace;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 4px;margin-left:6px;vertical-align:middle}
+.piog{display:inline-flex;align-items:center;gap:4px;border-radius:999px;font:800 12px var(--f-body);white-space:nowrap}
+.piog svg{width:9px;height:12px;flex:none}
+.piog.p0{color:var(--muted);font-weight:600}
+.piog.p1{color:var(--rain-ink)}
+.piog.p2{background:var(--rain);color:var(--rain-pill-ink);padding:2px 9px 2px 8px;font-weight:900}
+.met-note{font:700 11px/1.5 var(--f-body);color:var(--muted);margin-top:14px}
+.met-note a{color:inherit}
+.met-msg{padding:26px 6px;text-align:center;font:700 14px/1.5 var(--f-body);color:var(--ink2)}
+.met-msg .btn{margin-top:12px}
+.met-spin{width:28px;height:28px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--forest2);margin:0 auto 10px;animation:metspin .9s linear infinite}
+@keyframes metspin{to{transform:rotate(360deg)}}
+@media(max-width:380px){.met-sum{grid-template-columns:repeat(2,1fr)}.met-fascia{padding:8px 5px}.met-fascia .t{font-size:15px}}
 </style>
 </head>
 <body data-page="dashboard">
@@ -697,7 +766,7 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
     <p class="hero-sub">Trainer e compagna di vita: Tato</p>
     <div class="hero-badges" id="hbadges"></div>
     <div class="hero-stats" id="hero-stats"></div>
-    <span class="ver-pill" id="app-ver"></span>
+    <button class="meteo-btn" type="button" onclick="metOpen()" aria-label="Apri il meteo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2M4.9 4.9l1.4 1.4M2 12h2M19.1 4.9l-1.4 1.4"/><path d="M16 12a4 4 0 1 0-7.6 1.7"/><path d="M17.5 21H9a4 4 0 1 1 .9-7.9A5 5 0 0 1 19 15.5a3 3 0 0 1-1.5 5.5Z"/></svg><span>Meteo</span></button><span class="ver-pill" id="app-ver"></span>
   </div>
   <button class="hero-cue" type="button" aria-label="Scorri alle attività" onclick="scrollToContent()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
 </header>
@@ -905,8 +974,18 @@ select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://
   </div>
 </div>
 
+<!-- MODAL METEO (v3.8) -->
+<div class="overlay" id="m-meteo">
+  <div class="modal met-modal" role="dialog" aria-modal="true" aria-labelledby="met-title">
+    <div class="modal-handle"></div>
+    <div class="met-head"><div><div class="modal-title" id="met-title">Meteo per gli allenamenti</div></div><button class="met-x" type="button" onclick="metClose()" aria-label="Chiudi">✕</button></div>
+    <div class="met-sub" id="met-sub"></div>
+    <div id="met-body"></div>
+  </div>
+</div>
+
 <script>
-const APP_VERSION = '3.7';
+const APP_VERSION = '3.8';
 const VERSION_URL = 'version.json';
 
 const ACT = {
@@ -2099,6 +2178,293 @@ function importBackup(inp){
 /* ===== AVVIO ===== */
 document.querySelectorAll('[data-ico]').forEach(el=>{ el.innerHTML=ICON[el.dataset.ico]||''; });
 document.getElementById('brand-ico').innerHTML=ICON.paw;
+
+/* ===== v3.8 — METEO =====
+   Dati: Open-Meteo Forecast API (CC BY 4.0), chiamata diretta dal browser.
+   Nessun dato salvato nel localStorage: la previsione resta solo in memoria. */
+const METEO_CFG = {
+  api: 'https://api.open-meteo.com/v1/forecast',
+  timezone: 'Europe/Rome',
+  // Coordinate dal servizio di ricerca località di Open-Meteo (geocoding-api.open-meteo.com)
+  localita: [
+    { id:'trivignano', nome:'Trivignano', lat:45.532, lon:12.187 },
+    { id:'zelarino',   nome:'Zelarino',   lat:45.515, lon:12.208 },
+    { id:'mestre',     nome:'Mestre',     lat:45.492, lon:12.245 }
+  ],
+  // Ordine di priorità: ora per ora si usa il primo modello che ha il valore
+  modelli: [
+    { id:'icon_d2',      sigla:'D2', nome:'ICON-D2 (DWD, ~2 km)' },
+    { id:'ecmwf_ifs025', sigla:'EC', nome:'ECMWF IFS (~25 km)' },
+    { id:'best_match',   sigla:'BM', nome:'scelta automatica Open-Meteo, solo per i valori che mancano (es. indice UV)' }
+  ],
+  orarie: ['temperature_2m','apparent_temperature','precipitation_probability','precipitation',
+           'weather_code','wind_speed_10m','wind_gusts_10m','uv_index','is_day'],
+  giornaliere: ['sunrise','sunset'],
+  giorni: 3,            // giorni scaricati e mostrati
+  giorniOrari: 2,       // giorni con il dettaglio ora per ora (oggi e domani)
+  etichetteGiorni: ['Oggi','Domani','Dopodomani'],
+  fasce: [              // ore [da, a): l'ora "a" è esclusa
+    { id:'mattino',    nome:'Mattino',    da:6,  a:12 },
+    { id:'pomeriggio', nome:'Pomeriggio', da:12, a:18 },
+    { id:'sera',       nome:'Sera',       da:18, a:22 }
+  ],
+  pioggia: { azzurro:20, pieno:50 },   // %: sotto "azzurro" grigio, da "pieno" pillola piena (stile Forecast Lagoon)
+  // Soglie sulla temperatura percepita: scelta di Ennio e Tato, non un dato veterinario
+  avvisi: {
+    caldoForte:     { soglia:30, cls:'bad',  e:'🥵', testo:'Caldo forte: evita le ore più calde, scegli ombra e ore fresche, acqua sempre a disposizione.' },
+    caldoAttenzione:{ soglia:25, cls:'warn', e:'☀️', testo:'Caldo: meglio allenarsi presto o tardi, con acqua a disposizione.' },
+    freddo:         { soglia:0,  cls:'cold', e:'🥶', testo:'Freddo: percepita sotto zero, attenzione a ghiaccio e zampe.' }
+  },
+  cacheMinuti: 30,
+  timeoutMs: 15000,
+  attribuzione: { testo:'Dati meteo: Open-Meteo.com', url:'https://open-meteo.com/', licenza:'CC BY 4.0', licenzaUrl:'https://creativecommons.org/licenses/by/4.0/' }
+};
+// Codici meteo WMO usati da Open-Meteo
+const METEO_WMO = [
+  { c:[0],        e:'☀️', n:'🌙', t:'Sereno' },
+  { c:[1],        e:'🌤️', n:'🌙', t:'Quasi sereno' },
+  { c:[2],        e:'⛅',  n:'☁️', t:'Poco nuvoloso' },
+  { c:[3],        e:'☁️', t:'Coperto' },
+  { c:[45,48],    e:'🌫️', t:'Nebbia' },
+  { c:[51,53,55], e:'🌦️', t:'Pioviggine' },
+  { c:[56,57],    e:'🌧️', t:'Pioviggine gelata' },
+  { c:[61],       e:'🌧️', t:'Pioggia debole' },
+  { c:[63],       e:'🌧️', t:'Pioggia' },
+  { c:[65],       e:'🌧️', t:'Pioggia forte' },
+  { c:[66,67],    e:'🌧️', t:'Pioggia gelata' },
+  { c:[71,73,75,77], e:'🌨️', t:'Neve' },
+  { c:[80,81,82], e:'🌦️', t:'Rovesci' },
+  { c:[85,86],    e:'🌨️', t:'Rovesci di neve' },
+  { c:[95],       e:'⛈️', t:'Temporale' },
+  { c:[96,99],    e:'⛈️', t:'Temporale con grandine' }
+];
+
+let metCache=null, metLoc=0, metDay=0, metBusy=false;
+
+function metUrl(){
+  const C=METEO_CFG, p=new URLSearchParams();
+  p.set('latitude', C.localita.map(l=>l.lat).join(','));
+  p.set('longitude', C.localita.map(l=>l.lon).join(','));
+  p.set('hourly', C.orarie.join(','));
+  p.set('daily', C.giornaliere.join(','));
+  p.set('models', C.modelli.map(m=>m.id).join(','));
+  p.set('timezone', C.timezone);
+  p.set('forecast_days', String(C.giorni));
+  return C.api+'?'+p.toString();
+}
+// Valore di una variabile per un modello (con più modelli Open-Meteo aggiunge il suffisso _<modello>)
+function metArr(block, v, m){
+  if(!block) return null;
+  return block[v+'_'+m] || (METEO_CFG.modelli.length===1 ? block[v] : null) || null;
+}
+// Ora per ora: primo modello disponibile per ogni variabile
+function metParse(raw){
+  const C=METEO_CFG, list=Array.isArray(raw)?raw:[raw];
+  if(list.length!==C.localita.length) throw new Error('Risposta con '+list.length+' località invece di '+C.localita.length);
+  return list.map(o=>{
+    const H=o.hourly||{}, times=H.time||[];
+    const hours=times.map((t,i)=>{
+      const r={ t, d:t.slice(0,10), h:+t.slice(11,13), src:{} };
+      C.orarie.forEach(v=>{
+        r[v]=null;
+        for(const m of C.modelli){
+          const a=metArr(H,v,m.id), x=a?a[i]:null;
+          if(x!=null){ r[v]=x; r.src[v]=m.sigla; break; }
+        }
+      });
+      return r;
+    });
+    const D=o.daily||{}, days={};
+    (D.time||[]).forEach((d,i)=>{
+      const g={};
+      C.giornaliere.forEach(v=>{
+        g[v]=null;
+        for(const m of C.modelli){ const a=metArr(D,v,m.id); if(a&&a[i]!=null){ g[v]=a[i]; break; } }
+      });
+      days[d]=g;
+    });
+    return { hours, days, elev:o.elevation };
+  });
+}
+async function metFetch(force){
+  const now=Date.now();
+  if(!force && metCache && now-metCache.ts < METEO_CFG.cacheMinuti*60000) return metCache;
+  const ctl=('AbortController' in window)?new AbortController():null;
+  const tm=setTimeout(()=>{ if(ctl) ctl.abort(); }, METEO_CFG.timeoutMs);
+  try{
+    const res=await fetch(metUrl(), ctl?{signal:ctl.signal, cache:'no-store'}:{cache:'no-store'});
+    if(!res.ok){ let why=''; try{ why=(await res.json()).reason||''; }catch(e){} throw new Error('HTTP '+res.status+(why?' · '+why:'')); }
+    const data=metParse(await res.json());
+    metCache={ ts:now, data };
+    return metCache;
+  } finally { clearTimeout(tm); }
+}
+
+/* ---------- utilità ---------- */
+const metN0=x=>x==null?'–':Math.round(x).toLocaleString('it-IT');
+const metN1=x=>x==null?'–':(Math.round(x*10)/10).toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1});
+const metMax=a=>{ const v=a.filter(x=>x!=null); return v.length?Math.max(...v):null; };
+const metMin=a=>{ const v=a.filter(x=>x!=null); return v.length?Math.min(...v):null; };
+const metSum=a=>{ const v=a.filter(x=>x!=null); return v.length?v.reduce((s,x)=>s+x,0):null; };
+function metIco(code,isDay){
+  const w=METEO_WMO.find(x=>x.c.includes(code));
+  if(!w) return { e:'❔', t:'Codice '+code };
+  return { e:(isDay===0&&w.n)?w.n:w.e, t:w.t };
+}
+function metDays(){
+  const out=[], t0=new Date(); t0.setHours(12,0,0,0);
+  for(let i=0;i<METEO_CFG.giorni;i++){
+    const d=new Date(t0); d.setDate(t0.getDate()+i);
+    const p=n=>String(n).padStart(2,'0');
+    out.push(d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()));
+  }
+  return out;
+}
+function metNowKey(){ const d=new Date(), p=n=>String(n).padStart(2,'0'); return { d:localDate(), h:d.getHours() }; }
+function metIsPast(r){ const n=metNowKey(); return r.d<n.d || (r.d===n.d && r.h<n.h); }
+function metInFascia(h,f){ return h>=f.da && h<f.a; }
+function metPiog(p){
+  const C=METEO_CFG.pioggia;
+  if(p==null) return '<span class="piog p0">–</span>';
+  const cls=p>=C.pieno?'p2':p>=C.azzurro?'p1':'p0';
+  return `<span class="piog ${cls}"><svg viewBox="0 0 9 12" aria-hidden="true"><path d="M4.5 0C3 2.6 0 5.6 0 7.6A4.5 4.5 0 0 0 9 7.6C9 5.6 6 2.6 4.5 0Z" fill="currentColor"/></svg>${metN0(p)}%</span>`;
+}
+function metHoursOf(loc, d, f){
+  return metCache.data[loc].hours.filter(r=>r.d===d && (!f || metInFascia(r.h,f)));
+}
+function metFasciaStat(rows){
+  const app=rows.map(r=>r.apparent_temperature);
+  const codes=rows.map(r=>r.weather_code).filter(x=>x!=null);
+  const code=codes.length?Math.max(...codes):null;
+  const mid=rows[Math.floor(rows.length/2)];
+  return { tMin:metMin(rows.map(r=>r.temperature_2m)), tMax:metMax(rows.map(r=>r.temperature_2m)),
+           aMin:metMin(app), aMax:metMax(app), pMax:metMax(rows.map(r=>r.precipitation_probability)),
+           mm:metSum(rows.map(r=>r.precipitation)), wMax:metMax(rows.map(r=>r.wind_speed_10m)),
+           gMax:metMax(rows.map(r=>r.wind_gusts_10m)), code, isDay:mid?mid.is_day:1 };
+}
+function metAlertOf(s){
+  const A=METEO_CFG.avvisi;
+  if(s.aMax!=null && s.aMax>=A.caldoForte.soglia) return { k:A.caldoForte, v:s.aMax, txt:'percepita fino a '+metN0(s.aMax)+' °C' };
+  if(s.aMax!=null && s.aMax>=A.caldoAttenzione.soglia) return { k:A.caldoAttenzione, v:s.aMax, txt:'percepita fino a '+metN0(s.aMax)+' °C' };
+  if(s.aMin!=null && s.aMin<=A.freddo.soglia) return { k:A.freddo, v:s.aMin, txt:'percepita fino a '+metN0(s.aMin)+' °C' };
+  return null;
+}
+function metFuture(rows){ return rows.filter(r=>!metIsPast(r)); }
+
+/* ---------- differenza fra località (nelle ore delle fasce, prossime giorniOrari) ---------- */
+function metDiff(){
+  const C=METEO_CFG, days=metDays().slice(0,C.giorniOrari), L=metCache.data;
+  let dT=0, dP=0, n=0;
+  L[0].hours.forEach((r,i)=>{
+    if(!days.includes(r.d) || metIsPast(r) || !C.fasce.some(f=>metInFascia(r.h,f))) return;
+    const ts=L.map(x=>x.hours[i]&&x.hours[i].temperature_2m).filter(x=>x!=null);
+    const ps=L.map(x=>x.hours[i]&&x.hours[i].precipitation_probability).filter(x=>x!=null);
+    if(ts.length===L.length){ dT=Math.max(dT, Math.max(...ts)-Math.min(...ts)); n++; }
+    if(ps.length===L.length) dP=Math.max(dP, Math.max(...ps)-Math.min(...ps));
+  });
+  return { dT, dP, n, ore:C.giorniOrari*24 };
+}
+
+/* ---------- render ---------- */
+function metRender(){
+  const C=METEO_CFG, box=document.getElementById('met-body');
+  if(!metCache){ return; }
+  const days=metDays(), d=days[metDay], loc=metLoc, L=metCache.data[loc];
+  const agg=new Date(metCache.ts).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('met-sub').innerHTML=`${esc(C.localita[loc].nome)} · aggiornato alle ${agg} · <a href="#" onclick="metOpen(true);return false">aggiorna</a>`;
+
+  let h='<div class="met-chips">'+C.localita.map((l,i)=>`<button type="button" class="met-chip${i===loc?' on':''}" onclick="metLoc=${i};metRender()">${esc(l.nome)}</button>`).join('')+'</div>';
+  const df=metDiff();
+  if(df.n) h+=`<div class="met-diff">Nelle prossime ${df.ore} ore, nelle fasce di allenamento, le ${C.localita.length} località differiscono al massimo di <b>${metN1(df.dT)} °C</b> e <b>${metN0(df.dP)} punti</b> di probabilità di pioggia.</div>`;
+
+  // Avvisi: tutti i giorni, località scelta
+  const al=[];
+  days.forEach((dd,di)=>C.fasce.forEach(f=>{
+    const rows=metFuture(metHoursOf(loc,dd,f)); if(!rows.length) return;
+    const a=metAlertOf(metFasciaStat(rows));
+    if(a) al.push(`<div class="met-alert ${a.k.cls}"><span class="e">${a.k.e}</span><div><b>${esc(C.etichetteGiorni[di]||dd)} · ${esc(f.nome)}</b> — ${a.txt}. ${esc(a.k.testo)}</div></div>`);
+  }));
+  if(al.length) h+=`<div class="met-alerts">${al.join('')}</div>`;
+
+  h+='<div class="met-days">'+days.map((dd,i)=>{
+    const lab=C.etichetteGiorni[i]||dd;
+    const dt=new Date(dd+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric'});
+    return `<button type="button" class="met-chip${i===metDay?' on':''}" onclick="metDay=${i};metRender()">${esc(lab)}<br><small>${esc(dt)}</small></button>`;
+  }).join('')+'</div>';
+
+  const all=metHoursOf(loc,d);
+  if(!all.length){ box.innerHTML=h+'<div class="met-msg">Nessun dato per questo giorno.</div>'+metFoot(); return; }
+  const fasceRows=all.filter(r=>C.fasce.some(f=>metInFascia(r.h,f)));
+  const S=metFasciaStat(all), SF=metFasciaStat(fasceRows), G=L.days[d]||{};
+  const hm=x=>x?x.slice(11,16):'–';
+  h+=`<div class="met-sum">
+    <div class="met-kv"><span>Min / Max</span><b>${metN0(S.tMin)}° / ${metN0(S.tMax)}°</b></div>
+    <div class="met-kv"><span>Percepita fasce</span><b>${metN0(SF.aMin)}° / ${metN0(SF.aMax)}°</b></div>
+    <div class="met-kv"><span>Pioggia</span><b>${metN0(S.pMax)}% · ${metN1(S.mm)} mm</b></div>
+    <div class="met-kv"><span>Vento / raffiche</span><b>${metN0(S.wMax)} / ${metN0(S.gMax)} km/h</b></div>
+    <div class="met-kv"><span>UV max</span><b>${metN1(metMax(all.map(r=>r.uv_index)))}</b></div>
+    <div class="met-kv"><span>Alba / tramonto</span><b>${hm(G.sunrise)} / ${hm(G.sunset)}</b></div>
+  </div>`;
+
+  h+='<div class="met-fasce">'+C.fasce.map(f=>{
+    const rowsAll=metHoursOf(loc,d,f), rows=metFuture(rowsAll), past=!rows.length;
+    const s=metFasciaStat(past?rowsAll:rows), a=past?null:metAlertOf(s), ic=metIco(s.code,s.isDay);
+    return `<div class="met-fascia${a?' '+a.k.cls:''}${past?' past':''}">
+      <h4>${esc(f.nome)}</h4><small>${f.da}–${f.a}${past?' · passata':''}</small>
+      <div class="ic" title="${esc(ic.t)}">${ic.e}</div>
+      <div class="t">${metN0(s.tMin)}° / ${metN0(s.tMax)}°</div>
+      <div class="r">percepita ${metN0(s.aMax)}°<br>${metPiog(s.pMax)}<br>vento ${metN0(s.wMax)} km/h</div>
+    </div>`;
+  }).join('')+'</div>';
+
+  if(metDay<C.giorniOrari){
+    let hr='';
+    C.fasce.forEach(f=>{
+      const rows=metFuture(metHoursOf(loc,d,f)); if(!rows.length) return;
+      hr+=`<div class="met-band">${esc(f.nome)} · ${f.da}–${f.a}</div>`;
+      rows.forEach(r=>{
+        const ic=metIco(r.weather_code,r.is_day), src=r.src.temperature_2m||'';
+        hr+=`<div class="met-row">
+          <span class="h">${String(r.h).padStart(2,'0')}:00</span>
+          <span class="ic" title="${esc(ic.t)}">${ic.e}</span>
+          <span class="tt"><b>${metN0(r.temperature_2m)}°</b><small>perc. ${metN0(r.apparent_temperature)}°</small><span class="w">vento ${metN0(r.wind_speed_10m)} · raffiche ${metN0(r.wind_gusts_10m)} km/h${r.precipitation?' · '+metN1(r.precipitation)+' mm':''}</span></span>
+          <span>${metPiog(r.precipitation_probability)}${src?`<span class="m" title="Modello">${esc(src)}</span>`:''}</span>
+        </div>`;
+      });
+    });
+    h+=`<div class="met-hours">${hr||'<div class="met-msg">Le fasce di allenamento di oggi sono già passate.</div>'}</div>`;
+  } else {
+    h+=`<div class="met-diff">Per ${esc((C.etichetteGiorni[metDay]||'').toLowerCase())} solo il riepilogo per fasce: il dettaglio ora per ora è per i primi ${C.giorniOrari} giorni.</div>`;
+  }
+  box.innerHTML=h+metFoot();
+}
+function metFoot(){
+  const C=METEO_CFG, A=C.avvisi, P=C.pioggia, at=C.attribuzione;
+  return `<div class="met-note">
+    <a href="${at.url}" target="_blank" rel="noopener">${esc(at.testo)}</a> · licenza <a href="${at.licenzaUrl}" target="_blank" rel="noopener">${esc(at.licenza)}</a><br>
+    Modelli: ${C.modelli.map(m=>esc(m.sigla)+' = '+esc(m.nome)).join(', ')}; ora per ora si usa il primo disponibile, nell'ordine.<br>
+    Pioggia: probabilità e mm sono riferiti all'ora precedente; grigio sotto ${P.azzurro}%, azzurro da ${P.azzurro}%, pieno da ${P.pieno}%.<br>
+    Avvisi sulla temperatura percepita: caldo da ${A.caldoAttenzione.soglia} °C, caldo forte da ${A.caldoForte.soglia} °C, freddo da ${A.freddo.soglia} °C in giù. Soglie scelte da noi, non indicazioni veterinarie.
+  </div>`;
+}
+async function metOpen(force){
+  document.getElementById('m-meteo').classList.add('open');
+  const box=document.getElementById('met-body');
+  if(metBusy) return;
+  if(!force && metCache && Date.now()-metCache.ts < METEO_CFG.cacheMinuti*60000){ metRender(); return; }
+  metBusy=true;
+  if(!metCache || force){ box.innerHTML='<div class="met-msg"><div class="met-spin"></div>Scarico la previsione…</div>'; document.getElementById('met-sub').textContent='Open-Meteo'; }
+  try{
+    await metFetch(true);
+    metRender();
+  }catch(e){
+    const why=(e&&e.name==='AbortError')?'Open-Meteo non ha risposto in tempo.':(navigator.onLine===false?'Il dispositivo è offline.':'Errore: '+(e&&e.message||e));
+    box.innerHTML=`<div class="met-msg">Previsione non disponibile.<br><small>${esc(why)}</small><br><button class="btn btn-soil" type="button" onclick="metOpen(true)">Riprova</button></div>`+metFoot();
+  }finally{ metBusy=false; }
+}
+function metClose(){ closeModal('m-meteo'); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && document.getElementById('m-meteo').classList.contains('open')) metClose(); });
+
 document.getElementById('app-ver').textContent='v'+APP_VERSION;
 document.getElementById('nav-ver').textContent='v'+APP_VERSION;
 loadState(); renderDash();
